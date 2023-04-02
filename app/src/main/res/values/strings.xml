@@ -9,4 +9,8 @@
     <string name="share_application">Поделиться приложением</string>
     <string name="night_them">Темная тема</string>
     <string name="playlist_maker">Playlist Maker</string>
+    <string name="help_desk_post_title" translatable="false">"Сообщение разработчикам и разработчицам приложения Playlist Maker"</string>
+    <string name="help_desk_post_text" translatable="false">"Спасибо разработчикам и разработчицам за крутое приложение!"</string>
+    <string name="help_desk_post_email" translatable="false">"anton.vishkin@yandex.ru"</string>
+
 </resources>

@@ -4,63 +4,78 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:background="?attr/colorPrimary">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp">
+
         <ImageView
             android:id="@+id/back_button"
             style="@style/ArrowBack"
             android:src="@drawable/arrow_back"
             android:foreground="?attr/selectableItemBackground" />
+
         <TextView
             style="@style/NavigationBar"
-            android:text="@string/settings"/>
+            android:text="@string/settings" />
     </LinearLayout>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <TextView
             style="@style/SettingsLabel"
-            android:text="@string/night_them"/>
+            android:text="@string/night_them" />
+
         <Switch
             style="@style/SettingsIcon"
             android:layout_width="match_parent"
-            android:layout_marginEnd="0dp"
-            />
+            android:layout_marginEnd="0dp" />
     </FrameLayout>
+
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/sharing_button">
+
         <TextView
             style="@style/SettingsLabel"
-            android:text="@string/share_application"/>
+            android:text="@string/share_application" />
+
         <ImageView
             style="@style/SettingsIcon"
-            android:src="@drawable/share"
-            />
+            android:layout_width="wrap_content"
+            android:src="@drawable/share" />
     </FrameLayout>
+
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/write_help_desk">
+
         <TextView
             style="@style/SettingsLabel"
-            android:text="@string/write_to_support"/>
+            android:text="@string/write_to_support" />
+
         <ImageView
             style="@style/SettingsIcon"
-            android:src="@drawable/support"
-            />
+            android:src="@drawable/support" />
     </FrameLayout>
+
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/license_agreement">
+
         <TextView
             style="@style/SettingsLabel"
-            android:text="@string/license_agreement"/>
+            android:text="@string/license_agreement" />
+
         <ImageView
             style="@style/SettingsIcon"
             android:layout_marginEnd="20dp"
-            android:src="@drawable/arrow_forward"
-            />
+            android:src="@drawable/arrow_forward" />
     </FrameLayout>
 </LinearLayout>

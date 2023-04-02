@@ -6,8 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="?attr/colorSecondary"
-    android:statusBarColor="?attr/colorSecondary"
-    >
+    android:statusBarColor="?attr/colorSecondary">
 
     <TextView
         style="@style/NavigationBar"
@@ -18,21 +17,20 @@
 
     <Button
         android:id="@+id/search_button"
-        style = "@style/BigButton"
+        style="@style/BigButton"
         app:icon="@drawable/search"
-        android:text="@string/find_button"
-        />
+        android:text="@string/find_button" />
+
     <Button
         android:id="@+id/library_button"
-        style = "@style/BigButton"
+        style="@style/BigButton"
         app:icon="@drawable/library"
-        android:text="@string/media_button"
-        />
+        android:text="@string/media_button" />
+
     <Button
         android:id="@+id/settings_button"
-        style = "@style/BigButton"
+        style="@style/BigButton"
         app:icon="@drawable/settings"
         android:text="@string/settings"
-        android:layout_marginBottom="28dp"
-        />
+        android:layout_marginBottom="28dp" />
 </LinearLayout>
