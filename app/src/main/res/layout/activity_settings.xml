@@ -3,69 +3,40 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:background="@color/white"
-    android:layout_marginStart="@dimen/standard_margin">
+    android:background="?attr/colorPrimary">
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp">
         <ImageView
             android:id="@+id/back_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginStart="4dp"
+            style="@style/ArrowBack"
             android:src="@drawable/arrow_back"
             android:foreground="?attr/selectableItemBackground" />
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:layout_marginStart="12dp"
-            android:textColor="@color/black"
-            android:textSize="@dimen/standard_text_size"
-            android:textAllCaps="false"
+            style="@style/NavigationBar"
             android:text="@string/settings"/>
     </LinearLayout>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="start"
-            android:layout_marginTop="@dimen/settings_text_margin"
-            android:layout_marginBottom="@dimen/settings_text_margin"
-            android:textColor="@color/black"
-            android:textSize="@dimen/small_text_size"
-            android:textAllCaps="false"
+            style="@style/SettingsLabel"
             android:text="@string/night_them"/>
         <Switch
+            style="@style/SettingsIcon"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/settings_text_margin"
-            android:layout_marginBottom="@dimen/settings_text_margin"
-            android:gravity="end" />
+            android:layout_marginEnd="0dp"
+            />
     </FrameLayout>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="start"
-            android:layout_marginTop="@dimen/settings_text_margin"
-            android:layout_marginBottom="@dimen/settings_text_margin"
-            android:textColor="@color/black"
-            android:textSize="@dimen/small_text_size"
-            android:textAllCaps="false"
+            style="@style/SettingsLabel"
             android:text="@string/share_application"/>
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginTop="@dimen/settings_text_margin"
-            android:layout_marginBottom="@dimen/settings_text_margin"
-            android:layout_marginEnd="14dp"
+            style="@style/SettingsIcon"
             android:src="@drawable/share"
             />
     </FrameLayout>
@@ -73,22 +44,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="start"
-            android:layout_marginTop="@dimen/settings_text_margin"
-            android:layout_marginBottom="@dimen/settings_text_margin"
-            android:textColor="@color/black"
-            android:textSize="@dimen/small_text_size"
-            android:textAllCaps="false"
+            style="@style/SettingsLabel"
             android:text="@string/write_to_support"/>
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:layout_marginTop="@dimen/settings_text_margin"
-            android:layout_marginBottom="@dimen/settings_text_margin"
-            android:layout_marginEnd="@dimen/standard_margin"
+            style="@style/SettingsIcon"
             android:src="@drawable/support"
             />
     </FrameLayout>
@@ -96,21 +55,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="start"
-            android:layout_marginTop="@dimen/settings_text_margin"
-            android:layout_marginBottom="@dimen/settings_text_margin"
-            android:textColor="@color/black"
-            android:textSize="@dimen/small_text_size"
-            android:textAllCaps="false"
+            style="@style/SettingsLabel"
             android:text="@string/license_agreement"/>
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="end"
-            android:layout_marginTop="@dimen/settings_text_margin"
-            android:layout_marginBottom="@dimen/settings_text_margin"
+            style="@style/SettingsIcon"
             android:layout_marginEnd="20dp"
             android:src="@drawable/arrow_forward"
             />
