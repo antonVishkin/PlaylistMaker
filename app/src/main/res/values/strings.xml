@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Playlist Maker</string>
     <string name="title_hello">Привет, Практикум</string>
-    <string name="find_button">Поиск</string>
+    <string name="search">Поиск</string>
     <string name="media_button">Медиатека</string>
     <string name="settings">Настройки</string>
     <string name="license_agreement">Пользовательское соглашение</string>
