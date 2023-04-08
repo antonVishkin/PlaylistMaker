@@ -23,7 +23,7 @@ class SettingsActivity : AppCompatActivity() {
             val sharingButtonIntent = Intent(Intent.ACTION_SEND).apply {
                 putExtra(
                     Intent.EXTRA_TEXT,
-                    "https://practicum.yandex.ru/android-developer/"
+                    getString(R.string.help_desk_link_to_curse)
                 )
                 type = "text/plain"
             }
@@ -45,7 +45,7 @@ class SettingsActivity : AppCompatActivity() {
         val licenseAgreementButton = findViewById<FrameLayout>(R.id.license_agreement)
         licenseAgreementButton.setOnClickListener {
             val licenseAgreementIntent = Intent(Intent.ACTION_VIEW)
-            licenseAgreementIntent.data = Uri.parse("https://yandex.ru/legal/practicum_offer/")
+            licenseAgreementIntent.data = Uri.parse(getString(R.string.help_desk_link_to_license))
             startActivity(licenseAgreementIntent)
         }
     }

@@ -12,5 +12,7 @@
     <string name="help_desk_post_title" translatable="false">"Сообщение разработчикам и разработчицам приложения Playlist Maker"</string>
     <string name="help_desk_post_text" translatable="false">"Спасибо разработчикам и разработчицам за крутое приложение!"</string>
     <string name="help_desk_post_email" translatable="false">"anton.vishkin@yandex.ru"</string>
+    <string name="help_desk_link_to_curse" translatable="false">\"https://practicum.yandex.ru/android-developer/\"</string>
+    <string name="help_desk_link_to_license" translatable="false">https://yandex.ru/legal/practicum_offer/</string>
 
 </resources>

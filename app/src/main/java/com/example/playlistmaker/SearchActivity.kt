@@ -23,6 +23,7 @@ class SearchActivity : AppCompatActivity() {
                 searchClearButton.visibility = View.INVISIBLE
             else
                 searchClearButton.visibility = View.VISIBLE
+            searchText = s.toString()
         }
 
         override fun afterTextChanged(s: Editable?) {
@@ -32,6 +33,7 @@ class SearchActivity : AppCompatActivity() {
 
     companion object {
         const val SEARCH_VALUE = "SEARCH_VALUE"
+        var searchText:String? = null
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,12 +45,13 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(SEARCH_VALUE, searchEditText.text.toString())
+        outState.putString(SEARCH_VALUE, searchText)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
-        searchEditText.setText(savedInstanceState.getString(SEARCH_VALUE))
+        searchText = savedInstanceState.getString(SEARCH_VALUE)
+        searchEditText.setText(searchText)
     }
 
     private fun backButtonCreate() {
