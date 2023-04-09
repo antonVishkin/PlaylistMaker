@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -37,6 +38,7 @@
             android:layout_marginEnd="42dp"
             android:drawablePadding="9dp"
             android:drawableStart="@drawable/small_search"
+            android:drawableTint="?attr/hintsColor"
             android:background="@null"
             android:layout_gravity="center|end"
             android:hint="@string/search"
@@ -44,17 +46,18 @@
             android:maxLength="256"
             android:maxLines="1"
             android:textColor="@color/black"
-            android:textColorHint="@color/grey_text" />
+            android:textColorHint="?attr/hintsColor" />
 
         <ImageView
             android:id="@+id/search_clear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="11dp"
             android:layout_gravity="center|end"
+            android:layout_margin="11dp"
             android:layout_marginEnd="12dp"
             android:src="@drawable/edit_clear"
-            android:visibility="invisible" />
+            android:visibility="invisible"
+            app:tint="?attr/hintsColor" />
 
     </FrameLayout>
 </LinearLayout>

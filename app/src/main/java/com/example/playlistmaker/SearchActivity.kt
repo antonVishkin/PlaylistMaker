@@ -1,13 +1,12 @@
 package com.example.playlistmaker
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var backButton: ImageView
@@ -19,11 +18,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            if (s.isNullOrEmpty())
-                searchClearButton.visibility = View.INVISIBLE
-            else
-                searchClearButton.visibility = View.VISIBLE
-            searchText = s.toString()
+            visibilityClearButton(s)
         }
 
         override fun afterTextChanged(s: Editable?) {
@@ -31,10 +26,6 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    companion object {
-        const val SEARCH_VALUE = "SEARCH_VALUE"
-        var searchText:String? = null
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,16 +48,31 @@ class SearchActivity : AppCompatActivity() {
     private fun backButtonCreate() {
         backButton = findViewById(R.id.back_button)
         backButton.setOnClickListener {
-            val backButtonIntent = Intent(this, MainActivity::class.java)
-            startActivity(backButtonIntent)
+            this.finish()
         }
     }
 
     private fun searchEditTextCreate() {
         searchClearButton = findViewById(R.id.search_clear)
         searchEditText = findViewById(R.id.search_form)
-        searchClearButton.setOnClickListener { searchEditText.setText("") }
+        searchClearButton.setOnClickListener {
+            searchEditText.setText("")
+            it.hideKeyboard()
+        }
         searchEditText.addTextChangedListener(simpleTextWatcher)
         searchEditText.requestFocus()
+    }
+
+    private fun visibilityClearButton(s: CharSequence?) {
+        if (s.isNullOrEmpty())
+            searchClearButton.visibility = View.INVISIBLE
+        else
+            searchClearButton.visibility = View.VISIBLE
+        searchText = s.toString()
+    }
+
+    companion object {
+        const val SEARCH_VALUE = "SEARCH_VALUE"
+        var searchText: String? = null
     }
 }
