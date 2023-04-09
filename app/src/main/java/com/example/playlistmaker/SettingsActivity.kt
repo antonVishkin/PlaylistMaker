@@ -9,15 +9,11 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 
 class SettingsActivity : AppCompatActivity() {
-    @SuppressLint("MissingInflatedId")
+    lateinit var backButton:ImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
-        val backButton = findViewById<ImageView>(R.id.back_button)
-        backButton.setOnClickListener {
-            val backButtonIntent = Intent(this, MainActivity::class.java)
-            startActivity(backButtonIntent)
-        }
+        backButtonCreate()
         val sharingButton = findViewById<FrameLayout>(R.id.sharing_button)
         sharingButton.setOnClickListener {
             val sharingButtonIntent = Intent(Intent.ACTION_SEND).apply {
@@ -47,6 +43,12 @@ class SettingsActivity : AppCompatActivity() {
             val licenseAgreementIntent = Intent(Intent.ACTION_VIEW)
             licenseAgreementIntent.data = Uri.parse(getString(R.string.help_desk_link_to_license))
             startActivity(licenseAgreementIntent)
+        }
+    }
+    private fun backButtonCreate() {
+        backButton = findViewById(R.id.back_button)
+        backButton.setOnClickListener {
+            this.finish()
         }
     }
 }
