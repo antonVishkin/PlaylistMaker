@@ -1,13 +1,12 @@
 package com.example.playlistmaker
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var backButton: ImageView
@@ -26,7 +25,6 @@ class SearchActivity : AppCompatActivity() {
             //empty
         }
     }
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,15 +62,17 @@ class SearchActivity : AppCompatActivity() {
         searchEditText.addTextChangedListener(simpleTextWatcher)
         searchEditText.requestFocus()
     }
-    private fun visibilityClearButton(s:CharSequence?){
+
+    private fun visibilityClearButton(s: CharSequence?) {
         if (s.isNullOrEmpty())
             searchClearButton.visibility = View.INVISIBLE
         else
             searchClearButton.visibility = View.VISIBLE
         searchText = s.toString()
     }
+
     companion object {
         const val SEARCH_VALUE = "SEARCH_VALUE"
-        var searchText:String? = null
+        var searchText: String? = null
     }
 }
