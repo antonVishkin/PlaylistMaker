@@ -7,11 +7,13 @@ import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var backButton: ImageView
     private lateinit var searchClearButton: ImageView
     private lateinit var searchEditText: EditText
+    private lateinit var trackItemsRecyclerView: RecyclerView
     private val simpleTextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             //empty
@@ -26,13 +28,19 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+        val trackProvider = TrackProvider().getTrackList()
         backButtonCreate()
         searchEditTextCreate()
+        trackItemsRecyclerView = findViewById(R.id.trackList)
+        val trackItemAdapter = TrackItemAdapter(trackProvider)
+        trackItemsRecyclerView.adapter = trackItemAdapter
     }
+
+
+
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)

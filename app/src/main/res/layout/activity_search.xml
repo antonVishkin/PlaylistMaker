@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SearchActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".SearchActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,21 +26,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/standard_margin"
-        android:layout_marginRight="@dimen/standard_margin"
         android:layout_marginTop="12dp"
+        android:layout_marginRight="@dimen/standard_margin"
         android:background="@drawable/rectangle">
 
         <EditText
             android:id="@+id/search_form"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="center|end"
             android:layout_marginStart="13dp"
             android:layout_marginEnd="42dp"
-            android:drawablePadding="9dp"
-            android:drawableStart="@drawable/small_search"
-            android:drawableTint="?attr/hintsColor"
             android:background="@null"
-            android:layout_gravity="center|end"
+            android:drawableStart="@drawable/small_search"
+            android:drawablePadding="9dp"
+            android:drawableTint="?attr/hintsColor"
             android:hint="@string/search"
             android:inputType="text"
             android:maxLength="256"
@@ -60,4 +60,10 @@
             app:tint="?attr/hintsColor" />
 
     </FrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id = "@+id/trackList"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 </LinearLayout>
