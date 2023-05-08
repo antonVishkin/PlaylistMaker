@@ -26,7 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/standard_margin"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="@dimen/small_margin"
         android:layout_marginRight="@dimen/standard_margin"
         android:background="@drawable/rectangle">
 
@@ -53,8 +53,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|end"
-            android:layout_margin="11dp"
-            android:layout_marginEnd="12dp"
+            android:layout_margin="@dimen/small_margin"
+            android:layout_marginEnd="@dimen/small_margin"
             android:src="@drawable/edit_clear"
             android:visibility="invisible"
             app:tint="?attr/hintsColor" />
@@ -64,7 +64,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="@dimen/big_margin"
         android:id = "@+id/trackList"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 </LinearLayout>
