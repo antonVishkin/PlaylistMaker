@@ -80,7 +80,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val SEARCH_VALUE = "SEARCH_VALUE"
-        var searchText: String? = null
+        private const val SEARCH_VALUE = "SEARCH_VALUE"
+        private var searchText: String? = null
     }
 }

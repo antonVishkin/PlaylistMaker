@@ -10,9 +10,8 @@ class TrackItemAdapter(private val trackItems: List<Track>): Adapter<TrackItemVi
         return TrackItemViewHolder(view)
     }
 
-    override fun getItemCount(): Int {
-        return trackItems.size
-    }
+    override fun getItemCount() = trackItems.size
+
 
     override fun onBindViewHolder(holder: TrackItemViewHolder, position: Int) {
         holder.bind(trackItems[position])
