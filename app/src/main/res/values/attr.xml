@@ -3,7 +3,6 @@
     <declare-styleable name="Theme">
         <attr name="hintsColor" format="color" />
         <attr name="iconsColor" format="color" />
-
     </declare-styleable>
     >
 </resources>

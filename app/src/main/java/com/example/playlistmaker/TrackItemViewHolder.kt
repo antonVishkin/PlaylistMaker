@@ -5,6 +5,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import java.text.SimpleDateFormat
+import java.util.*
 
 class TrackItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val trackName = itemView.findViewById<TextView>(R.id.track_name)
@@ -16,9 +18,11 @@ class TrackItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(track: Track) {
         trackName.text = track.trackName
         groupName.text = track.artistName
-        trackTime.text = track.trackTime
+        trackTime.text =
+            SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
         Glide.with(itemView)
-            .load(track.artworkUrl)
+            .load(track.artworkUrl100)
+            .placeholder(R.drawable.album_placeholder)
             .centerInside()
             .into(albumArt)
     }

@@ -1,19 +1,38 @@
 package com.example.playlistmaker
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.iTunesApi.ITunesApi
+import com.example.playlistmaker.iTunesApi.SearchResponse
+import retrofit2.*
+import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchActivity : AppCompatActivity() {
     private lateinit var backButton: ImageView
     private lateinit var searchClearButton: ImageView
     private lateinit var searchEditText: EditText
     private lateinit var trackItemsRecyclerView: RecyclerView
+    private lateinit var noSearchResult: LinearLayout
+    private lateinit var noInternet: LinearLayout
+    private lateinit var refreshButton: Button
+
+    private val baseUrl = "https://itunes.apple.com"
+    private val retrofit = Retrofit.Builder().baseUrl(baseUrl).addConverterFactory(
+        GsonConverterFactory.create()
+    ).build()
+    private val iTunesService = retrofit.create(ITunesApi::class.java)
+    private val trackProvider = arrayListOf<Track>()
+    private val trackItemAdapter = TrackItemAdapter(trackProvider)
     private val simpleTextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             //empty
@@ -28,18 +47,58 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
+    private fun search(searchText: String) {
+        iTunesService.search(searchText).enqueue(object : Callback<SearchResponse> {
+            @SuppressLint("NotifyDataSetChanged")
+            override fun onResponse(
+                call: Call<SearchResponse>,
+                response: Response<SearchResponse>
+            ) {
+                when (response.code()) {
+                    200 -> {
+                        noInternet.visibility = View.INVISIBLE
+                        if (response.body()?.results!!.isNotEmpty()) {
+                            trackProvider.clear()
+                            trackProvider.addAll(response.body()?.results!!)
+                            noSearchResult.visibility = View.INVISIBLE
+                            trackItemsRecyclerView.visibility = View.VISIBLE
+                            trackItemAdapter.notifyDataSetChanged()
+                        } else {
+                            trackProvider.clear()
+                            trackItemAdapter.notifyDataSetChanged()
+                            trackItemsRecyclerView.visibility = View.INVISIBLE
+                            noSearchResult.visibility = View.VISIBLE
+                        }
+                    }
+                    else -> {
+                        trackItemsRecyclerView.visibility = View.INVISIBLE
+                        noSearchResult.visibility = View.INVISIBLE
+                        noInternet.visibility = View.VISIBLE
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
+                trackItemsRecyclerView.visibility = View.INVISIBLE
+                noSearchResult.visibility = View.INVISIBLE
+                noInternet.visibility = View.VISIBLE
+            }
+        })
+    }
+
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-        val trackProvider = TrackProvider().getTrackList()
         backButtonCreate()
         searchEditTextCreate()
         trackItemsRecyclerView = findViewById(R.id.trackList)
-        val trackItemAdapter = TrackItemAdapter(trackProvider)
         trackItemsRecyclerView.adapter = trackItemAdapter
+        noSearchResult = findViewById(R.id.no_search_result)
+        noInternet = findViewById(R.id.no_internet)
+        refreshButton = findViewById(R.id.refresh_button)
+        refreshButton.setOnClickListener { search(searchEditText.text.toString()) }
     }
-
-
 
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -66,9 +125,19 @@ class SearchActivity : AppCompatActivity() {
         searchClearButton.setOnClickListener {
             searchEditText.setText("")
             it.hideKeyboard()
+            searchEditText.clearFocus()
+            trackProvider.clear()
+            trackItemAdapter.notifyDataSetChanged()
         }
         searchEditText.addTextChangedListener(simpleTextWatcher)
         searchEditText.requestFocus()
+        searchEditText.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                search(searchEditText.text.toString())
+                true
+            }
+            false
+        }
     }
 
     private fun visibilityClearButton(s: CharSequence?) {
