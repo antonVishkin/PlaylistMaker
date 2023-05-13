@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="find_button">Поиск</string>
+    <string name="search">Поиск</string>
 </resources>
