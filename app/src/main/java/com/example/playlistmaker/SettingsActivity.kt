@@ -5,7 +5,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {
     private lateinit var backButton: ImageView
@@ -19,6 +21,7 @@ class SettingsActivity : AppCompatActivity() {
         sharingButtonCreate()
         helpDeskButtonCreate()
         licenseButtonCreate()
+        themeSwitcherCreate()
     }
 
     private fun backButtonCreate() {
@@ -64,6 +67,15 @@ class SettingsActivity : AppCompatActivity() {
             val licenseAgreementIntent = Intent(Intent.ACTION_VIEW)
             licenseAgreementIntent.data = Uri.parse(getString(R.string.help_desk_link_to_license))
             startActivity(licenseAgreementIntent)
+        }
+    }
+
+    private fun themeSwitcherCreate(){
+        val themeSwitcher = findViewById<Switch>(R.id.themeSwitcher)
+        if (App.darkTheme)
+            themeSwitcher.isChecked = true
+        themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
+            (applicationContext as App).switchTheme(checked)
         }
     }
 

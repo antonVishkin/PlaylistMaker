@@ -14,6 +14,7 @@
         <!-- Customize your theme here. -->
         <item name="hintsColor">@color/grey_text</item>
         <item name="iconsColor">@color/grey_text</item>
-
+        <item name="switchColor">@color/grey_text</item>
+        <item name="backgroundMainActivityColor">@color/blue_fon</item>
     </style>
 </resources>
