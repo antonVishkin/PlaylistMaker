@@ -14,7 +14,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.iTunesApi.ITunesApi
 import com.example.playlistmaker.iTunesApi.SearchResponse
-import retrofit2.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchActivity : AppCompatActivity() {
@@ -26,8 +29,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var noInternet: LinearLayout
     private lateinit var refreshButton: Button
 
-    private val baseUrl = "https://itunes.apple.com"
-    private val retrofit = Retrofit.Builder().baseUrl(baseUrl).addConverterFactory(
+    private val retrofit = Retrofit.Builder().baseUrl(Companion.ITUNES_BASE_URL).addConverterFactory(
         GsonConverterFactory.create()
     ).build()
     private val iTunesService = retrofit.create(ITunesApi::class.java)
@@ -71,17 +73,13 @@ class SearchActivity : AppCompatActivity() {
                         }
                     }
                     else -> {
-                        trackItemsRecyclerView.visibility = View.INVISIBLE
-                        noSearchResult.visibility = View.INVISIBLE
-                        noInternet.visibility = View.VISIBLE
+                        showNoInternetPlaceHolder()
                     }
                 }
             }
 
             override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
-                trackItemsRecyclerView.visibility = View.INVISIBLE
-                noSearchResult.visibility = View.INVISIBLE
-                noInternet.visibility = View.VISIBLE
+                showNoInternetPlaceHolder()
             }
         })
     }
@@ -148,8 +146,14 @@ class SearchActivity : AppCompatActivity() {
         searchText = s.toString()
     }
 
+    private fun showNoInternetPlaceHolder(){
+        trackItemsRecyclerView.visibility = View.INVISIBLE
+        noSearchResult.visibility = View.INVISIBLE
+        noInternet.visibility = View.VISIBLE
+    }
     companion object {
         private const val SEARCH_VALUE = "SEARCH_VALUE"
         private var searchText: String? = null
+        const val ITUNES_BASE_URL = "https://itunes.apple.com"
     }
 }
