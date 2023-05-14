@@ -10,4 +10,7 @@
     <string name="share_application">Share App</string>
     <string name="night_them">Night Them</string>
     <string name="playlist_maker">Playlist Maker</string>
+    <string name="no_search_result">no results</string>
+    <string name="no_internet">Communication problem\n\nDownload failed. Check your internet connection</string>
+    <string name="refresh">Refresh</string>
 </resources>
