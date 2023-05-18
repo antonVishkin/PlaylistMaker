@@ -16,5 +16,7 @@
     <string name="help_desk_link_to_license" translatable="false">https://yandex.ru/legal/practicum_offer/</string>
     <string name="no_search_result">Ничего не нашлось</string>
     <string name="no_internet">Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету</string>
-    <string name="refresh">Обновить</string>>
+    <string name="refresh">Обновить</string>
+    <string name="search_history">Вы искали</string>
+    <string name="clear_history">Очистить историю</string>>
 </resources>
