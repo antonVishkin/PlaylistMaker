@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="standard_margin">16dp</dimen>
     <dimen name="standard_text_size">22sp</dimen>
+    <dimen name="place_holder_text_size">19sp</dimen>
     <dimen name="small_text_size">16sp</dimen>
     <dimen name="icon_padding">10dp</dimen>
     <dimen name="button_corner_radius">16dp</dimen>
     <dimen name="settings_text_margin">21dp</dimen>
+    <dimen name="minimum_margin">8dp</dimen>>
     <dimen name="small_margin">12dp</dimen>>
+    <dimen name="standard_margin">16dp</dimen>
     <dimen name="big_margin">24dp</dimen>>
+    <dimen name="extra_margin">42dp</dimen>>
 </resources>
