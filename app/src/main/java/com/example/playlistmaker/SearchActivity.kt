@@ -49,7 +49,7 @@ class SearchActivity : AppCompatActivity() {
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             visibilityClearButton(s)
-            if (searchEditText.hasFocus() && s?.isEmpty() == true) showingRouter(ViewShowing.SEARCH_HISTORY)
+            if (searchEditText.hasFocus() && s?.isEmpty() == true) setVisibleContent(VisibleContent.SEARCH_HISTORY)
         }
 
         override fun afterTextChanged(s: Editable?) {
@@ -69,22 +69,22 @@ class SearchActivity : AppCompatActivity() {
                         if (response.body()?.results!!.isNotEmpty()) {
                             trackProvider.clear()
                             trackProvider.addAll(response.body()?.results!!)
-                            showingRouter(ViewShowing.SEARCH_RESULT)
+                            setVisibleContent(VisibleContent.SEARCH_RESULT)
                             searchListItemAdapter.notifyDataSetChanged()
                         } else {
                             trackProvider.clear()
                             searchListItemAdapter.notifyDataSetChanged()
-                            showingRouter(ViewShowing.NO_SEARCH_RESULT)
+                            setVisibleContent(VisibleContent.NO_SEARCH_RESULT)
                         }
                     }
                     else -> {
-                        showingRouter(ViewShowing.NO_INTERNET)
+                        setVisibleContent(VisibleContent.NO_INTERNET)
                     }
                 }
             }
 
             override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
-                showingRouter(ViewShowing.NO_INTERNET)
+                setVisibleContent(VisibleContent.NO_INTERNET)
             }
         })
     }
@@ -140,9 +140,9 @@ class SearchActivity : AppCompatActivity() {
             false
         }
         searchEditText.setOnFocusChangeListener { view, hasFocus ->
-                if (hasFocus && searchEditText.text.isEmpty()) showingRouter(ViewShowing.SEARCH_HISTORY)
+                if (hasFocus && searchEditText.text.isEmpty()) setVisibleContent(VisibleContent.SEARCH_HISTORY)
         }
-        showingRouter(ViewShowing.SEARCH_HISTORY)
+        setVisibleContent(VisibleContent.SEARCH_HISTORY)
         refreshButton = findViewById(R.id.refresh_button)
         refreshButton.setOnClickListener { search(searchEditText.text.toString()) }
     }
@@ -156,7 +156,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun trackListCreation() {
-        searchListItemAdapter = TrackItemAdapter(trackProvider,searchHistoryProvider,historyTrackListAdapter)
+        searchListItemAdapter = TrackItemAdapter(trackProvider,onTrackClick)
         trackItemsRecyclerView = findViewById(R.id.trackList)
         trackItemsRecyclerView.adapter = searchListItemAdapter
     }
@@ -170,25 +170,25 @@ class SearchActivity : AppCompatActivity() {
         searchHistory = findViewById(R.id.search_history)
         historyTrackList = findViewById(R.id.history_track_list)
         clearHistoryButton = findViewById(R.id.clear_history)
-        historyTrackListAdapter = TrackItemAdapter(searchHistoryProvider.getSearchHistory(),searchHistoryProvider)
+        historyTrackListAdapter = TrackItemAdapter(searchHistoryProvider.getSearchHistory(),onTrackClick)
         historyTrackList.adapter = historyTrackListAdapter
         clearHistoryButton = findViewById(R.id.clear_history)
         clearHistoryButton.setOnClickListener {
             searchHistoryProvider.clearHistory()
             historyTrackListAdapter.notifyDataSetChanged()
-            showingRouter(ViewShowing.SEARCH_HISTORY)
+            setVisibleContent(VisibleContent.SEARCH_HISTORY)
         }
     }
 
-    enum class ViewShowing{
+    enum class VisibleContent{
         SEARCH_RESULT,
         SEARCH_HISTORY,
         NO_SEARCH_RESULT,
         NO_INTERNET
     }
-    private fun showingRouter(v :ViewShowing){
+    private fun setVisibleContent(v :VisibleContent){
         when (v){
-            ViewShowing.SEARCH_HISTORY -> {
+            VisibleContent.SEARCH_HISTORY -> {
                 noInternet.visibility = View.INVISIBLE
                 noSearchResult.visibility = View.INVISIBLE
                 trackItemsRecyclerView.visibility = View.INVISIBLE
@@ -197,25 +197,31 @@ class SearchActivity : AppCompatActivity() {
                 else
                     searchHistory.visibility = View.INVISIBLE
             }
-            ViewShowing.SEARCH_RESULT -> {
+            VisibleContent.SEARCH_RESULT -> {
                 noInternet.visibility = View.INVISIBLE
                 noSearchResult.visibility = View.INVISIBLE
                 trackItemsRecyclerView.visibility = View.VISIBLE
                 searchHistory.visibility = View.INVISIBLE
             }
-            ViewShowing.NO_SEARCH_RESULT -> {
+            VisibleContent.NO_SEARCH_RESULT -> {
                 noInternet.visibility = View.INVISIBLE
                 noSearchResult.visibility = View.VISIBLE
                 trackItemsRecyclerView.visibility = View.INVISIBLE
                 searchHistory.visibility = View.INVISIBLE
             }
-            ViewShowing.NO_INTERNET -> {
+            VisibleContent.NO_INTERNET -> {
                 noInternet.visibility = View.VISIBLE
                 noSearchResult.visibility = View.INVISIBLE
                 trackItemsRecyclerView.visibility = View.INVISIBLE
                 searchHistory.visibility = View.INVISIBLE
             }
         }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    val onTrackClick: (Track) -> Unit =  { track ->
+        searchHistoryProvider.addTrackToHistory(track)
+        historyTrackListAdapter.notifyDataSetChanged()
     }
 
     companion object {

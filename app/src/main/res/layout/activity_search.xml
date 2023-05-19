@@ -25,9 +25,9 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/standard_margin"
+        android:layout_marginStart="@dimen/standard_margin"
         android:layout_marginTop="@dimen/small_margin"
-        android:layout_marginRight="@dimen/standard_margin"
+        android:layout_marginEnd="@dimen/standard_margin"
         android:background="@drawable/rectangle">
 
         <EditText
@@ -148,6 +148,7 @@
                 android:gravity="center_horizontal"
                 android:text="@string/search_history"
                 android:textSize="@dimen/place_holder_text_size"
+                android:textColor="?attr/colorOnPrimary"
                 android:textStyle="bold" />
 
             <androidx.recyclerview.widget.RecyclerView
