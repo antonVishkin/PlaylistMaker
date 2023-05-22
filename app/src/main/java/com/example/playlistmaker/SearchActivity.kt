@@ -34,7 +34,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var clearHistoryButton: Button
     private lateinit var sharedPreference: SharedPreferences
     private lateinit var searchHistoryProvider: SearchHistoryProvider
-    private lateinit var searchListItemAdapter:TrackItemAdapter
+    private lateinit var searchListItemAdapter: TrackItemAdapter
     private val retrofit =
         Retrofit.Builder().baseUrl(Companion.ITUNES_BASE_URL).addConverterFactory(
             GsonConverterFactory.create()
@@ -140,7 +140,7 @@ class SearchActivity : AppCompatActivity() {
             false
         }
         searchEditText.setOnFocusChangeListener { view, hasFocus ->
-                if (hasFocus && searchEditText.text.isEmpty()) setVisibleContent(VisibleContent.SEARCH_HISTORY)
+            if (hasFocus && searchEditText.text.isEmpty()) setVisibleContent(VisibleContent.SEARCH_HISTORY)
         }
         setVisibleContent(VisibleContent.SEARCH_HISTORY)
         refreshButton = findViewById(R.id.refresh_button)
@@ -156,7 +156,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun trackListCreation() {
-        searchListItemAdapter = TrackItemAdapter(trackProvider,onTrackClick)
+        searchListItemAdapter = TrackItemAdapter(trackProvider, onTrackClick)
         trackItemsRecyclerView = findViewById(R.id.trackList)
         trackItemsRecyclerView.adapter = searchListItemAdapter
     }
@@ -170,7 +170,8 @@ class SearchActivity : AppCompatActivity() {
         searchHistory = findViewById(R.id.search_history)
         historyTrackList = findViewById(R.id.history_track_list)
         clearHistoryButton = findViewById(R.id.clear_history)
-        historyTrackListAdapter = TrackItemAdapter(searchHistoryProvider.getSearchHistory(),onTrackClick)
+        historyTrackListAdapter =
+            TrackItemAdapter(searchHistoryProvider.getSearchHistory(), onTrackClick)
         historyTrackList.adapter = historyTrackListAdapter
         clearHistoryButton = findViewById(R.id.clear_history)
         clearHistoryButton.setOnClickListener {
@@ -180,14 +181,15 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    enum class VisibleContent{
+    enum class VisibleContent {
         SEARCH_RESULT,
         SEARCH_HISTORY,
         NO_SEARCH_RESULT,
         NO_INTERNET
     }
-    private fun setVisibleContent(v :VisibleContent){
-        when (v){
+
+    private fun setVisibleContent(v: VisibleContent) {
+        when (v) {
             VisibleContent.SEARCH_HISTORY -> {
                 noInternet.visibility = View.INVISIBLE
                 noSearchResult.visibility = View.INVISIBLE
@@ -219,7 +221,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    val onTrackClick: (Track) -> Unit =  { track ->
+    val onTrackClick: (Track) -> Unit = { track ->
         searchHistoryProvider.addTrackToHistory(track)
         historyTrackListAdapter.notifyDataSetChanged()
     }

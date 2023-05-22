@@ -23,11 +23,12 @@ class TrackItemAdapter(
         holder.itemView.setOnClickListener {
             track = trackItems[position]
             onTrackClicked.invoke(track!!)
-            val playerIntent = Intent(it.context,AudioPlayerActivity::class.java)
+            val playerIntent = Intent(it.context, AudioPlayerActivity::class.java)
             it.context.startActivity(playerIntent)
         }
     }
-    companion object{
+
+    companion object {
         var track: Track? = null
     }
 }

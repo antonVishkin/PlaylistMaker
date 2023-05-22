@@ -7,7 +7,6 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {
     private lateinit var backButton: ImageView
@@ -70,7 +69,7 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 
-    private fun themeSwitcherCreate(){
+    private fun themeSwitcherCreate() {
         val themeSwitcher = findViewById<Switch>(R.id.themeSwitcher)
         if (App.darkTheme)
             themeSwitcher.isChecked = true
