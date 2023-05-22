@@ -31,7 +31,7 @@
         android:foreground="?attr/selectableItemBackground"
         android:src="@drawable/arrow_back"
         app:tint="?attr/colorOnPrimary" />
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/album_art"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -42,6 +42,7 @@
         android:layout_marginHorizontal="@dimen/minimum_margin"
         android:layout_marginTop="46dp"
         app:layout_constraintDimensionRatio="h,4:4"
+        app:shapeAppearanceOverlay="@style/rounded_corner"
         />
     <TextView
         android:id="@+id/track_name"
@@ -81,7 +82,6 @@
         app:layout_constraintStart_toEndOf="@id/leftBorder"
         app:layout_constraintEnd_toStartOf="@+id/playButton"
         app:layout_constraintHorizontal_bias="0.5"
-        android:alpha="0.2"
         android:background="@drawable/round_button_grey"
         android:src = "@drawable/add_to_playlist"
         android:layout_gravity="center"
@@ -107,7 +107,6 @@
         app:layout_constraintStart_toEndOf="@id/playButton"
         app:layout_constraintEnd_toStartOf="@+id/rightBorder"
         app:layout_constraintHorizontal_bias="0.5"
-        android:alpha="0.2"
         android:background="@drawable/round_button_grey"
         android:src = "@drawable/like_button"
         android:gravity="center"

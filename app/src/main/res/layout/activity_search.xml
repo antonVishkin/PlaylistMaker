@@ -29,7 +29,7 @@
         android:layout_marginStart="@dimen/standard_margin"
         android:layout_marginTop="@dimen/small_margin"
         android:layout_marginEnd="@dimen/standard_margin"
-        android:background="@drawable/rectangle">
+        android:background="@drawable/grey_rectangle">
 
         <EditText
             android:id="@+id/search_form"

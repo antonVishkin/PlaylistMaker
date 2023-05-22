@@ -3,6 +3,7 @@ package com.example.playlistmaker
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
@@ -16,6 +17,7 @@ class AudioPlayerActivity : AppCompatActivity() {
     private lateinit var groupNameText:TextView
     private lateinit var durationText:TextView
     private lateinit var collectionText:TextView
+    private lateinit var collectionTitle:TextView
     private lateinit var yearText:TextView
     private lateinit var genreText:TextView
     private lateinit var countrtry:TextView
@@ -39,7 +41,13 @@ class AudioPlayerActivity : AppCompatActivity() {
         durationText = findViewById(R.id.durationValue)
         durationText.setText(SimpleDateFormat("mm:ss", Locale.getDefault()).format(track?.trackTimeMillis))
         collectionText = findViewById(R.id.albumNameValue)
-        collectionText.setText(track?.collectionName)
+        if (track?.collectionName == null){
+            collectionTitle = findViewById(R.id.albumName)
+            collectionText.visibility = View.GONE
+            collectionTitle.visibility = View.GONE
+        } else {
+            collectionText.setText(track?.collectionName)
+        }
         yearText = findViewById(R.id.yearValue)
         yearText.setText(track?.releaseDate?.subSequence(0,4))
         genreText = findViewById(R.id.genreValue)
