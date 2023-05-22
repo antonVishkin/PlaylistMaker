@@ -5,8 +5,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="?attr/colorSecondary"
-    android:statusBarColor="?attr/colorSecondary">
+    android:background="?attr/backgroundMainActivityColor"
+    android:statusBarColor="?attr/backgroundMainActivityColor">
 
     <TextView
         style="@style/NavigationBar"

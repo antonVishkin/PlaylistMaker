@@ -13,4 +13,6 @@
     <string name="no_search_result">no results</string>
     <string name="no_internet">Communication problem\n\nDownload failed. Check your internet connection</string>
     <string name="refresh">Refresh</string>
+    <string name="search_history">Search History</string>
+    <string name="clear_history">Clear History</string>
 </resources>

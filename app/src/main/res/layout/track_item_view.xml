@@ -2,7 +2,9 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:foreground="?attr/selectableItemBackground">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -13,21 +15,27 @@
             android:id="@+id/album_art"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:layout_marginVertical="8dp"
-            android:layout_marginLeft="13dp" />
+            android:layout_marginVertical="@dimen/minimum_margin"
+            android:layout_marginStart="@dimen/small_margin" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="8dp"
+            android:layout_marginStart="@dimen/minimum_margin"
+            android:layout_marginEnd="@dimen/extra_margin"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/track_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="Track Name" />
+                android:fontFamily="@font/ys_display_regular"
+                android:textSize="@dimen/small_text_size"
+                android:textColor="?attr/colorOnPrimary"
+                android:maxLines="1"
+                android:ellipsize="end"
+                tools:text="Track olololollololollolollooooooooooollllllllllllName" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -37,6 +45,10 @@
                     android:id="@+id/group_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/ys_display_regular"
+                    android:textSize="@dimen/minimum_text_size"
+                    android:textColor="?attr/iconsColor"
+                    android:maxLines="1"
                     tools:text="Group Name" />
 
                 <ImageView
@@ -44,18 +56,21 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="5dp"
+                    app:tint="?attr/iconsColor"
                     android:src="@drawable/ellipse_1" />
 
                 <TextView
                     android:id="@+id/track_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/ys_display_regular"
+                    android:textSize="@dimen/minimum_text_size"
+                    android:textColor="?attr/iconsColor"
                     tools:text="00:00" />
             </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>
-    >
 
     <ImageView
         android:layout_width="wrap_content"
@@ -63,5 +78,6 @@
         android:layout_gravity="center_vertical|end"
         android:layout_marginVertical="@dimen/big_margin"
         android:layout_marginEnd="20dp"
+        app:tint="?attr/iconsColor"
         android:src="@drawable/arrow_forward" />
 </FrameLayout>

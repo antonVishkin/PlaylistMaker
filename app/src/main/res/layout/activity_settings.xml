@@ -32,7 +32,11 @@
         <Switch
             style="@style/SettingsIcon"
             android:layout_width="match_parent"
-            android:layout_marginEnd="0dp" />
+            android:layout_marginEnd="0dp"
+            android:id="@+id/themeSwitcher"
+            android:trackTint="?attr/switchColor"
+            android:thumbTint="?attr/switchColor"
+            />
     </FrameLayout>
 
     <FrameLayout

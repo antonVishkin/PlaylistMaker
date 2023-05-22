@@ -1,6 +1,7 @@
 package com.example.playlistmaker
 
 import android.annotation.SuppressLint
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -28,13 +29,19 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var noSearchResult: LinearLayout
     private lateinit var noInternet: LinearLayout
     private lateinit var refreshButton: Button
-
-    private val retrofit = Retrofit.Builder().baseUrl(Companion.ITUNES_BASE_URL).addConverterFactory(
-        GsonConverterFactory.create()
-    ).build()
+    private lateinit var searchHistory: LinearLayout
+    private lateinit var historyTrackList: RecyclerView
+    private lateinit var clearHistoryButton: Button
+    private lateinit var sharedPreference: SharedPreferences
+    private lateinit var searchHistoryProvider: SearchHistoryProvider
+    private lateinit var searchListItemAdapter:TrackItemAdapter
+    private val retrofit =
+        Retrofit.Builder().baseUrl(Companion.ITUNES_BASE_URL).addConverterFactory(
+            GsonConverterFactory.create()
+        ).build()
     private val iTunesService = retrofit.create(ITunesApi::class.java)
     private val trackProvider = arrayListOf<Track>()
-    private val trackItemAdapter = TrackItemAdapter(trackProvider)
+    private lateinit var historyTrackListAdapter: TrackItemAdapter
     private val simpleTextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             //empty
@@ -42,6 +49,7 @@ class SearchActivity : AppCompatActivity() {
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             visibilityClearButton(s)
+            if (searchEditText.hasFocus() && s?.isEmpty() == true) setVisibleContent(VisibleContent.SEARCH_HISTORY)
         }
 
         override fun afterTextChanged(s: Editable?) {
@@ -58,28 +66,25 @@ class SearchActivity : AppCompatActivity() {
             ) {
                 when (response.code()) {
                     200 -> {
-                        noInternet.visibility = View.INVISIBLE
                         if (response.body()?.results!!.isNotEmpty()) {
                             trackProvider.clear()
                             trackProvider.addAll(response.body()?.results!!)
-                            noSearchResult.visibility = View.INVISIBLE
-                            trackItemsRecyclerView.visibility = View.VISIBLE
-                            trackItemAdapter.notifyDataSetChanged()
+                            setVisibleContent(VisibleContent.SEARCH_RESULT)
+                            searchListItemAdapter.notifyDataSetChanged()
                         } else {
                             trackProvider.clear()
-                            trackItemAdapter.notifyDataSetChanged()
-                            trackItemsRecyclerView.visibility = View.INVISIBLE
-                            noSearchResult.visibility = View.VISIBLE
+                            searchListItemAdapter.notifyDataSetChanged()
+                            setVisibleContent(VisibleContent.NO_SEARCH_RESULT)
                         }
                     }
                     else -> {
-                        showNoInternetPlaceHolder()
+                        setVisibleContent(VisibleContent.NO_INTERNET)
                     }
                 }
             }
 
             override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
-                showNoInternetPlaceHolder()
+                setVisibleContent(VisibleContent.NO_INTERNET)
             }
         })
     }
@@ -88,14 +93,10 @@ class SearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+        searchHistoryCreation()
         backButtonCreate()
+        trackListCreation()
         searchEditTextCreate()
-        trackItemsRecyclerView = findViewById(R.id.trackList)
-        trackItemsRecyclerView.adapter = trackItemAdapter
-        noSearchResult = findViewById(R.id.no_search_result)
-        noInternet = findViewById(R.id.no_internet)
-        refreshButton = findViewById(R.id.refresh_button)
-        refreshButton.setOnClickListener { search(searchEditText.text.toString()) }
     }
 
 
@@ -118,6 +119,8 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun searchEditTextCreate() {
+        noSearchResult = findViewById(R.id.no_search_result)
+        noInternet = findViewById(R.id.no_internet)
         searchClearButton = findViewById(R.id.search_clear)
         searchEditText = findViewById(R.id.search_form)
         searchClearButton.setOnClickListener {
@@ -125,7 +128,7 @@ class SearchActivity : AppCompatActivity() {
             it.hideKeyboard()
             searchEditText.clearFocus()
             trackProvider.clear()
-            trackItemAdapter.notifyDataSetChanged()
+            searchListItemAdapter.notifyDataSetChanged()
         }
         searchEditText.addTextChangedListener(simpleTextWatcher)
         searchEditText.requestFocus()
@@ -136,6 +139,12 @@ class SearchActivity : AppCompatActivity() {
             }
             false
         }
+        searchEditText.setOnFocusChangeListener { view, hasFocus ->
+                if (hasFocus && searchEditText.text.isEmpty()) setVisibleContent(VisibleContent.SEARCH_HISTORY)
+        }
+        setVisibleContent(VisibleContent.SEARCH_HISTORY)
+        refreshButton = findViewById(R.id.refresh_button)
+        refreshButton.setOnClickListener { search(searchEditText.text.toString()) }
     }
 
     private fun visibilityClearButton(s: CharSequence?) {
@@ -146,14 +155,79 @@ class SearchActivity : AppCompatActivity() {
         searchText = s.toString()
     }
 
-    private fun showNoInternetPlaceHolder(){
-        trackItemsRecyclerView.visibility = View.INVISIBLE
-        noSearchResult.visibility = View.INVISIBLE
-        noInternet.visibility = View.VISIBLE
+    private fun trackListCreation() {
+        searchListItemAdapter = TrackItemAdapter(trackProvider,onTrackClick)
+        trackItemsRecyclerView = findViewById(R.id.trackList)
+        trackItemsRecyclerView.adapter = searchListItemAdapter
     }
+
+    private fun searchHistoryCreation() {
+        sharedPreference = getSharedPreferences(
+            PLAYLIST_MAKER_SHARED_PREFERENCES,
+            MODE_PRIVATE
+        )
+        searchHistoryProvider = SearchHistoryProvider(sharedPreference)
+        searchHistory = findViewById(R.id.search_history)
+        historyTrackList = findViewById(R.id.history_track_list)
+        clearHistoryButton = findViewById(R.id.clear_history)
+        historyTrackListAdapter = TrackItemAdapter(searchHistoryProvider.getSearchHistory(),onTrackClick)
+        historyTrackList.adapter = historyTrackListAdapter
+        clearHistoryButton = findViewById(R.id.clear_history)
+        clearHistoryButton.setOnClickListener {
+            searchHistoryProvider.clearHistory()
+            historyTrackListAdapter.notifyDataSetChanged()
+            setVisibleContent(VisibleContent.SEARCH_HISTORY)
+        }
+    }
+
+    enum class VisibleContent{
+        SEARCH_RESULT,
+        SEARCH_HISTORY,
+        NO_SEARCH_RESULT,
+        NO_INTERNET
+    }
+    private fun setVisibleContent(v :VisibleContent){
+        when (v){
+            VisibleContent.SEARCH_HISTORY -> {
+                noInternet.visibility = View.INVISIBLE
+                noSearchResult.visibility = View.INVISIBLE
+                trackItemsRecyclerView.visibility = View.INVISIBLE
+                if (searchHistoryProvider.getSize() > 0)
+                    searchHistory.visibility = View.VISIBLE
+                else
+                    searchHistory.visibility = View.INVISIBLE
+            }
+            VisibleContent.SEARCH_RESULT -> {
+                noInternet.visibility = View.INVISIBLE
+                noSearchResult.visibility = View.INVISIBLE
+                trackItemsRecyclerView.visibility = View.VISIBLE
+                searchHistory.visibility = View.INVISIBLE
+            }
+            VisibleContent.NO_SEARCH_RESULT -> {
+                noInternet.visibility = View.INVISIBLE
+                noSearchResult.visibility = View.VISIBLE
+                trackItemsRecyclerView.visibility = View.INVISIBLE
+                searchHistory.visibility = View.INVISIBLE
+            }
+            VisibleContent.NO_INTERNET -> {
+                noInternet.visibility = View.VISIBLE
+                noSearchResult.visibility = View.INVISIBLE
+                trackItemsRecyclerView.visibility = View.INVISIBLE
+                searchHistory.visibility = View.INVISIBLE
+            }
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    val onTrackClick: (Track) -> Unit =  { track ->
+        searchHistoryProvider.addTrackToHistory(track)
+        historyTrackListAdapter.notifyDataSetChanged()
+    }
+
     companion object {
         private const val SEARCH_VALUE = "SEARCH_VALUE"
         private var searchText: String? = null
         const val ITUNES_BASE_URL = "https://itunes.apple.com"
+        const val SEARCH_HISTORY_KEY = "search_history"
     }
 }
