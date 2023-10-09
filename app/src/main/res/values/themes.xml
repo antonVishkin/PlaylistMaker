@@ -16,5 +16,7 @@
         <item name="iconsColor">@color/grey_text</item>
         <item name="switchColor">@color/grey_text</item>
         <item name="backgroundMainActivityColor">@color/blue_fon</item>
+        <item name="backgroundColorWithAlpha">@color/blackWithAlpha</item>
+        <item name="searchFieldBackgroundColor">@color/grey</item>
     </style>
 </resources>

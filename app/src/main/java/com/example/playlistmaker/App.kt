@@ -8,7 +8,7 @@ const val PLAYLIST_MAKER_SHARED_PREFERENCES = "playlist_maker_shared_preferences
 const val THEME_KEY = "theme_key"
 
 class App : Application() {
-    private lateinit var sharedPreference:SharedPreferences
+    private lateinit var sharedPreference: SharedPreferences
 
     override fun onCreate() {
         super.onCreate()
