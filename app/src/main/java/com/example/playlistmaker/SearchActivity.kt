@@ -24,6 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class SearchActivity : AppCompatActivity() {
     private val handler = Handler(Looper.getMainLooper())
     private var isClickAllowed = true
+    private var lastSearch = ""
     private lateinit var backButton: ImageView
     private lateinit var searchClearButton: ImageView
     private lateinit var searchEditText: EditText
@@ -53,7 +54,11 @@ class SearchActivity : AppCompatActivity() {
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             visibilityClearButton(s)
             if (searchEditText.hasFocus() && s?.isEmpty() == true) setVisibleContent(VisibleContent.SEARCH_HISTORY)
-            searchDebounce()
+            if (s?.isEmpty() != true && lastSearch != searchEditText.text.toString()) {
+                setVisibleContent(VisibleContent.SEARCH_PROGRESS_BAR)
+                lastSearch = searchEditText.text.toString()
+                searchDebounce()
+            }
         }
 
         override fun afterTextChanged(s: Editable?) {
@@ -65,8 +70,7 @@ class SearchActivity : AppCompatActivity() {
         iTunesService.search(searchText).enqueue(object : Callback<SearchResponse> {
             @SuppressLint("NotifyDataSetChanged")
             override fun onResponse(
-                call: Call<SearchResponse>,
-                response: Response<SearchResponse>
+                call: Call<SearchResponse>, response: Response<SearchResponse>
             ) {
                 when (response.code()) {
                     200 -> {
@@ -155,8 +159,11 @@ class SearchActivity : AppCompatActivity() {
         searchEditText.requestFocus()
         searchEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                setVisibleContent(VisibleContent.SEARCH_PROGRESS_BAR)
-                search(searchEditText.text.toString())
+                if (lastSearch != searchEditText.text.toString()) {
+                    setVisibleContent(VisibleContent.SEARCH_PROGRESS_BAR)
+                    lastSearch = searchEditText.text.toString()
+                    searchDebounce()
+                }
                 true
             }
             false
@@ -168,15 +175,13 @@ class SearchActivity : AppCompatActivity() {
         refreshButton = findViewById(R.id.refresh_button)
         refreshButton.setOnClickListener {
             setVisibleContent(VisibleContent.SEARCH_PROGRESS_BAR)
-            search(searchEditText.text.toString())
+            searchDebounce()
         }
     }
 
     private fun visibilityClearButton(s: CharSequence?) {
-        if (s.isNullOrEmpty())
-            searchClearButton.visibility = View.INVISIBLE
-        else
-            searchClearButton.visibility = View.VISIBLE
+        if (s.isNullOrEmpty()) searchClearButton.visibility = View.INVISIBLE
+        else searchClearButton.visibility = View.VISIBLE
         searchText = s.toString()
     }
 
@@ -188,8 +193,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun searchHistoryCreation() {
         sharedPreference = getSharedPreferences(
-            PLAYLIST_MAKER_SHARED_PREFERENCES,
-            MODE_PRIVATE
+            PLAYLIST_MAKER_SHARED_PREFERENCES, MODE_PRIVATE
         )
         searchHistoryProvider = SearchHistoryProvider(sharedPreference)
         searchHistory = findViewById(R.id.search_history)
@@ -207,11 +211,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     enum class VisibleContent {
-        SEARCH_RESULT,
-        SEARCH_HISTORY,
-        NO_SEARCH_RESULT,
-        NO_INTERNET,
-        SEARCH_PROGRESS_BAR
+        SEARCH_RESULT, SEARCH_HISTORY, NO_SEARCH_RESULT, NO_INTERNET, SEARCH_PROGRESS_BAR
     }
 
     private fun setVisibleContent(v: VisibleContent) {
@@ -221,10 +221,8 @@ class SearchActivity : AppCompatActivity() {
                 noInternet.visibility = View.INVISIBLE
                 noSearchResult.visibility = View.INVISIBLE
                 trackItemsRecyclerView.visibility = View.INVISIBLE
-                if (searchHistoryProvider.getSize() > 0)
-                    searchHistory.visibility = View.VISIBLE
-                else
-                    searchHistory.visibility = View.INVISIBLE
+                if (searchHistoryProvider.getSize() > 0) searchHistory.visibility = View.VISIBLE
+                else searchHistory.visibility = View.INVISIBLE
             }
             VisibleContent.SEARCH_RESULT -> {
                 searchProgressBar.visibility = View.INVISIBLE

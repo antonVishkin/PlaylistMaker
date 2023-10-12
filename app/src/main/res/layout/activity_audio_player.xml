@@ -43,7 +43,7 @@
         app:layout_constraintBottom_toTopOf="@id/track_name"
         android:layout_marginHorizontal="@dimen/minimum_margin"
         android:layout_marginTop="@dimen/biggest_margin"
-        app:layout_constraintDimensionRatio="h,4:4"
+        app:layout_constraintDimensionRatio="1:1"
         app:shapeAppearanceOverlay="@style/rounded_corner" />
 
     <TextView
@@ -67,6 +67,7 @@
         app:layout_constraintTop_toBottomOf="@id/track_name"
         app:layout_constraintStart_toEndOf="@id/leftBorder"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
+        app:layout_constraintBottom_toTopOf="@id/playButton"
         android:layout_marginHorizontal="@dimen/minimum_margin"
         android:layout_marginTop="@dimen/small_margin"
         tools:text="Group Name"
@@ -92,6 +93,7 @@
         android:id="@+id/playButton"
         android:layout_width="84dp"
         android:layout_height="84dp"
+        android:layout_marginTop="@dimen/small_margin"
         app:layout_constraintTop_toBottomOf="@id/group_name"
         app:layout_constraintStart_toEndOf="@id/addToPlaylist"
         app:layout_constraintEnd_toStartOf="@+id/likeButton"
@@ -139,10 +141,13 @@
         android:id="@+id/durationValue"
         style="@style/TrackInfoText"
         android:textColor="?attr/colorOnPrimary"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
         app:layout_constraintTop_toBottomOf="@id/playingTime"
+        app:layout_constraintStart_toEndOf="@id/audio_player_barrier"
+        android:singleLine="true"
+        android:gravity="end"
         tools:text="5:35" />
 
     <TextView
@@ -158,10 +163,13 @@
         android:id="@+id/albumNameValue"
         style="@style/TrackInfoText"
         android:textColor="?attr/colorOnPrimary"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
         app:layout_constraintTop_toBottomOf="@id/durationValue"
+        app:layout_constraintStart_toEndOf="@id/audio_player_barrier"
+        android:singleLine="true"
+        android:gravity="end"
         tools:text="Yesterday (Remastered 2009)" />
 
     <TextView
@@ -177,10 +185,13 @@
         android:id="@+id/yearValue"
         style="@style/TrackInfoText"
         android:textColor="?attr/colorOnPrimary"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
         app:layout_constraintTop_toBottomOf="@id/albumNameValue"
+        app:layout_constraintStart_toEndOf="@id/audio_player_barrier"
+        android:singleLine="true"
+        android:gravity="end"
         tools:text="1965" />
 
     <TextView
@@ -197,11 +208,14 @@
         android:id="@+id/genreValue"
         style="@style/TrackInfoText"
         android:textColor="?attr/colorOnPrimary"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
         app:layout_constraintTop_toBottomOf="@id/yearValue"
         app:layout_constraintBottom_toTopOf="@id/countryValue"
+        app:layout_constraintStart_toEndOf="@id/audio_player_barrier"
+        android:singleLine="true"
+        android:gravity="end"
         tools:text="Rock" />
 
     <TextView
@@ -218,11 +232,22 @@
         android:id="@+id/countryValue"
         style="@style/TrackInfoText"
         android:textColor="?attr/colorOnPrimary"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toStartOf="@id/rightBorder"
         app:layout_constraintTop_toBottomOf="@id/yearValue"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/audio_player_barrier"
+        android:singleLine="true"
+        android:gravity="end"
         tools:text="Великобритания" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/audio_player_barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="duration"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
