@@ -43,7 +43,7 @@
         app:layout_constraintBottom_toTopOf="@id/track_name"
         android:layout_marginHorizontal="@dimen/minimum_margin"
         android:layout_marginTop="@dimen/biggest_margin"
-        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintDimensionRatio="h,4:4"
         app:shapeAppearanceOverlay="@style/rounded_corner" />
 
     <TextView
