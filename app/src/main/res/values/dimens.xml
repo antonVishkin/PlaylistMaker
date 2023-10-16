@@ -17,6 +17,7 @@
     <dimen name="standard_margin">16dp</dimen>
     <dimen name="medium_margin">20dp</dimen>
     <dimen name="extra_medium_margin">24dp</dimen>
+    <dimen name="thirty_margin">39dp</dimen>
     <dimen name="extra_margin">42dp</dimen>
     <dimen name="biggest_margin">46dp</dimen>
     <!--all margins end-->

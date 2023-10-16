@@ -39,21 +39,26 @@
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                >
 
                 <TextView
                     android:id="@+id/group_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:fontFamily="@font/ys_display_regular"
                     android:textSize="@dimen/minimum_text_size"
                     android:textColor="?attr/iconsColor"
                     android:maxLines="1"
+                    android:ellipsize="end"
                     tools:text="Group Name" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0"
                     android:layout_gravity="center"
                     android:layout_marginHorizontal="5dp"
                     app:tint="?attr/iconsColor"
@@ -63,9 +68,11 @@
                     android:id="@+id/track_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0"
                     android:fontFamily="@font/ys_display_regular"
                     android:textSize="@dimen/minimum_text_size"
                     android:textColor="?attr/iconsColor"
+                    android:maxLines="1"
                     tools:text="00:00" />
             </LinearLayout>
 

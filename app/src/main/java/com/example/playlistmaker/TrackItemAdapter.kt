@@ -1,6 +1,5 @@
 package com.example.playlistmaker
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
@@ -23,8 +22,6 @@ class TrackItemAdapter(
         holder.itemView.setOnClickListener {
             track = trackItems[position]
             onTrackClicked.invoke(track!!)
-            val playerIntent = Intent(it.context, AudioPlayerActivity::class.java)
-            it.context.startActivity(playerIntent)
         }
     }
 
