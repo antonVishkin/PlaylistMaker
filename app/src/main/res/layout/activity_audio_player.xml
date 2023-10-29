@@ -40,7 +40,7 @@
         android:src="@drawable/arrow_back"
         app:tint="?attr/colorOnPrimary" />
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/album_art"
         android:layout_width="0dp"
         android:layout_height="0dp"

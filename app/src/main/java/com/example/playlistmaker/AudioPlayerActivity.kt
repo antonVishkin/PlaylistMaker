@@ -1,6 +1,5 @@
 package com.example.playlistmaker
 
-import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -11,6 +10,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.example.playlistmaker.Creator.provideMediaPlayerInteractor
+import com.example.playlistmaker.data.mediaplayer.AudioPlayerImpl
+import com.example.playlistmaker.data.mediaplayer.PlayerStatus.*
+import com.example.playlistmaker.domain.Track
 import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.*
@@ -28,8 +31,7 @@ class AudioPlayerActivity : AppCompatActivity() {
     private lateinit var backButton: ImageView
     private lateinit var playingTime: TextView
     private lateinit var playButton: ImageButton
-    private var mediaPlayer = MediaPlayer()
-    private var playerState = STATE_DEFAULT
+    private var mediaPlayer = provideMediaPlayerInteractor()
     private val mainThreadHandler = Handler(Looper.getMainLooper())
     private var track = TrackItemAdapter.track
 
@@ -43,7 +45,8 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        pausePlayer()
+        mediaPlayer.pause()
+        playButton.setImageResource(R.drawable.play_button)
     }
 
     override fun onDestroy() {
@@ -54,7 +57,16 @@ class AudioPlayerActivity : AppCompatActivity() {
     private fun contentCreation() {
         playButton = findViewById(R.id.playButton)
         playButton.setOnClickListener {
-            playbackControl()
+            when (mediaPlayer.playbackControl()){
+                STATE_PLAYING -> {
+                    startTimer()
+                    playButton.setImageResource(R.drawable.pause_button)
+                }
+                else -> {
+                    pauseTimer()
+                    playButton.setImageResource(R.drawable.play_button)
+                }
+            }
         }
         preparePlayer()
         trackNameText = findViewById(R.id.track_name)
@@ -112,43 +124,17 @@ class AudioPlayerActivity : AppCompatActivity() {
     }
 
     private fun preparePlayer() {
-        mediaPlayer.setDataSource(track?.previewUrl)
-        mediaPlayer.prepareAsync()
-        mediaPlayer.setOnPreparedListener {
-            playButton.isEnabled = true
-            playerState = STATE_PREPARED
-        }
-        mediaPlayer.setOnCompletionListener {
-            playButton.setImageResource(R.drawable.play_button)
-            playingTime.text = "00:00"
-            playerState = STATE_PREPARED
-        }
+        track?.previewUrl?.let { mediaPlayer.prepare(it,onPrepared(),onCompletion()) }
     }
 
-    private fun startPlayer() {
-        mediaPlayer.start()
-        startTimer()
-        playButton.setImageResource(R.drawable.pause_button)
-        playerState = STATE_PLAYING
+    private fun onPrepared():()->Unit = {
+        playButton.isEnabled = true
     }
-
-    private fun pausePlayer() {
-        mediaPlayer.pause()
-        pauseTimer()
+    private fun onCompletion():()->Unit ={
         playButton.setImageResource(R.drawable.play_button)
-        playerState = STATE_PAUSED
+        playingTime.text = "00:00"
     }
 
-    private fun playbackControl() {
-        when (playerState) {
-            STATE_PLAYING -> {
-                pausePlayer()
-            }
-            STATE_PREPARED, STATE_PAUSED -> {
-                startPlayer()
-            }
-        }
-    }
 
     private fun startTimer() {
         mainThreadHandler?.post(timerRunnable)
@@ -160,7 +146,7 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     private val timerRunnable = object : Runnable {
         override fun run() {
-            if (playerState == STATE_PLAYING) {
+            if (mediaPlayer.playerStatus == STATE_PLAYING) {
                 val playedTime = mediaPlayer.currentPosition / DELAY
                 playingTime?.text =
                     String.format("%d:%02d", playedTime / 60, playedTime % 60)
@@ -171,10 +157,6 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     companion object {
         const val TRACK_DATA = "TRACK_DATA"
-        private const val STATE_DEFAULT = 0
-        private const val STATE_PREPARED = 1
-        private const val STATE_PLAYING = 2
-        private const val STATE_PAUSED = 3
         private const val DELAY = 1000L
 
     }

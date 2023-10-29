@@ -2,6 +2,7 @@ package com.example.playlistmaker
 
 import android.content.SharedPreferences
 import com.example.playlistmaker.SearchActivity.Companion.SEARCH_HISTORY_KEY
+import com.example.playlistmaker.domain.Track
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
