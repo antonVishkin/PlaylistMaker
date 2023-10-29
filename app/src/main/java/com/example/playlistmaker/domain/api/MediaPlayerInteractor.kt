@@ -1,6 +1,6 @@
 package com.example.playlistmaker.domain.api
 
-import com.example.playlistmaker.data.mediaplayer.PlayerStatus
+import com.example.playlistmaker.domain.PlayerStatus
 
 interface MediaPlayerInteractor {
     val currentPosition: Int

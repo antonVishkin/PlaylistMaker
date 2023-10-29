@@ -1,6 +1,6 @@
 package com.example.playlistmaker.domain.impl
 
-import com.example.playlistmaker.data.mediaplayer.PlayerStatus
+import com.example.playlistmaker.domain.PlayerStatus
 import com.example.playlistmaker.domain.api.AudioPlayer
 import com.example.playlistmaker.domain.api.MediaPlayerInteractor
 import java.util.concurrent.Executors

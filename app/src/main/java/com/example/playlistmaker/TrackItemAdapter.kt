@@ -3,7 +3,7 @@ package com.example.playlistmaker
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.Adapter
-import com.example.playlistmaker.domain.Track
+import com.example.playlistmaker.domain.entity.Track
 
 class TrackItemAdapter(
     private val trackItems: List<Track>,

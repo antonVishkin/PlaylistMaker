@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.ui
 
 import android.os.Bundle
 import android.os.Handler
@@ -10,11 +10,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.example.playlistmaker.Creator
 import com.example.playlistmaker.Creator.provideMediaPlayerInteractor
-import com.example.playlistmaker.data.mediaplayer.AudioPlayerImpl
-import com.example.playlistmaker.data.mediaplayer.PlayerStatus.*
-import com.example.playlistmaker.domain.Track
-import com.google.gson.Gson
+import com.example.playlistmaker.R
+import com.example.playlistmaker.TrackItemAdapter
+import com.example.playlistmaker.domain.PlayerStatus.*
+import com.example.playlistmaker.domain.api.TrackInteractor
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -32,11 +33,13 @@ class AudioPlayerActivity : AppCompatActivity() {
     private lateinit var playingTime: TextView
     private lateinit var playButton: ImageButton
     private var mediaPlayer = provideMediaPlayerInteractor()
+    private lateinit var trackInteractor: TrackInteractor
     private val mainThreadHandler = Handler(Looper.getMainLooper())
     private var track = TrackItemAdapter.track
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        trackInteractor = Creator.provideTrackInteractor(this)
         setContentView(R.layout.activity_audio_player)
         contentCreation()
         backButtonCreate()
@@ -111,7 +114,7 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
         super.onSaveInstanceState(outState, outPersistentState)
-        outState.putString(TRACK_DATA, Gson().toJson(track))
+        track?.let { trackInteractor.trackPut(it) }
     }
 
     override fun onRestoreInstanceState(
@@ -119,8 +122,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         persistentState: PersistableBundle?
     ) {
         super.onRestoreInstanceState(savedInstanceState, persistentState)
-        val json = savedInstanceState?.getString(TRACK_DATA)
-        track = Gson().fromJson(json, Track::class.java)
+        track = trackInteractor.trackGet()
     }
 
     private fun preparePlayer() {
