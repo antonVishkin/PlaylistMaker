@@ -2,10 +2,10 @@ package com.example.playlistmaker.data.mediaplayer
 
 import android.media.MediaPlayer
 import com.example.playlistmaker.domain.PlayerStatus
-import com.example.playlistmaker.domain.api.AudioPlayer
 import com.example.playlistmaker.domain.PlayerStatus.*
+import com.example.playlistmaker.domain.api.AudioPlayer
 
-class AudioPlayerImpl: AudioPlayer {
+class AudioPlayerImpl : AudioPlayer {
     private var mediaPlayer = MediaPlayer()
     override val currentPosition
         get() = mediaPlayer.currentPosition
@@ -40,7 +40,7 @@ class AudioPlayerImpl: AudioPlayer {
     override fun prepare(url: String, onPrepared: () -> Unit, onCompletion: () -> Unit) {
         mediaPlayer.setDataSource(url)
         mediaPlayer.prepareAsync()
-        mediaPlayer.setOnPreparedListener{
+        mediaPlayer.setOnPreparedListener {
             onPrepared.invoke()
             playerStatus = STATE_PREPARED
         }

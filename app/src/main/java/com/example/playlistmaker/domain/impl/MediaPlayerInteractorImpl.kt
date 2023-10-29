@@ -5,7 +5,7 @@ import com.example.playlistmaker.domain.api.AudioPlayer
 import com.example.playlistmaker.domain.api.MediaPlayerInteractor
 import java.util.concurrent.Executors
 
-class MediaPlayerInteractorImpl(private val audioPlayer: AudioPlayer): MediaPlayerInteractor {
+class MediaPlayerInteractorImpl(private val audioPlayer: AudioPlayer) : MediaPlayerInteractor {
     private val executor = Executors.newCachedThreadPool()
 
     override val currentPosition
@@ -26,8 +26,8 @@ class MediaPlayerInteractorImpl(private val audioPlayer: AudioPlayer): MediaPlay
     }
 
     override fun prepare(url: String, onPrepared: () -> Unit, onCompletion: () -> Unit) {
-        executor.execute{
-            audioPlayer.prepare(url = url,onPrepared = onPrepared, onCompletion = onCompletion)
+        executor.execute {
+            audioPlayer.prepare(url = url, onPrepared = onPrepared, onCompletion = onCompletion)
         }
     }
 

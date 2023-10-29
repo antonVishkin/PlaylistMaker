@@ -14,7 +14,7 @@ import com.example.playlistmaker.Creator
 import com.example.playlistmaker.Creator.provideMediaPlayerInteractor
 import com.example.playlistmaker.R
 import com.example.playlistmaker.TrackItemAdapter
-import com.example.playlistmaker.domain.PlayerStatus.*
+import com.example.playlistmaker.domain.PlayerStatus.STATE_PLAYING
 import com.example.playlistmaker.domain.api.TrackInteractor
 import java.text.SimpleDateFormat
 import java.util.*
@@ -60,7 +60,7 @@ class AudioPlayerActivity : AppCompatActivity() {
     private fun contentCreation() {
         playButton = findViewById(R.id.playButton)
         playButton.setOnClickListener {
-            when (mediaPlayer.playbackControl()){
+            when (mediaPlayer.playbackControl()) {
                 STATE_PLAYING -> {
                     startTimer()
                     playButton.setImageResource(R.drawable.pause_button)
@@ -126,13 +126,14 @@ class AudioPlayerActivity : AppCompatActivity() {
     }
 
     private fun preparePlayer() {
-        track?.previewUrl?.let { mediaPlayer.prepare(it,onPrepared(),onCompletion()) }
+        track?.previewUrl?.let { mediaPlayer.prepare(it, onPrepared(), onCompletion()) }
     }
 
-    private fun onPrepared():()->Unit = {
+    private fun onPrepared(): () -> Unit = {
         playButton.isEnabled = true
     }
-    private fun onCompletion():()->Unit ={
+
+    private fun onCompletion(): () -> Unit = {
         playButton.setImageResource(R.drawable.play_button)
         playingTime.text = "00:00"
     }
