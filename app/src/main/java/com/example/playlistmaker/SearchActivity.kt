@@ -13,8 +13,10 @@ import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlistmaker.iTunesApi.ITunesApi
-import com.example.playlistmaker.iTunesApi.SearchResponse
+import com.example.playlistmaker.data.dto.SearchResponse
+import com.example.playlistmaker.data.network.ITunesApi
+import com.example.playlistmaker.domain.entity.Track
+import com.example.playlistmaker.ui.AudioPlayerActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

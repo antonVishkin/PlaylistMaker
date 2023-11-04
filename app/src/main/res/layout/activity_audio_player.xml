@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AudioPlayerActivity"
+    tools:context=".ui.AudioPlayerActivity"
     android:background="?attr/colorPrimary">
 
     <androidx.constraintlayout.widget.Guideline
@@ -40,7 +40,7 @@
         android:src="@drawable/arrow_back"
         app:tint="?attr/colorOnPrimary" />
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/album_art"
         android:layout_width="0dp"
         android:layout_height="0dp"
