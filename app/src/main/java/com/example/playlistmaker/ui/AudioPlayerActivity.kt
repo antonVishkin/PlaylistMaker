@@ -135,7 +135,7 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     private fun onCompletion(): () -> Unit = {
         playButton.setImageResource(R.drawable.play_button)
-        playingTime.text = "00:00"
+        playingTime.text = getString(R.string.timer_zero_value)
     }
 
 

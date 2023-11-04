@@ -16,9 +16,7 @@ object Creator {
     }
 
     private fun getTrackRepository(context: Context): TrackRepository {
-        val preferencesRepository = TrackRepositoryImpl()
-        preferencesRepository.init(context)
-        return preferencesRepository
+        return TrackRepositoryImpl(context = context)
     }
 
     fun provideMediaPlayerInteractor(): MediaPlayerInteractor {

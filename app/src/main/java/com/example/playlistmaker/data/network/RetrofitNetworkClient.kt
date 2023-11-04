@@ -21,7 +21,10 @@ class RetrofitNetworkClient : NetworkClient {
             val body = response.body() ?: Response()
             return body.apply { resultCode = response.code() }
         } else {
-            return Response().apply { resultCode = 400 }
+            return Response().apply { resultCode = CLIENT_ERROR_RESULT_CODE }
         }
+    }
+    companion object{
+        const val CLIENT_ERROR_RESULT_CODE = 400
     }
 }
