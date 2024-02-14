@@ -1,8 +1,7 @@
 package com.example.playlistmaker.player.data.mediaplayer
 
 import android.media.MediaPlayer
-import com.example.playlistmaker.domain.PlayerStatus
-import com.example.playlistmaker.domain.PlayerStatus.*
+import com.example.playlistmaker.player.data.mediaplayer.PlayerStatus.*
 import com.example.playlistmaker.player.data.mediaplayer.api.AudioPlayer
 
 class AudioPlayerImpl : AudioPlayer {
@@ -37,15 +36,13 @@ class AudioPlayerImpl : AudioPlayer {
         }
     }
 
-    override fun prepare(url: String, onPrepared: () -> Unit, onCompletion: () -> Unit) {
+    override fun prepare(url: String) {
         mediaPlayer.setDataSource(url)
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener {
-            onPrepared.invoke()
             playerStatus = STATE_PREPARED
         }
         mediaPlayer.setOnCompletionListener {
-            onCompletion.invoke()
             playerStatus = STATE_PREPARED
         }
     }

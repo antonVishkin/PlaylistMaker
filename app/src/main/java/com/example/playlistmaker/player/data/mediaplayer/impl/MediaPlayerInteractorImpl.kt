@@ -1,6 +1,6 @@
 package com.example.playlistmaker.player.data.mediaplayer.impl
 
-import com.example.playlistmaker.domain.PlayerStatus
+import com.example.playlistmaker.player.data.mediaplayer.PlayerStatus
 import com.example.playlistmaker.player.data.mediaplayer.api.AudioPlayer
 import com.example.playlistmaker.player.data.mediaplayer.api.MediaPlayerInteractor
 import java.util.concurrent.Executors
@@ -25,9 +25,9 @@ class MediaPlayerInteractorImpl(private val audioPlayer: AudioPlayer) : MediaPla
         return audioPlayer.playbackControl()
     }
 
-    override fun prepare(url: String, onPrepared: () -> Unit, onCompletion: () -> Unit) {
+    override fun prepare(url: String) {
         executor.execute {
-            audioPlayer.prepare(url = url, onPrepared = onPrepared, onCompletion = onCompletion)
+            audioPlayer.prepare(url = url)
         }
     }
 
