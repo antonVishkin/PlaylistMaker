@@ -1,6 +1,6 @@
 package com.example.playlistmaker.search.data.network
 
-import com.example.playlistmaker.SearchActivity
+import com.example.playlistmaker.search.ui.SearchActivity
 import com.example.playlistmaker.search.data.NetworkClient
 import com.example.playlistmaker.search.data.dto.Response
 import com.example.playlistmaker.search.data.dto.SearchRequest

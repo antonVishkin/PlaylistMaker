@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.search.ui
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -12,11 +12,16 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.PLAYLIST_MAKER_SHARED_PREFERENCES
+import com.example.playlistmaker.R
 import com.example.playlistmaker.search.data.dto.SearchResponse
 import com.example.playlistmaker.search.data.network.ITunesApi
 import com.example.playlistmaker.domain.entity.Track
+import com.example.playlistmaker.hideKeyboard
 import com.example.playlistmaker.player.ui.AudioPlayerActivity
+import com.example.playlistmaker.search.ui.models.SearchState
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -41,11 +46,7 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var searchHistoryProvider: SearchHistoryProvider
     private lateinit var searchListItemAdapter: TrackItemAdapter
     private lateinit var searchProgressBar: ProgressBar
-    private val retrofit =
-        Retrofit.Builder().baseUrl(Companion.ITUNES_BASE_URL).addConverterFactory(
-            GsonConverterFactory.create()
-        ).build()
-    private val iTunesService = retrofit.create(ITunesApi::class.java)
+    private lateinit var viewModel: SearchViewModel
     private val trackProvider = arrayListOf<Track>()
     private lateinit var historyTrackListAdapter: TrackItemAdapter
     private val simpleTextWatcher = object : TextWatcher {
@@ -55,12 +56,9 @@ class SearchActivity : AppCompatActivity() {
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             visibilityClearButton(s)
-            if (searchEditText.hasFocus() && s?.isEmpty() == true) setVisibleContent(VisibleContent.SEARCH_HISTORY)
-            if (s?.isEmpty() != true && lastSearch != searchEditText.text.toString()) {
-                setVisibleContent(VisibleContent.SEARCH_PROGRESS_BAR)
-                lastSearch = searchEditText.text.toString()
-                searchDebounce()
-            }
+            viewModel.searchDebounce(
+                changedText = s?.toString() ?: ""
+            )
         }
 
         override fun afterTextChanged(s: Editable?) {
@@ -68,57 +66,20 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun search(searchText: String) {
-        iTunesService.search(searchText).enqueue(object : Callback<SearchResponse> {
-            @SuppressLint("NotifyDataSetChanged")
-            override fun onResponse(
-                call: Call<SearchResponse>, response: Response<SearchResponse>
-            ) {
-                when (response.code()) {
-                    200 -> {
-                        if (response.body()?.results!!.isNotEmpty()) {
-                            trackProvider.clear()
-                            trackProvider.addAll(response.body()?.results!!)
-                            setVisibleContent(VisibleContent.SEARCH_RESULT)
-                            searchListItemAdapter.notifyDataSetChanged()
-                        } else {
-                            trackProvider.clear()
-                            searchListItemAdapter.notifyDataSetChanged()
-                            setVisibleContent(VisibleContent.NO_SEARCH_RESULT)
-                        }
-                    }
-                    else -> {
-                        setVisibleContent(VisibleContent.NO_INTERNET)
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<SearchResponse>, t: Throwable) {
-                setVisibleContent(VisibleContent.NO_INTERNET)
-            }
-        })
-    }
-
-    private val searchRunnable = Runnable {
-        setVisibleContent(VisibleContent.SEARCH_PROGRESS_BAR)
-        search(searchEditText.text.toString())
-    }
-
-    private fun searchDebounce() {
-        handler.removeCallbacks(searchRunnable)
-        handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
-    }
-
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+        viewModel = ViewModelProvider(this,SearchViewModel.getViewModelFactory())[SearchViewModel::class.java]
         searchProgressBarCreate()
         searchHistoryCreation()
         backButtonCreate()
         trackListCreation()
         searchEditTextCreate()
+        viewModel.observeState().observe(this){
+            render(it)
+        }
     }
 
     private fun searchProgressBarCreate() {
@@ -162,22 +123,15 @@ class SearchActivity : AppCompatActivity() {
         searchEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 if (lastSearch != searchEditText.text.toString()) {
-                    setVisibleContent(VisibleContent.SEARCH_PROGRESS_BAR)
-                    lastSearch = searchEditText.text.toString()
-                    searchDebounce()
+                    viewModel.searchDebounce(searchEditText.text.toString())
                 }
                 true
             }
             false
         }
-        searchEditText.setOnFocusChangeListener { view, hasFocus ->
-            if (hasFocus && searchEditText.text.isEmpty()) setVisibleContent(VisibleContent.SEARCH_HISTORY)
-        }
-        setVisibleContent(VisibleContent.SEARCH_HISTORY)
         refreshButton = findViewById(R.id.refresh_button)
         refreshButton.setOnClickListener {
-            setVisibleContent(VisibleContent.SEARCH_PROGRESS_BAR)
-            searchDebounce()
+            viewModel.searchDebounce(searchEditText.text.toString())
         }
     }
 
@@ -208,53 +162,11 @@ class SearchActivity : AppCompatActivity() {
         clearHistoryButton.setOnClickListener {
             searchHistoryProvider.clearHistory()
             historyTrackListAdapter.notifyDataSetChanged()
-            setVisibleContent(VisibleContent.SEARCH_HISTORY)
         }
     }
 
     enum class VisibleContent {
         SEARCH_RESULT, SEARCH_HISTORY, NO_SEARCH_RESULT, NO_INTERNET, SEARCH_PROGRESS_BAR
-    }
-
-    private fun setVisibleContent(v: VisibleContent) {
-        when (v) {
-            VisibleContent.SEARCH_HISTORY -> {
-                searchProgressBar.visibility = View.INVISIBLE
-                noInternet.visibility = View.INVISIBLE
-                noSearchResult.visibility = View.INVISIBLE
-                trackItemsRecyclerView.visibility = View.INVISIBLE
-                if (searchHistoryProvider.getSize() > 0) searchHistory.visibility = View.VISIBLE
-                else searchHistory.visibility = View.INVISIBLE
-            }
-            VisibleContent.SEARCH_RESULT -> {
-                searchProgressBar.visibility = View.INVISIBLE
-                noInternet.visibility = View.INVISIBLE
-                noSearchResult.visibility = View.INVISIBLE
-                trackItemsRecyclerView.visibility = View.VISIBLE
-                searchHistory.visibility = View.INVISIBLE
-            }
-            VisibleContent.NO_SEARCH_RESULT -> {
-                searchProgressBar.visibility = View.INVISIBLE
-                noInternet.visibility = View.INVISIBLE
-                noSearchResult.visibility = View.VISIBLE
-                trackItemsRecyclerView.visibility = View.INVISIBLE
-                searchHistory.visibility = View.INVISIBLE
-            }
-            VisibleContent.NO_INTERNET -> {
-                searchProgressBar.visibility = View.INVISIBLE
-                noInternet.visibility = View.VISIBLE
-                noSearchResult.visibility = View.INVISIBLE
-                trackItemsRecyclerView.visibility = View.INVISIBLE
-                searchHistory.visibility = View.INVISIBLE
-            }
-            VisibleContent.SEARCH_PROGRESS_BAR -> {
-                searchProgressBar.visibility = View.VISIBLE
-                noInternet.visibility = View.INVISIBLE
-                noSearchResult.visibility = View.INVISIBLE
-                trackItemsRecyclerView.visibility = View.INVISIBLE
-                searchHistory.visibility = View.INVISIBLE
-            }
-        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -276,12 +188,66 @@ class SearchActivity : AppCompatActivity() {
         return current
     }
 
+    private fun render(state: SearchState){
+        when(state){
+            SearchState.Empty -> showEmptyState()
+            is SearchState.History -> showHistory()
+            SearchState.Loading -> showLoadingState()
+            SearchState.NoInternet -> showNoInternet()
+            is SearchState.Results -> showResultState(state.trackList)
+        }
+    }
+
+    private fun showEmptyState(){
+        searchProgressBar.visibility = View.INVISIBLE
+        noInternet.visibility = View.INVISIBLE
+        trackItemsRecyclerView.visibility = View.INVISIBLE
+        searchHistory.visibility = View.INVISIBLE
+        noSearchResult.visibility = View.VISIBLE
+    }
+
+    private fun showLoadingState(){
+        searchProgressBar.visibility = View.VISIBLE
+        noInternet.visibility = View.INVISIBLE
+        noSearchResult.visibility = View.INVISIBLE
+        trackItemsRecyclerView.visibility = View.INVISIBLE
+        searchHistory.visibility = View.INVISIBLE
+    }
+
+    private fun showNoInternet(){
+        searchProgressBar.visibility = View.INVISIBLE
+        noSearchResult.visibility = View.INVISIBLE
+        trackItemsRecyclerView.visibility = View.INVISIBLE
+        searchHistory.visibility = View.INVISIBLE
+        noInternet.visibility = View.VISIBLE
+    }
+
+    private fun showResultState(trackList: List<Track>){
+        searchProgressBar.visibility = View.INVISIBLE
+        noInternet.visibility = View.INVISIBLE
+        noSearchResult.visibility = View.INVISIBLE
+        searchHistory.visibility = View.INVISIBLE
+        trackItemsRecyclerView.visibility = View.VISIBLE
+
+        trackProvider.clear()
+        trackProvider.addAll(trackList)
+        searchListItemAdapter.notifyDataSetChanged()
+    }
+
+    private fun showHistory(){
+        searchProgressBar.visibility = View.INVISIBLE
+        noInternet.visibility = View.INVISIBLE
+        noSearchResult.visibility = View.INVISIBLE
+        trackItemsRecyclerView.visibility = View.INVISIBLE
+        if (searchHistoryProvider.getSize() > 0) searchHistory.visibility = View.VISIBLE
+        else searchHistory.visibility = View.INVISIBLE
+    }
+
     companion object {
         private const val SEARCH_VALUE = "SEARCH_VALUE"
         private var searchText: String? = null
         const val ITUNES_BASE_URL = "https://itunes.apple.com"
         const val SEARCH_HISTORY_KEY = "search_history"
-        private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 }
