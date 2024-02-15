@@ -1,6 +1,5 @@
-package com.example.playlistmaker.player.data.prefs.impl
+package com.example.playlistmaker.player.domain
 
-import com.example.playlistmaker.player.data.prefs.api.TrackInteractor
 import com.example.playlistmaker.player.data.prefs.api.TrackRepository
 import com.example.playlistmaker.domain.entity.Track
 

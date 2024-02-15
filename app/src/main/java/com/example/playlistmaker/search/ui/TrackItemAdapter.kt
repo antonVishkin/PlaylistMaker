@@ -7,9 +7,9 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.entity.Track
 
 class TrackItemAdapter(
-    private val trackItems: List<Track>,
     private val onTrackClicked: (Track) -> Unit
 ) : Adapter<TrackItemViewHolder>() {
+    val trackItems = arrayListOf<Track>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackItemViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.track_item_view, parent, false)

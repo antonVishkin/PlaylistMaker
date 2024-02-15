@@ -1,4 +1,4 @@
-package com.example.playlistmaker.player.data.prefs.api
+package com.example.playlistmaker.player.domain
 
 import com.example.playlistmaker.domain.entity.Track
 
