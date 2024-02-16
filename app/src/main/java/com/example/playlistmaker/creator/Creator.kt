@@ -14,6 +14,14 @@ import com.example.playlistmaker.search.domain.api.TrackListInteractor
 import com.example.playlistmaker.search.domain.api.TrackListRepository
 import com.example.playlistmaker.search.domain.impl.TrackHistoryInteractorImpl
 import com.example.playlistmaker.search.domain.impl.TrackListInteractorImpl
+import com.example.playlistmaker.settings.data.ExternalNavigator
+import com.example.playlistmaker.settings.data.ExternalNavigatorImpl
+import com.example.playlistmaker.settings.data.SettingsRepository
+import com.example.playlistmaker.settings.data.SettingsRepositoryImpl
+import com.example.playlistmaker.settings.domain.SettingsInteractor
+import com.example.playlistmaker.settings.domain.SettingsInteractorImpl
+import com.example.playlistmaker.settings.domain.SharingInteractor
+import com.example.playlistmaker.settings.domain.SharingInteractorImpl
 
 object Creator {
     private fun getAudioPlayer(): AudioPlayer {
@@ -39,5 +47,20 @@ object Creator {
 
     fun provideTrackHistoryInteractor(context: Context):TrackHistoryInteractor{
         return TrackHistoryInteractorImpl(getSearchHistoryRepository(context))
+    }
+
+    private fun getSettingsRepository(context: Context):SettingsRepository{
+        return SettingsRepositoryImpl(context)
+    }
+
+    fun provideSettingsInteractor(context: Context):SettingsInteractor{
+        return SettingsInteractorImpl(getSettingsRepository(context))
+    }
+
+    private fun getExternalNavigator(context: Context):ExternalNavigator{
+        return ExternalNavigatorImpl(context)
+    }
+    fun provideSharingInteractor(context: Context):SharingInteractor{
+        return SharingInteractorImpl(context,getExternalNavigator(context))
     }
 }

@@ -2,7 +2,7 @@ package com.example.playlistmaker.search.data
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
-import com.example.playlistmaker.PLAYLIST_MAKER_SHARED_PREFERENCES
+import com.example.playlistmaker.App.Companion.PLAYLIST_MAKER_SHARED_PREFERENCES
 import com.example.playlistmaker.player.data.track.Track
 import com.example.playlistmaker.search.domain.api.SearchHistoryRepository
 import com.google.gson.Gson

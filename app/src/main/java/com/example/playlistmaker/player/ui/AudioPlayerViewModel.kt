@@ -63,6 +63,7 @@ class AudioPlayerViewModel(application: Application):AndroidViewModel(applicatio
 
     override fun onCleared() {
         super.onCleared()
+        mainThreadHandler?.removeCallbacks(timerRunnable)
         mediaPlayer.release()
     }
 

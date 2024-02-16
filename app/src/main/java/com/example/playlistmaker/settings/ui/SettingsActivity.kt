@@ -58,12 +58,9 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 
-    @SuppressLint("UseSwitchCompatOrMaterialCode")
     private fun themeSwitcherCreate() {
         val themeSwitcher = findViewById<Switch>(R.id.themeSwitcher)
-        viewModel.observeDarkTheme().observe(this){
-            themeSwitcher.isChecked = it
-        }
+        themeSwitcher.isChecked = viewModel.observeDarkTheme().value ?: false
         themeSwitcher.setOnCheckedChangeListener { _, checked ->
             viewModel.switchTheme(checked)
         }
