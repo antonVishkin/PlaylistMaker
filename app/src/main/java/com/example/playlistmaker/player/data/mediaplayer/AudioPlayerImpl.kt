@@ -36,13 +36,15 @@ class AudioPlayerImpl : AudioPlayer {
         }
     }
 
-    override fun prepare(url: String) {
+    override fun prepare(url: String, onPrepared: () -> Unit, onCompletion: () -> Unit) {
         mediaPlayer.setDataSource(url)
         mediaPlayer.prepareAsync()
         mediaPlayer.setOnPreparedListener {
+            onPrepared.invoke()
             playerStatus = STATE_PREPARED
         }
         mediaPlayer.setOnCompletionListener {
+            onCompletion.invoke()
             playerStatus = STATE_PREPARED
         }
     }

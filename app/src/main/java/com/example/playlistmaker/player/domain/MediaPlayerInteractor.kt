@@ -1,4 +1,4 @@
-package com.example.playlistmaker.player.data.mediaplayer.api
+package com.example.playlistmaker.player.domain
 
 import com.example.playlistmaker.player.data.mediaplayer.PlayerStatus
 
@@ -8,6 +8,6 @@ interface MediaPlayerInteractor {
     fun start()
     fun pause()
     fun playbackControl(): PlayerStatus
-    fun prepare(url: String)
+    fun prepare(url: String, onPrepared: () -> Unit, onCompletion: () -> Unit)
     fun release()
 }

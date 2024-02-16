@@ -52,6 +52,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         }
         viewModel.observePlayerState().observe(this){render(it)}
         viewModel.observeTimer().observe(this){changeTimer(it)}
+        viewModel.observePlayerState().value?.let { render(it) }
     }
 
     override fun onPause() {
@@ -59,10 +60,6 @@ class AudioPlayerActivity : AppCompatActivity() {
         showPause()
     }
 
-    override fun onDestroy() {
-        viewModel.playerRelease()
-        super.onDestroy()
-    }
 
 
 

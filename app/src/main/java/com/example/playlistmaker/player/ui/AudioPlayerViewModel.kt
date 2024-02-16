@@ -21,7 +21,7 @@ class AudioPlayerViewModel(application: Application):AndroidViewModel(applicatio
     private var mediaPlayer = Creator.provideMediaPlayerInteractor()
     private var track = TrackItemAdapter.track
     private val mainThreadHandler = Handler(Looper.getMainLooper())
-    private val stateLiveData = MutableLiveData<PlayerState>(track?.let { PlayerState.Prepared(it) })
+    private val stateLiveData = MutableLiveData<PlayerState>()
     private val timerLiveData = MutableLiveData(getApplication<Application>().getString(R.string.timer_zero))
     fun observePlayerState():LiveData<PlayerState> = stateLiveData
     fun observeTimer():LiveData<String> = timerLiveData
@@ -40,7 +40,7 @@ class AudioPlayerViewModel(application: Application):AndroidViewModel(applicatio
     }
 
     private fun preparePlayer() {
-        track?.previewUrl?.let { mediaPlayer.prepare(it) }
+        track?.previewUrl?.let { mediaPlayer.prepare(it, onPrepared = onPrepared(),onCompletion = onCompletion()) }
     }
 
 
@@ -51,20 +51,18 @@ class AudioPlayerViewModel(application: Application):AndroidViewModel(applicatio
     fun playClick() {
         when (mediaPlayer.playbackControl()) {
             PlayerStatus.STATE_PLAYING -> {
-                mediaPlayer.start()
                 startTimer()
                 renderState(PlayerState.Playing)
             }
             else -> {
-                mediaPlayer.pause()
                 pauseTimer()
                 renderState(PlayerState.Pause)
             }
         }
     }
 
-    fun playerRelease(){
-        pauseTimer()
+    override fun onCleared() {
+        super.onCleared()
         mediaPlayer.release()
     }
 
@@ -88,4 +86,7 @@ class AudioPlayerViewModel(application: Application):AndroidViewModel(applicatio
         }
     }
 
+    private fun onPrepared():() -> Unit = { renderState(PlayerState.Prepared(track!!)) }
+
+    private fun onCompletion():() -> Unit = { renderState(PlayerState.Pause) }
 }

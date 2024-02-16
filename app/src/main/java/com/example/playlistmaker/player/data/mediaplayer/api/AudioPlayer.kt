@@ -8,6 +8,7 @@ interface AudioPlayer {
     fun start()
     fun pause()
     fun playbackControl(): PlayerStatus
-    fun prepare(url: String)
+    fun prepare(url: String,onPrepared: () -> Unit, onCompletion: () -> Unit)
     fun release()
+
 }

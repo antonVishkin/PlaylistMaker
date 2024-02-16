@@ -1,9 +1,6 @@
 package com.example.playlistmaker.search.ui
 
-import android.annotation.SuppressLint
 import android.app.Application
-import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
@@ -17,40 +14,28 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmaker.PLAYLIST_MAKER_SHARED_PREFERENCES
 import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.domain.entity.Track
-import com.example.playlistmaker.search.data.dto.SearchResponse
-import com.example.playlistmaker.search.data.network.ITunesApi
+import com.example.playlistmaker.search.data.SearchHistoryProvider
 import com.example.playlistmaker.search.domain.api.TrackListInteractor
 import com.example.playlistmaker.search.ui.models.SearchState
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchViewModel(application: Application) : AndroidViewModel(application) {
     private val handler = Handler(Looper.getMainLooper())
-    private val stateLiveData = MutableLiveData<SearchState>(SearchState.History(searchHistoryProvider.getSearchHistory()))
+    private var stateLiveData: MutableLiveData<SearchState>
     private var latestSearchText: String? = null
     private var isClickAllowed = true
     private val trackListInteractor = Creator.provideTrackListInteractor()
-    private lateinit var searchHistoryProvider: SearchHistoryProvider
-    private var sharedPreference = application.getSharedPreferences(
-        PLAYLIST_MAKER_SHARED_PREFERENCES, AppCompatActivity.MODE_PRIVATE
-    )
+    private val trackHistoryInteractor = Creator.provideTrackHistoryInteractor(application)
 
     fun observeState(): LiveData<SearchState> = stateLiveData
 init {
-    searchHistoryProvider = SearchHistoryProvider(sharedPreference)
+    stateLiveData = MutableLiveData<SearchState>(SearchState.History(trackHistoryInteractor.getHistory()))
 }
 
 
     companion object {
         private val SEARCH_REQUEST_TOKEN = Any()
-        const val SEARCH_HISTORY_KEY = "search_history"
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private const val CLICK_DEBOUNCE_DELAY = 1000L
-        private const val SEARCH_VALUE = "SEARCH_VALUE"
-
         fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 SearchViewModel(this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as Application)
@@ -82,7 +67,7 @@ init {
     private fun search(searchText: String) {
         if (searchText.isEmpty()) {
             renderState(
-                SearchState.History(searchHistoryProvider.getSearchHistory())
+                SearchState.History(trackHistoryInteractor.getHistory())
             )
         }else{
             renderState(
@@ -119,27 +104,18 @@ init {
     }
 
     fun clearHistory(){
-        searchHistoryProvider.clearHistory()
-        renderState(SearchState.History(searchHistoryProvider.getSearchHistory()))
+        trackHistoryInteractor.clearHistory()
+        renderState(SearchState.History(trackHistoryInteractor.getHistory()))
     }
 
     fun clearSearch(){
-        renderState(SearchState.Results(listOf<Track>()))
+        renderState(SearchState.History(trackHistoryInteractor.getHistory()))
     }
 
     fun onTrackClicked(track: Track){
         if (clickDebounce()){
-            searchHistoryProvider.addTrackToHistory(track)
-            renderState(SearchState.History(searchHistoryProvider.getSearchHistory()))
+            trackHistoryInteractor.addTrackToHistory(track)
         }
-    }
-
-    fun saveState(){
-        sharedPreference.edit().putString(SEARCH_VALUE,latestSearchText)
-    }
-
-    fun getSearchFromState():String{
-        return sharedPreference.getString(SEARCH_VALUE,"") ?: ""
     }
 
     private fun clickDebounce(): Boolean {

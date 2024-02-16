@@ -78,16 +78,6 @@ class SearchActivity : AppCompatActivity() {
     }
 
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        viewModel.saveState()
-        super.onSaveInstanceState(outState)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        searchEditText.setText(viewModel.getSearchFromState())
-    }
-
     private fun backButtonCreate() {
         backButton = findViewById(R.id.back_button)
         backButton.setOnClickListener {
@@ -209,6 +199,7 @@ class SearchActivity : AppCompatActivity() {
         if (trackList.isNotEmpty()) {
             historyTrackListAdapter.trackItems.clear()
             historyTrackListAdapter.trackItems.addAll(trackList)
+            historyTrackListAdapter.notifyDataSetChanged()
             searchHistory.visibility = View.VISIBLE
         } else
             searchHistory.visibility = View.INVISIBLE
