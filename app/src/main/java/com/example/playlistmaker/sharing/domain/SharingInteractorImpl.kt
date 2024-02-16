@@ -1,9 +1,9 @@
-package com.example.playlistmaker.settings.domain
+package com.example.playlistmaker.sharing.domain
 
 import android.content.Context
 import com.example.playlistmaker.R
-import com.example.playlistmaker.settings.data.EmailData
-import com.example.playlistmaker.settings.data.ExternalNavigator
+import com.example.playlistmaker.sharing.data.EmailData
+import com.example.playlistmaker.sharing.data.ExternalNavigator
 
 class SharingInteractorImpl(
     private val context: Context,

@@ -2,10 +2,10 @@ package com.example.playlistmaker.search.ui.models
 
 import com.example.playlistmaker.player.data.track.Track
 
-sealed interface SearchState{
+sealed interface SearchState {
     object Loading : SearchState
-    data class Results(val trackList: List<Track>):SearchState
-    data class History(val trackList: List<Track>):SearchState
-    object Empty:SearchState
-    object NoInternet:SearchState
+    data class Results(val trackList: List<Track>) : SearchState
+    data class History(val trackList: List<Track>) : SearchState
+    object Empty : SearchState
+    object NoInternet : SearchState
 }

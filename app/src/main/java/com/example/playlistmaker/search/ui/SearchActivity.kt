@@ -14,8 +14,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
-import com.example.playlistmaker.player.data.track.Track
 import com.example.playlistmaker.hideKeyboard
+import com.example.playlistmaker.player.data.track.Track
 import com.example.playlistmaker.player.ui.AudioPlayerActivity
 import com.example.playlistmaker.search.ui.models.SearchState
 
@@ -131,7 +131,7 @@ class SearchActivity : AppCompatActivity() {
         historyTrackList = findViewById(R.id.history_track_list)
         clearHistoryButton = findViewById(R.id.clear_history)
         historyTrackListAdapter =
-            TrackItemAdapter{
+            TrackItemAdapter {
                 viewModel.onTrackClicked(it)
                 val playerIntent = Intent(this, AudioPlayerActivity::class.java)
                 this.startActivity(playerIntent)
@@ -142,7 +142,6 @@ class SearchActivity : AppCompatActivity() {
             viewModel.clearHistory()
         }
     }
-
 
 
     private fun render(state: SearchState) {

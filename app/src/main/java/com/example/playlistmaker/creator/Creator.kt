@@ -1,8 +1,8 @@
 package com.example.playlistmaker.creator
 
 import android.content.Context
-import com.example.playlistmaker.player.data.mediaplayer.impl.AudioPlayerImpl
 import com.example.playlistmaker.player.data.mediaplayer.api.AudioPlayer
+import com.example.playlistmaker.player.data.mediaplayer.impl.AudioPlayerImpl
 import com.example.playlistmaker.player.domain.MediaPlayerInteractor
 import com.example.playlistmaker.player.domain.MediaPlayerInteractorImpl
 import com.example.playlistmaker.search.data.SearchHistoryProvider
@@ -14,14 +14,14 @@ import com.example.playlistmaker.search.domain.api.TrackListInteractor
 import com.example.playlistmaker.search.domain.api.TrackListRepository
 import com.example.playlistmaker.search.domain.impl.TrackHistoryInteractorImpl
 import com.example.playlistmaker.search.domain.impl.TrackListInteractorImpl
-import com.example.playlistmaker.settings.data.ExternalNavigator
-import com.example.playlistmaker.settings.data.ExternalNavigatorImpl
 import com.example.playlistmaker.settings.data.SettingsRepository
 import com.example.playlistmaker.settings.data.SettingsRepositoryImpl
 import com.example.playlistmaker.settings.domain.SettingsInteractor
 import com.example.playlistmaker.settings.domain.SettingsInteractorImpl
-import com.example.playlistmaker.settings.domain.SharingInteractor
-import com.example.playlistmaker.settings.domain.SharingInteractorImpl
+import com.example.playlistmaker.sharing.data.ExternalNavigator
+import com.example.playlistmaker.sharing.domain.ExternalNavigatorImpl
+import com.example.playlistmaker.sharing.domain.SharingInteractor
+import com.example.playlistmaker.sharing.domain.SharingInteractorImpl
 
 object Creator {
     private fun getAudioPlayer(): AudioPlayer {
@@ -33,34 +33,35 @@ object Creator {
         return MediaPlayerInteractorImpl(getAudioPlayer())
     }
 
-    private fun getTrackListRepository():TrackListRepository{
+    private fun getTrackListRepository(): TrackListRepository {
         return TrackListRepositoryImpl(RetrofitNetworkClient())
     }
 
-    fun provideTrackListInteractor():TrackListInteractor{
+    fun provideTrackListInteractor(): TrackListInteractor {
         return TrackListInteractorImpl(getTrackListRepository())
     }
 
-    private fun getSearchHistoryRepository(context: Context):SearchHistoryRepository{
+    private fun getSearchHistoryRepository(context: Context): SearchHistoryRepository {
         return SearchHistoryProvider(context)
     }
 
-    fun provideTrackHistoryInteractor(context: Context):TrackHistoryInteractor{
+    fun provideTrackHistoryInteractor(context: Context): TrackHistoryInteractor {
         return TrackHistoryInteractorImpl(getSearchHistoryRepository(context))
     }
 
-    private fun getSettingsRepository(context: Context):SettingsRepository{
+    private fun getSettingsRepository(context: Context): SettingsRepository {
         return SettingsRepositoryImpl(context)
     }
 
-    fun provideSettingsInteractor(context: Context):SettingsInteractor{
+    fun provideSettingsInteractor(context: Context): SettingsInteractor {
         return SettingsInteractorImpl(getSettingsRepository(context))
     }
 
-    private fun getExternalNavigator(context: Context):ExternalNavigator{
+    private fun getExternalNavigator(context: Context): ExternalNavigator {
         return ExternalNavigatorImpl(context)
     }
-    fun provideSharingInteractor(context: Context):SharingInteractor{
-        return SharingInteractorImpl(context,getExternalNavigator(context))
+
+    fun provideSharingInteractor(context: Context): SharingInteractor {
+        return SharingInteractorImpl(context, getExternalNavigator(context))
     }
 }

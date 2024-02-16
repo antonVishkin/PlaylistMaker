@@ -2,7 +2,10 @@ package com.example.playlistmaker.player.data.mediaplayer.impl
 
 import android.media.MediaPlayer
 import com.example.playlistmaker.player.data.mediaplayer.PlayerStatus
-import com.example.playlistmaker.player.data.mediaplayer.PlayerStatus.*
+import com.example.playlistmaker.player.data.mediaplayer.PlayerStatus.STATE_DEFAULT
+import com.example.playlistmaker.player.data.mediaplayer.PlayerStatus.STATE_PAUSED
+import com.example.playlistmaker.player.data.mediaplayer.PlayerStatus.STATE_PLAYING
+import com.example.playlistmaker.player.data.mediaplayer.PlayerStatus.STATE_PREPARED
 import com.example.playlistmaker.player.data.mediaplayer.api.AudioPlayer
 
 class AudioPlayerImpl : AudioPlayer {
@@ -27,10 +30,12 @@ class AudioPlayerImpl : AudioPlayer {
                 pause()
                 STATE_PAUSED
             }
+
             STATE_PREPARED, STATE_PAUSED -> {
                 start()
                 STATE_PLAYING
             }
+
             else -> {
                 STATE_DEFAULT
             }

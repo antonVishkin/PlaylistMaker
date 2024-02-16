@@ -6,6 +6,6 @@ interface TrackListInteractor {
     fun searchTracks(expression: String, consumer: TracksConsumer)
 
     interface TracksConsumer {
-        fun consume(foundTracks:List<Track>?, errorMessage:String?)
+        fun consume(foundTracks: List<Track>?, errorMessage: String?)
     }
 }

@@ -24,9 +24,11 @@ class SearchViewModel(application: Application) : AndroidViewModel(application) 
     private val trackHistoryInteractor = Creator.provideTrackHistoryInteractor(application)
 
     fun observeState(): LiveData<SearchState> = stateLiveData
-init {
-    stateLiveData = MutableLiveData<SearchState>(SearchState.History(trackHistoryInteractor.getHistory()))
-}
+
+    init {
+        stateLiveData =
+            MutableLiveData<SearchState>(SearchState.History(trackHistoryInteractor.getHistory()))
+    }
 
 
     companion object {
@@ -66,51 +68,52 @@ init {
             renderState(
                 SearchState.History(trackHistoryInteractor.getHistory())
             )
-        }else{
+        } else {
             renderState(
                 SearchState.Loading
             )
 
-            trackListInteractor.searchTracks(searchText,object :TrackListInteractor.TracksConsumer {
-                override fun consume(foundTracks: List<Track>?, errorMessage: String?) {
-                    val trackList = mutableListOf<Track>()
-                    if (foundTracks != null)
-                        trackList.addAll(foundTracks)
-                    when {
-                        errorMessage != null -> {
-                            renderState(
-                                SearchState.Empty
-                            )
-                        }
+            trackListInteractor.searchTracks(searchText,
+                object : TrackListInteractor.TracksConsumer {
+                    override fun consume(foundTracks: List<Track>?, errorMessage: String?) {
+                        val trackList = mutableListOf<Track>()
+                        if (foundTracks != null)
+                            trackList.addAll(foundTracks)
+                        when {
+                            errorMessage != null -> {
+                                renderState(
+                                    SearchState.Empty
+                                )
+                            }
 
-                        trackList.isEmpty() -> {
-                            renderState(
-                                SearchState.Empty
-                            )
-                        }
+                            trackList.isEmpty() -> {
+                                renderState(
+                                    SearchState.Empty
+                                )
+                            }
 
-                        else -> {
-                            renderState(
-                                SearchState.Results(trackList)
-                            )
+                            else -> {
+                                renderState(
+                                    SearchState.Results(trackList)
+                                )
+                            }
                         }
                     }
-                }
-            })
+                })
         }
     }
 
-    fun clearHistory(){
+    fun clearHistory() {
         trackHistoryInteractor.clearHistory()
         renderState(SearchState.History(trackHistoryInteractor.getHistory()))
     }
 
-    fun clearSearch(){
+    fun clearSearch() {
         renderState(SearchState.History(trackHistoryInteractor.getHistory()))
     }
 
-    fun onTrackClicked(track: Track){
-        if (clickDebounce()){
+    fun onTrackClicked(track: Track) {
+        if (clickDebounce()) {
             trackHistoryInteractor.addTrackToHistory(track)
         }
     }

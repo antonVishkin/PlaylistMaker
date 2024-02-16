@@ -1,4 +1,4 @@
-package com.example.playlistmaker.settings.data
+package com.example.playlistmaker.sharing.data
 
 interface ExternalNavigator {
     fun shareLink(shareAppLink: String)

@@ -8,10 +8,14 @@ import com.example.playlistmaker.search.domain.api.SearchHistoryRepository
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-class SearchHistoryProvider(context: Context):SearchHistoryRepository {
+class SearchHistoryProvider(context: Context) : SearchHistoryRepository {
     private lateinit var searchList: ArrayList<Track>
     private val limit = 10
-    private val prefs = context.getSharedPreferences(PLAYLIST_MAKER_SHARED_PREFERENCES, AppCompatActivity.MODE_PRIVATE)
+    private val prefs = context.getSharedPreferences(
+        PLAYLIST_MAKER_SHARED_PREFERENCES,
+        AppCompatActivity.MODE_PRIVATE
+    )
+
     override fun getHistory(): ArrayList<Track> {
         if (!::searchList.isInitialized) {
             val listAsString = prefs.getString(SEARCH_HISTORY_KEY, "")
@@ -46,7 +50,7 @@ class SearchHistoryProvider(context: Context):SearchHistoryRepository {
         searchList = ArrayList(searchList.take(limit))
     }
 
-    companion object{
+    companion object {
         const val SEARCH_HISTORY_KEY = "search_history"
     }
 }

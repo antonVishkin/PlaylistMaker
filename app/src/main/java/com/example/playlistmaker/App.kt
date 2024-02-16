@@ -1,7 +1,6 @@
 package com.example.playlistmaker
 
 import android.app.Application
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.playlistmaker.creator.Creator
 
@@ -23,8 +22,8 @@ class App : Application() {
         )
     }
 
-companion object{
-    const val PLAYLIST_MAKER_SHARED_PREFERENCES = "playlist_maker_shared_preferences"
-    const val THEME_KEY = "theme_key"
-}
+    companion object {
+        const val PLAYLIST_MAKER_SHARED_PREFERENCES = "playlist_maker_shared_preferences"
+        const val THEME_KEY = "theme_key"
+    }
 }

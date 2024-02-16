@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide
 import com.example.playlistmaker.R
 import com.example.playlistmaker.player.data.track.Track
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 class TrackItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val trackName = itemView.findViewById<TextView>(R.id.track_name)

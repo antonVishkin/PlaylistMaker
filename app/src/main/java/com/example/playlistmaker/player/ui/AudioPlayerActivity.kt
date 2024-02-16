@@ -13,7 +13,7 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.player.data.track.Track
 import com.example.playlistmaker.player.ui.models.PlayerState
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 class AudioPlayerActivity : AppCompatActivity() {
     private lateinit var albumImage: ImageView
@@ -33,7 +33,10 @@ class AudioPlayerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_audio_player)
-        viewModel = ViewModelProvider(this,AudioPlayerViewModel.getViewModelFactory())[AudioPlayerViewModel::class.java]
+        viewModel = ViewModelProvider(
+            this,
+            AudioPlayerViewModel.getViewModelFactory()
+        )[AudioPlayerViewModel::class.java]
         playButton = findViewById(R.id.playButton)
         trackNameText = findViewById(R.id.track_name)
         groupNameText = findViewById(R.id.group_name)
@@ -51,8 +54,8 @@ class AudioPlayerActivity : AppCompatActivity() {
         playButton.setOnClickListener {
             viewModel.playClick()
         }
-        viewModel.observePlayerState().observe(this){render(it)}
-        viewModel.observeTimer().observe(this){changeTimer(it)}
+        viewModel.observePlayerState().observe(this) { render(it) }
+        viewModel.observeTimer().observe(this) { changeTimer(it) }
         viewModel.observePlayerState().value?.let { render(it) }
     }
 
@@ -62,20 +65,20 @@ class AudioPlayerActivity : AppCompatActivity() {
     }
 
 
-    private fun showPause(){
+    private fun showPause() {
         playButton.setImageResource(R.drawable.play_button)
     }
 
-    private fun showPlaying(){
+    private fun showPlaying() {
         playButton.setImageResource(R.drawable.pause_button)
     }
 
-    private fun changeTimer(time:String){
-        Log.v("timer",time)
+    private fun changeTimer(time: String) {
+        Log.v("timer", time)
         playingTime?.text = time
     }
 
-    private fun showContent(track: Track){
+    private fun showContent(track: Track) {
         trackNameText.text = track.trackName
         groupNameText.text = track.artistName
         durationText.text = SimpleDateFormat(
@@ -99,8 +102,8 @@ class AudioPlayerActivity : AppCompatActivity() {
             .into(albumImage)
     }
 
-    private fun render(state: PlayerState){
-        when (state){
+    private fun render(state: PlayerState) {
+        when (state) {
             PlayerState.Pause -> showPause()
             PlayerState.Playing -> showPlaying()
             is PlayerState.Prepared -> showContent(state.track)

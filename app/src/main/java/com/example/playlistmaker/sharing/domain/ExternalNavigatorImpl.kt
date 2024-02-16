@@ -1,9 +1,11 @@
-package com.example.playlistmaker.settings.data
+package com.example.playlistmaker.sharing.domain
 
 import android.content.Context
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.net.Uri
+import com.example.playlistmaker.sharing.data.EmailData
+import com.example.playlistmaker.sharing.data.ExternalNavigator
 
 class ExternalNavigatorImpl(private val context: Context) : ExternalNavigator {
     override fun shareLink(shareAppLink: String) {
