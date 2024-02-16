@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.playlistmaker.R
-import com.example.playlistmaker.domain.entity.Track
+import com.example.playlistmaker.player.data.track.Track
 import com.example.playlistmaker.player.ui.models.PlayerState
 import java.text.SimpleDateFormat
 import java.util.*
@@ -76,7 +76,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         playingTime?.text = time
     }
 
-    private fun showContent(track:Track){
+    private fun showContent(track: Track){
         trackNameText.text = track.trackName
         groupNameText.text = track.artistName
         durationText.text = SimpleDateFormat(

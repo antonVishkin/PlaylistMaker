@@ -1,6 +1,6 @@
 package com.example.playlistmaker.search.domain.api
 
-import com.example.playlistmaker.domain.entity.Track
+import com.example.playlistmaker.player.data.track.Track
 
 interface TrackHistoryInteractor {
     fun getHistory():List<Track>

@@ -1,6 +1,7 @@
-package com.example.playlistmaker.player.data.mediaplayer
+package com.example.playlistmaker.player.data.mediaplayer.impl
 
 import android.media.MediaPlayer
+import com.example.playlistmaker.player.data.mediaplayer.PlayerStatus
 import com.example.playlistmaker.player.data.mediaplayer.PlayerStatus.*
 import com.example.playlistmaker.player.data.mediaplayer.api.AudioPlayer
 

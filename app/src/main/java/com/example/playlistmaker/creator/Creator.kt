@@ -1,7 +1,7 @@
 package com.example.playlistmaker.creator
 
 import android.content.Context
-import com.example.playlistmaker.player.data.mediaplayer.AudioPlayerImpl
+import com.example.playlistmaker.player.data.mediaplayer.impl.AudioPlayerImpl
 import com.example.playlistmaker.player.data.mediaplayer.api.AudioPlayer
 import com.example.playlistmaker.player.domain.MediaPlayerInteractor
 import com.example.playlistmaker.player.domain.MediaPlayerInteractorImpl
