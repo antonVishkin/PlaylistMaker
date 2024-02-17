@@ -15,4 +15,4 @@ data class Track(
     val artworkUrl100: String,
     val country: String,
     val previewUrl: String
-):Parcelable
+) : Parcelable

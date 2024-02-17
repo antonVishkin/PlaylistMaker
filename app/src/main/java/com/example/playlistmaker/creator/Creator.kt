@@ -1,8 +1,8 @@
 package com.example.playlistmaker.creator
 
 import android.content.Context
-import com.example.playlistmaker.player.domain.AudioPlayer
 import com.example.playlistmaker.player.data.AudioPlayerImpl
+import com.example.playlistmaker.player.domain.AudioPlayer
 import com.example.playlistmaker.player.domain.MediaPlayerInteractor
 import com.example.playlistmaker.player.domain.MediaPlayerInteractorImpl
 import com.example.playlistmaker.search.data.SearchHistoryProvider
@@ -14,12 +14,12 @@ import com.example.playlistmaker.search.domain.api.TrackListInteractor
 import com.example.playlistmaker.search.domain.api.TrackListRepository
 import com.example.playlistmaker.search.domain.impl.TrackHistoryInteractorImpl
 import com.example.playlistmaker.search.domain.impl.TrackListInteractorImpl
-import com.example.playlistmaker.settings.domain.SettingsRepository
 import com.example.playlistmaker.settings.data.SettingsRepositoryImpl
 import com.example.playlistmaker.settings.domain.SettingsInteractor
 import com.example.playlistmaker.settings.domain.SettingsInteractorImpl
-import com.example.playlistmaker.sharing.domain.ExternalNavigator
+import com.example.playlistmaker.settings.domain.SettingsRepository
 import com.example.playlistmaker.sharing.data.ExternalNavigatorImpl
+import com.example.playlistmaker.sharing.domain.ExternalNavigator
 import com.example.playlistmaker.sharing.domain.SharingInteractor
 import com.example.playlistmaker.sharing.domain.SharingInteractorImpl
 

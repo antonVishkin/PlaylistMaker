@@ -36,7 +36,7 @@ class AudioPlayerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_audio_player)
-        val track = intent.getParcelableExtra("track",Track::class.java) as Track
+        val track = intent.getParcelableExtra("track", Track::class.java) as Track
         viewModel = ViewModelProvider(
             this,
             AudioPlayerViewModel.getViewModelFactory(track)

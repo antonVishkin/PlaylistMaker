@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.os.Parcelable
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -121,7 +120,7 @@ class SearchActivity : AppCompatActivity() {
         searchListItemAdapter = TrackItemAdapter {
             viewModel.onTrackClicked(it)
             val playerIntent = Intent(this, AudioPlayerActivity::class.java)
-            playerIntent.putExtra("track",it)
+            playerIntent.putExtra("track", it)
             this.startActivity(playerIntent)
         }
         trackItemsRecyclerView = findViewById(R.id.trackList)
@@ -136,7 +135,7 @@ class SearchActivity : AppCompatActivity() {
             TrackItemAdapter {
                 viewModel.onTrackClicked(it)
                 val playerIntent = Intent(this, AudioPlayerActivity::class.java)
-                playerIntent.putExtra("track",it)
+                playerIntent.putExtra("track", it)
                 this.startActivity(playerIntent)
             }
         historyTrackList.adapter = historyTrackListAdapter

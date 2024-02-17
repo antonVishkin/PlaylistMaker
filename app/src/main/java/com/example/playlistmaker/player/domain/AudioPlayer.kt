@@ -1,7 +1,5 @@
 package com.example.playlistmaker.player.domain
 
-import com.example.playlistmaker.player.domain.PlayerStatus
-
 interface AudioPlayer {
     val currentPosition: Int
     var playerStatus: PlayerStatus

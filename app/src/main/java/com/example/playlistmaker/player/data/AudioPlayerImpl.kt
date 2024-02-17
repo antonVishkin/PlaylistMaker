@@ -1,12 +1,12 @@
 package com.example.playlistmaker.player.data
 
 import android.media.MediaPlayer
+import com.example.playlistmaker.player.domain.AudioPlayer
 import com.example.playlistmaker.player.domain.PlayerStatus
 import com.example.playlistmaker.player.domain.PlayerStatus.STATE_DEFAULT
 import com.example.playlistmaker.player.domain.PlayerStatus.STATE_PAUSED
 import com.example.playlistmaker.player.domain.PlayerStatus.STATE_PLAYING
 import com.example.playlistmaker.player.domain.PlayerStatus.STATE_PREPARED
-import com.example.playlistmaker.player.domain.AudioPlayer
 
 class AudioPlayerImpl : AudioPlayer {
     private var mediaPlayer = MediaPlayer()

@@ -15,10 +15,10 @@ import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.player.domain.PlayerStatus
 import com.example.playlistmaker.player.domain.Track
 import com.example.playlistmaker.player.ui.models.PlayerState
-import com.example.playlistmaker.search.ui.TrackItemAdapter
 
 
-class AudioPlayerViewModel(private val track:Track,application: Application) : AndroidViewModel(application) {
+class AudioPlayerViewModel(private val track: Track, application: Application) :
+    AndroidViewModel(application) {
     private val mediaPlayer = Creator.provideMediaPlayerInteractor()
     private val mainThreadHandler = Handler(Looper.getMainLooper())
     private val stateLiveData = MutableLiveData<PlayerState>()
@@ -36,7 +36,7 @@ class AudioPlayerViewModel(private val track:Track,application: Application) : A
         private const val DELAY = 1000L
         fun getViewModelFactory(track: Track): ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                AudioPlayerViewModel(track,this[APPLICATION_KEY] as Application)
+                AudioPlayerViewModel(track, this[APPLICATION_KEY] as Application)
             }
         }
     }
