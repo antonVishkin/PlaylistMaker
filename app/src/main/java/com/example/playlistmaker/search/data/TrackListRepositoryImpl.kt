@@ -1,17 +1,16 @@
 package com.example.playlistmaker.search.data
 
-import com.example.playlistmaker.creator.Resource
-import com.example.playlistmaker.player.data.track.Track
+import com.example.playlistmaker.player.domain.Track
 import com.example.playlistmaker.search.data.dto.SearchRequest
 import com.example.playlistmaker.search.data.dto.SearchResponse
 import com.example.playlistmaker.search.domain.api.TrackListRepository
 
 class TrackListRepositoryImpl(private val networkClient: NetworkClient) : TrackListRepository {
-    override fun searchTrack(expression: String): Resource<List<Track>> {
+    override fun searchTrack(expression: String): Result<List<Track>> {
         val response = networkClient.doRequest(SearchRequest(expression))
         return when (response.resultCode) {
             200 ->
-                Resource.Success((response as SearchResponse).results.map {
+                Result.success((response as SearchResponse).results.map {
                     Track(
                         it.trackName,
                         it.artistName,
@@ -24,9 +23,8 @@ class TrackListRepositoryImpl(private val networkClient: NetworkClient) : TrackL
                         it.previewUrl
                     )
                 })
-
             else -> {
-                Resource.Error("Сетевая ошибка")
+                Result.failure(Throwable("Сетевая ошибка"))
             }
         }
     }

@@ -1,6 +1,6 @@
 package com.example.playlistmaker.search.ui.models
 
-import com.example.playlistmaker.player.data.track.Track
+import com.example.playlistmaker.player.domain.Track
 
 sealed interface SearchState {
     object Loading : SearchState

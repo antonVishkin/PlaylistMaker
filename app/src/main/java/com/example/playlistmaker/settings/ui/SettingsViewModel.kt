@@ -7,7 +7,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.example.playlistmaker.R
 import com.example.playlistmaker.creator.Creator
+import com.example.playlistmaker.sharing.domain.EmailData
 
 class SettingsViewModel(private val application: Application) :
     AndroidViewModel(application) {
@@ -28,15 +30,21 @@ class SettingsViewModel(private val application: Application) :
     }
 
     fun shareLink() {
-        sharingInteractor.shareApp()
+        sharingInteractor.shareApp(application.getString(R.string.share_application))
     }
 
     fun createMailToSupport() {
-        sharingInteractor.openSupport()
+        sharingInteractor.openSupport(
+            EmailData(
+                arrayOf(application.getString(R.string.help_desk_post_email)),
+                application.getString(R.string.help_desk_post_title),
+                application.getString(R.string.help_desk_post_text)
+            )
+        )
     }
 
     fun openLicense() {
-        sharingInteractor.openTerms()
+        sharingInteractor.openTerms(application.getString(R.string.help_desk_link_to_license))
     }
 
     fun switchTheme(checked: Boolean) {

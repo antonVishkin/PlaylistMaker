@@ -1,39 +1,20 @@
 package com.example.playlistmaker.sharing.domain
 
-import android.content.Context
 import com.example.playlistmaker.R
-import com.example.playlistmaker.sharing.data.EmailData
-import com.example.playlistmaker.sharing.data.ExternalNavigator
 
 class SharingInteractorImpl(
-    private val context: Context,
     private val externalNavigator: ExternalNavigator,
 ) : SharingInteractor {
-    override fun shareApp() {
-        externalNavigator.shareLink(getShareAppLink())
+    override fun shareApp(shareAppLink :String) {
+        externalNavigator.shareLink(shareAppLink)
     }
 
-    override fun openTerms() {
-        externalNavigator.openLink(getTermsLink())
+    override fun openTerms(termsLink:String) {
+        externalNavigator.openLink(termsLink)
     }
 
-    override fun openSupport() {
-        externalNavigator.openEmail(getSupportEmailData())
+    override fun openSupport(emailData: EmailData) {
+        externalNavigator.openEmail(emailData)
     }
 
-    private fun getShareAppLink(): String {
-        return context.getString(R.string.share_application)
-    }
-
-    private fun getSupportEmailData(): EmailData {
-        return EmailData(
-            arrayOf(context.getString(R.string.help_desk_post_email)),
-            context.getString(R.string.help_desk_post_title),
-            context.getString(R.string.help_desk_post_text)
-        )
-    }
-
-    private fun getTermsLink(): String {
-        return context.getString(R.string.help_desk_link_to_license)
-    }
 }

@@ -1,7 +1,5 @@
 package com.example.playlistmaker.player.domain
 
-import com.example.playlistmaker.player.data.mediaplayer.PlayerStatus
-import com.example.playlistmaker.player.data.mediaplayer.api.AudioPlayer
 import java.util.concurrent.Executors
 
 class MediaPlayerInteractorImpl(private val audioPlayer: AudioPlayer) : MediaPlayerInteractor {

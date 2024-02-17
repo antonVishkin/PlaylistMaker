@@ -1,16 +1,18 @@
 package com.example.playlistmaker.player.ui
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.playlistmaker.R
-import com.example.playlistmaker.player.data.track.Track
+import com.example.playlistmaker.player.domain.Track
 import com.example.playlistmaker.player.ui.models.PlayerState
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -30,12 +32,14 @@ class AudioPlayerActivity : AppCompatActivity() {
     private lateinit var playButton: ImageButton
     private lateinit var viewModel: AudioPlayerViewModel
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_audio_player)
+        val track = intent.getParcelableExtra("track",Track::class.java) as Track
         viewModel = ViewModelProvider(
             this,
-            AudioPlayerViewModel.getViewModelFactory()
+            AudioPlayerViewModel.getViewModelFactory(track)
         )[AudioPlayerViewModel::class.java]
         playButton = findViewById(R.id.playButton)
         trackNameText = findViewById(R.id.track_name)

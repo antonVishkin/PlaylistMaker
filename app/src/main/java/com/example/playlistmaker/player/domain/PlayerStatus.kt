@@ -1,4 +1,4 @@
-package com.example.playlistmaker.player.data.mediaplayer
+package com.example.playlistmaker.player.domain
 
 enum class PlayerStatus {
     STATE_DEFAULT,

@@ -1,6 +1,6 @@
 package com.example.playlistmaker.player.ui.models
 
-import com.example.playlistmaker.player.data.track.Track
+import com.example.playlistmaker.player.domain.Track
 
 sealed interface PlayerState {
     object Playing : PlayerState
