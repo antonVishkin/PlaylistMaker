@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.playlistmaker.R
 import com.example.playlistmaker.player.domain.Track
+import com.example.playlistmaker.player.domain.Track.Companion.TRACK
 import com.example.playlistmaker.player.ui.models.PlayerState
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -36,7 +37,7 @@ class AudioPlayerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_audio_player)
-        val track = intent.getParcelableExtra("track", Track::class.java) as Track
+        val track = intent.getParcelableExtra(TRACK, Track::class.java) as Track
         viewModel = ViewModelProvider(
             this,
             AudioPlayerViewModel.getViewModelFactory(track)
@@ -67,8 +68,6 @@ class AudioPlayerActivity : AppCompatActivity() {
         super.onPause()
         showPause()
     }
-
-
     private fun showPause() {
         playButton.setImageResource(R.drawable.play_button)
     }

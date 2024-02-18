@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.hideKeyboard
 import com.example.playlistmaker.player.domain.Track
+import com.example.playlistmaker.player.domain.Track.Companion.TRACK
 import com.example.playlistmaker.player.ui.AudioPlayerActivity
 import com.example.playlistmaker.search.ui.models.SearchState
 
@@ -120,7 +121,7 @@ class SearchActivity : AppCompatActivity() {
         searchListItemAdapter = TrackItemAdapter {
             viewModel.onTrackClicked(it)
             val playerIntent = Intent(this, AudioPlayerActivity::class.java)
-            playerIntent.putExtra("track", it)
+            playerIntent.putExtra(TRACK, it)
             this.startActivity(playerIntent)
         }
         trackItemsRecyclerView = findViewById(R.id.trackList)
@@ -135,7 +136,7 @@ class SearchActivity : AppCompatActivity() {
             TrackItemAdapter {
                 viewModel.onTrackClicked(it)
                 val playerIntent = Intent(this, AudioPlayerActivity::class.java)
-                playerIntent.putExtra("track", it)
+                playerIntent.putExtra(TRACK, it)
                 this.startActivity(playerIntent)
             }
         historyTrackList.adapter = historyTrackListAdapter
