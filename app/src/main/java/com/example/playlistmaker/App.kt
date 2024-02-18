@@ -2,6 +2,7 @@ package com.example.playlistmaker
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
+import com.example.playlistmaker.di.dataModule
 import com.example.playlistmaker.di.playerModule
 import com.example.playlistmaker.di.searchModule
 import com.example.playlistmaker.di.settingsModule
@@ -19,7 +20,7 @@ class App : Application() {
             // Метод специального класса, переданного как this, для добавления контекста в граф
             androidContext(this@App)
             // Передаём все модули, чтобы их содержимое было передано в граф
-            modules(playerModule, searchModule, settingsModule, sharingModule)
+            modules(playerModule, searchModule, settingsModule, sharingModule, dataModule)
         }
         val settingsTheme: SettingsInteractor by inject()
         switchTheme(settingsTheme.isDarkTheme())
