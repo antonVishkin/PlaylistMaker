@@ -9,15 +9,17 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.playlistmaker.R
 import com.example.playlistmaker.player.domain.Track
 import com.example.playlistmaker.player.domain.Track.Companion.TRACK
 import com.example.playlistmaker.player.ui.models.PlayerState
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
 import java.util.Locale
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 class AudioPlayerActivity : AppCompatActivity() {
     private lateinit var albumImage: ImageView
     private lateinit var trackNameText: TextView
@@ -31,17 +33,15 @@ class AudioPlayerActivity : AppCompatActivity() {
     private lateinit var backButton: ImageView
     private lateinit var playingTime: TextView
     private lateinit var playButton: ImageButton
-    private lateinit var viewModel: AudioPlayerViewModel
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    private val viewModel: AudioPlayerViewModel by viewModel {
+        parametersOf(this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_audio_player)
-        val track = intent.getParcelableExtra(TRACK, Track::class.java) as Track
-        viewModel = ViewModelProvider(
-            this,
-            AudioPlayerViewModel.getViewModelFactory(track)
-        )[AudioPlayerViewModel::class.java]
+        viewModel.preparePlayer(intent.getParcelableExtra(TRACK, Track::class.java) as Track)
         playButton = findViewById(R.id.playButton)
         trackNameText = findViewById(R.id.track_name)
         groupNameText = findViewById(R.id.group_name)
@@ -66,8 +66,10 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        showPause()
+        viewModel.onPause()
     }
+
+
     private fun showPause() {
         playButton.setImageResource(R.drawable.play_button)
     }

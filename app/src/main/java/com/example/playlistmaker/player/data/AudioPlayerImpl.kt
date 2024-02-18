@@ -1,6 +1,8 @@
 package com.example.playlistmaker.player.data
 
 import android.media.MediaPlayer
+import android.os.Build
+import androidx.annotation.RequiresApi
 import com.example.playlistmaker.player.domain.AudioPlayer
 import com.example.playlistmaker.player.domain.PlayerStatus
 import com.example.playlistmaker.player.domain.PlayerStatus.STATE_DEFAULT
@@ -8,8 +10,7 @@ import com.example.playlistmaker.player.domain.PlayerStatus.STATE_PAUSED
 import com.example.playlistmaker.player.domain.PlayerStatus.STATE_PLAYING
 import com.example.playlistmaker.player.domain.PlayerStatus.STATE_PREPARED
 
-class AudioPlayerImpl : AudioPlayer {
-    private var mediaPlayer = MediaPlayer()
+class AudioPlayerImpl(private val mediaPlayer: MediaPlayer) : AudioPlayer {
     override val currentPosition
         get() = mediaPlayer.currentPosition
     override var playerStatus = STATE_DEFAULT
@@ -42,9 +43,9 @@ class AudioPlayerImpl : AudioPlayer {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun prepare(url: String, onPrepared: () -> Unit, onCompletion: () -> Unit) {
-        mediaPlayer.setDataSource(url)
-        mediaPlayer.prepareAsync()
+        mediaPlayer.reset()
         mediaPlayer.setOnPreparedListener {
             onPrepared.invoke()
             playerStatus = STATE_PREPARED
@@ -53,9 +54,8 @@ class AudioPlayerImpl : AudioPlayer {
             onCompletion.invoke()
             playerStatus = STATE_PREPARED
         }
+        mediaPlayer.setDataSource(url)
+        mediaPlayer.prepareAsync()
     }
 
-    override fun release() {
-        mediaPlayer.release()
-    }
 }

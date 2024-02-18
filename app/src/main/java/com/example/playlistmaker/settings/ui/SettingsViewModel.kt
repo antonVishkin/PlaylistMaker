@@ -4,30 +4,19 @@ import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmaker.R
-import com.example.playlistmaker.creator.Creator
+import com.example.playlistmaker.settings.domain.SettingsInteractor
 import com.example.playlistmaker.sharing.domain.EmailData
+import com.example.playlistmaker.sharing.domain.SharingInteractor
 
-class SettingsViewModel(private val application: Application) :
+class SettingsViewModel(
+    private val application: Application, private val settingsInteractor: SettingsInteractor,
+    private val sharingInteractor: SharingInteractor
+) :
     AndroidViewModel(application) {
-    private val settingsInteractor = Creator.provideSettingsInteractor(application)
-    private val sharingInteractor = Creator.provideSharingInteractor(application)
     private val darkThemeLivedata = MutableLiveData(settingsInteractor.isDarkTheme())
     fun observeDarkTheme() = darkThemeLivedata
 
-    companion object {
-        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                SettingsViewModel(
-                    this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as Application,
-
-                    )
-            }
-        }
-    }
 
     fun shareLink() {
         sharingInteractor.shareApp(application.getString(R.string.share_application))

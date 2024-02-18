@@ -7,39 +7,29 @@ import android.os.SystemClock
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.player.domain.Track
+import com.example.playlistmaker.search.domain.api.TrackHistoryInteractor
 import com.example.playlistmaker.search.domain.api.TrackListInteractor
 import com.example.playlistmaker.search.ui.models.SearchState
 
-class SearchViewModel(application: Application) : AndroidViewModel(application) {
+class SearchViewModel(
+    application: Application,
+    private val trackListInteractor: TrackListInteractor,
+    private val trackHistoryInteractor: TrackHistoryInteractor
+) : AndroidViewModel(application) {
     private val handler = Handler(Looper.getMainLooper())
-    private var stateLiveData: MutableLiveData<SearchState>
+    private var stateLiveData: MutableLiveData<SearchState> =
+        MutableLiveData<SearchState>(SearchState.History(trackHistoryInteractor.getHistory()))
     private var latestSearchText: String? = null
     private var isClickAllowed = true
-    private val trackListInteractor = Creator.provideTrackListInteractor()
-    private val trackHistoryInteractor = Creator.provideTrackHistoryInteractor(application)
 
     fun observeState(): LiveData<SearchState> = stateLiveData
-
-    init {
-        stateLiveData =
-            MutableLiveData<SearchState>(SearchState.History(trackHistoryInteractor.getHistory()))
-    }
 
 
     companion object {
         private val SEARCH_REQUEST_TOKEN = Any()
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private const val CLICK_DEBOUNCE_DELAY = 1000L
-        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                SearchViewModel(this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as Application)
-            }
-        }
     }
 
     override fun onCleared() {
