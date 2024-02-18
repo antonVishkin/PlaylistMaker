@@ -5,6 +5,7 @@ import com.example.playlistmaker.player.data.AudioPlayerImpl
 import com.example.playlistmaker.player.domain.AudioPlayer
 import com.example.playlistmaker.player.domain.MediaPlayerInteractor
 import com.example.playlistmaker.player.domain.MediaPlayerInteractorImpl
+import com.example.playlistmaker.player.domain.Track
 import com.example.playlistmaker.player.ui.AudioPlayerViewModel
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -16,7 +17,7 @@ val playerModule = module {
         AudioPlayerImpl(get())
     }
     factory<MediaPlayerInteractor> { MediaPlayerInteractorImpl(get()) }
-    viewModel {
-        AudioPlayerViewModel(androidApplication(), get())
+    viewModel {(track: Track) ->
+        AudioPlayerViewModel(track = track,androidApplication(), get())
     }
 }

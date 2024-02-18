@@ -14,13 +14,14 @@ import com.example.playlistmaker.player.ui.models.PlayerState
 
 
 class AudioPlayerViewModel(
+    private val track: Track,
     application: Application,
     private val mediaPlayer: MediaPlayerInteractor
 ) :
     AndroidViewModel(application) {
     private val mainThreadHandler = Handler(Looper.getMainLooper())
     private val stateLiveData = MutableLiveData<PlayerState>()
-    private lateinit var track: Track
+
     private val timerLiveData =
         MutableLiveData(getApplication<Application>().getString(R.string.timer_zero))
 
@@ -31,8 +32,7 @@ class AudioPlayerViewModel(
         private const val DELAY = 1000L
     }
 
-    fun preparePlayer(track: Track) {
-        this.track = track
+    fun preparePlayer() {
         track.previewUrl.let {
             mediaPlayer.prepare(
                 it,

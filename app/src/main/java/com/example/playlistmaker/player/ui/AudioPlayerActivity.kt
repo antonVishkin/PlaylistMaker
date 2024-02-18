@@ -13,6 +13,7 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.player.domain.Track
 import com.example.playlistmaker.player.domain.Track.Companion.TRACK
 import com.example.playlistmaker.player.ui.models.PlayerState
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
@@ -32,18 +33,21 @@ class AudioPlayerActivity : AppCompatActivity() {
     private lateinit var playingTime: TextView
     private lateinit var playButton: ImageButton
 
-    private val viewModel: AudioPlayerViewModel by viewModel {
-        parametersOf(this)
-    }
+    private lateinit var viewModel: AudioPlayerViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_audio_player)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            viewModel.preparePlayer(intent.getParcelableExtra(TRACK, Track::class.java) as Track)
+        val track = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra(TRACK, Track::class.java) as Track
         } else {
-            viewModel.preparePlayer(intent.getParcelableExtra(TRACK)!!)
+            intent.getParcelableExtra(TRACK)!!
         }
+        viewModel = getViewModel(){
+            parametersOf(track)
+        }
+        viewModel.preparePlayer()
         playButton = findViewById(R.id.playButton)
         trackNameText = findViewById(R.id.track_name)
         groupNameText = findViewById(R.id.group_name)
