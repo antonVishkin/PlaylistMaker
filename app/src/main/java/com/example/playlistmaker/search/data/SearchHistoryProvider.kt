@@ -1,26 +1,26 @@
 package com.example.playlistmaker.search.data
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
-import com.example.playlistmaker.App.Companion.PLAYLIST_MAKER_SHARED_PREFERENCES
+import android.content.SharedPreferences
 import com.example.playlistmaker.player.domain.Track
 import com.example.playlistmaker.search.domain.api.SearchHistoryRepository
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-class SearchHistoryProvider(context: Context) : SearchHistoryRepository {
+class SearchHistoryProvider(
+    context: Context,
+    private val gson: Gson,
+    private val prefs: SharedPreferences
+) : SearchHistoryRepository {
     private lateinit var searchList: ArrayList<Track>
     private val limit = 10
-    private val prefs = context.getSharedPreferences(
-        PLAYLIST_MAKER_SHARED_PREFERENCES,
-        AppCompatActivity.MODE_PRIVATE
-    )
+
 
     override fun getHistory(): ArrayList<Track> {
         if (!::searchList.isInitialized) {
             val listAsString = prefs.getString(SEARCH_HISTORY_KEY, "")
             val itemType = object : TypeToken<ArrayList<Track>>() {}.type
-            searchList = Gson().fromJson<ArrayList<Track>>(listAsString, itemType) ?: arrayListOf()
+            searchList = gson.fromJson<ArrayList<Track>>(listAsString, itemType) ?: arrayListOf()
         }
         removeOverLimited()
         return searchList

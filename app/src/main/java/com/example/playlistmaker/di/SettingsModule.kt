@@ -12,8 +12,8 @@ import org.koin.dsl.module
 
 val settingsModule = module {
     single<SettingsRepository> {
-        SettingsRepositoryImpl(androidContext())
+        SettingsRepositoryImpl(androidContext(),get())
     }
-    single<SettingsInteractor> { SettingsInteractorImpl(get()) }
+    factory<SettingsInteractor> { SettingsInteractorImpl(get()) }
     viewModel { SettingsViewModel(androidApplication(), get(), get()) }
 }

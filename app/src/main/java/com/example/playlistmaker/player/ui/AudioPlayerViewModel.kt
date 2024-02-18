@@ -42,7 +42,7 @@ class AudioPlayerViewModel(
         }
     }
 
-    fun onPause() {
+    fun stopPlaying() {
         when (mediaPlayer.playerStatus) {
             PlayerStatus.STATE_PLAYING -> playClick()
             else -> {}

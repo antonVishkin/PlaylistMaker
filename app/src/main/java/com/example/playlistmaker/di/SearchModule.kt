@@ -17,7 +17,7 @@ import org.koin.dsl.module
 
 val searchModule = module {
     single<NetworkClient> { RetrofitNetworkClient(get()) }
-    single<SearchHistoryRepository> { SearchHistoryProvider(androidApplication()) }
+    single<SearchHistoryRepository> { SearchHistoryProvider(androidApplication(), get(),get()) }
     single<TrackListRepository> { TrackListRepositoryImpl(get()) }
     factory<TrackHistoryInteractor> { TrackHistoryInteractorImpl(get()) }
     factory<TrackListInteractor> { TrackListInteractorImpl(get()) }

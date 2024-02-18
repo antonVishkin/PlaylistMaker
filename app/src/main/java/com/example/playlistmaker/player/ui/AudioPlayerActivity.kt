@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.playlistmaker.R
@@ -19,7 +18,6 @@ import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 class AudioPlayerActivity : AppCompatActivity() {
     private lateinit var albumImage: ImageView
     private lateinit var trackNameText: TextView
@@ -41,7 +39,11 @@ class AudioPlayerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_audio_player)
-        viewModel.preparePlayer(intent.getParcelableExtra(TRACK, Track::class.java) as Track)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            viewModel.preparePlayer(intent.getParcelableExtra(TRACK, Track::class.java) as Track)
+        } else {
+            viewModel.preparePlayer(intent.getParcelableExtra(TRACK)!!)
+        }
         playButton = findViewById(R.id.playButton)
         trackNameText = findViewById(R.id.track_name)
         groupNameText = findViewById(R.id.group_name)
@@ -66,7 +68,7 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        viewModel.onPause()
+        viewModel.stopPlaying()
     }
 
 

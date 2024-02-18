@@ -2,14 +2,12 @@ package com.example.playlistmaker.search.ui
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
@@ -53,7 +51,6 @@ class SearchActivity : AppCompatActivity() {
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -112,7 +109,7 @@ class SearchActivity : AppCompatActivity() {
         else searchClearButton.visibility = View.VISIBLE
     }
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+
     private fun trackListCreation() {
         searchListItemAdapter = TrackItemAdapter {
             viewModel.onTrackClicked(it)
@@ -124,7 +121,6 @@ class SearchActivity : AppCompatActivity() {
         trackItemsRecyclerView.adapter = searchListItemAdapter
     }
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     private fun searchHistoryCreation() {
         searchHistory = findViewById(R.id.search_history)
         historyTrackList = findViewById(R.id.history_track_list)

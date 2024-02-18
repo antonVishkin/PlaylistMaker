@@ -1,8 +1,6 @@
 package com.example.playlistmaker.player.data
 
 import android.media.MediaPlayer
-import android.os.Build
-import androidx.annotation.RequiresApi
 import com.example.playlistmaker.player.domain.AudioPlayer
 import com.example.playlistmaker.player.domain.PlayerStatus
 import com.example.playlistmaker.player.domain.PlayerStatus.STATE_DEFAULT
@@ -43,7 +41,7 @@ class AudioPlayerImpl(private val mediaPlayer: MediaPlayer) : AudioPlayer {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
+
     override fun prepare(url: String, onPrepared: () -> Unit, onCompletion: () -> Unit) {
         mediaPlayer.reset()
         mediaPlayer.setOnPreparedListener {
