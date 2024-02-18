@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.AudioPlayerActivity"
+    tools:context=".player.ui.AudioPlayerActivity"
     android:background="?attr/colorPrimary">
 
     <androidx.constraintlayout.widget.Guideline
@@ -165,7 +165,7 @@
         app:layout_constraintBottom_toTopOf="@id/albumNameValue"
         android:singleLine="true"
         android:gravity="end"
-        app:layout_constraintBaseline_toBaselineOf = "@id/duration"
+        app:layout_constraintBaseline_toBaselineOf="@id/duration"
         tools:text="5:35" />
 
     <TextView
@@ -189,7 +189,7 @@
         app:layout_constraintStart_toEndOf="@id/audio_player_barrier"
         android:singleLine="true"
         android:gravity="end"
-        app:layout_constraintBaseline_toBaselineOf = "@id/albumName"
+        app:layout_constraintBaseline_toBaselineOf="@id/albumName"
         tools:text="Yesterday (Remastered 2009)" />
 
     <TextView
@@ -213,7 +213,7 @@
         app:layout_constraintStart_toEndOf="@id/audio_player_barrier"
         android:singleLine="true"
         android:gravity="end"
-        app:layout_constraintBaseline_toBaselineOf = "@id/year"
+        app:layout_constraintBaseline_toBaselineOf="@id/year"
         tools:text="1965" />
 
     <TextView
@@ -238,7 +238,7 @@
         app:layout_constraintStart_toEndOf="@id/audio_player_barrier"
         android:singleLine="true"
         android:gravity="end"
-        app:layout_constraintBaseline_toBaselineOf = "@id/genre"
+        app:layout_constraintBaseline_toBaselineOf="@id/genre"
         tools:text="Rock" />
 
     <TextView
@@ -263,7 +263,7 @@
         app:layout_constraintStart_toEndOf="@id/audio_player_barrier"
         android:singleLine="true"
         android:gravity="end"
-        app:layout_constraintBaseline_toBaselineOf = "@id/country"
+        app:layout_constraintBaseline_toBaselineOf="@id/country"
         tools:text="Великобритания" />
 
     <androidx.constraintlayout.widget.Barrier
@@ -271,7 +271,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:barrierDirection="end"
-        app:constraint_referenced_ids="duration"
-        />
+        app:constraint_referenced_ids="duration" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
