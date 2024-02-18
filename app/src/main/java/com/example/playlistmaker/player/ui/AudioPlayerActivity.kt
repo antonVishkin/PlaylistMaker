@@ -14,7 +14,6 @@ import com.example.playlistmaker.player.domain.Track
 import com.example.playlistmaker.player.domain.Track.Companion.TRACK
 import com.example.playlistmaker.player.ui.models.PlayerState
 import org.koin.androidx.viewmodel.ext.android.getViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -44,7 +43,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         } else {
             intent.getParcelableExtra(TRACK)!!
         }
-        viewModel = getViewModel(){
+        viewModel = getViewModel() {
             parametersOf(track)
         }
         viewModel.preparePlayer()
