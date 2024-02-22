@@ -29,7 +29,4 @@ class MediaPlayerInteractorImpl(private val audioPlayer: AudioPlayer) : MediaPla
         }
     }
 
-    override fun release() {
-        audioPlayer.release()
-    }
 }

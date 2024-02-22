@@ -5,22 +5,22 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.Switch
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.example.playlistmaker.R
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class SettingsActivity : AppCompatActivity() {
     private lateinit var backButton: ImageView
     private lateinit var sharingButton: FrameLayout
     private lateinit var writeToHelpDeskButton: FrameLayout
     private lateinit var licenseAgreementButton: FrameLayout
-    private lateinit var viewModel: SettingsViewModel
+    private val viewModel: SettingsViewModel by viewModel {
+        parametersOf(this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
-        viewModel = ViewModelProvider(
-            this,
-            SettingsViewModel.getViewModelFactory()
-        )[SettingsViewModel::class.java]
         backButtonCreate()
         sharingButtonCreate()
         helpDeskButtonCreate()

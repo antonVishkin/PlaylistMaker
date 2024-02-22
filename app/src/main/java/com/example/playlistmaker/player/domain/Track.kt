@@ -15,9 +15,8 @@ data class Track(
     val artworkUrl100: String,
     val country: String,
     val previewUrl: String
-) : Parcelable
-{
-    companion object{
-        const val TRACK = "TRACK"
+) : Parcelable {
+    companion object {
+        const val TRACK = "TRACK_PARCELABLE_EXTRA"
     }
 }
