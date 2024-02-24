@@ -6,6 +6,7 @@
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".library.ui.LibraryActivity">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,6 +22,7 @@
             style="@style/NavigationBar"
             android:text="@string/media_button" />
     </LinearLayout>
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/libraryTabLayout"
         android:layout_width="match_parent"
@@ -28,13 +30,11 @@
         app:tabMode="fixed"
         app:tabTextAppearance="@style/TabStyLe"
         app:tabIndicatorColor="?attr/colorOnPrimary"
-        app:tabTextColor="?attr/colorOnPrimary"
-        />
+        app:tabTextColor="?attr/colorOnPrimary" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/libraryViewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:layout_height="match_parent" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -80,6 +80,7 @@
     <style name="rounded_corner">
         <item name="cornerSize">8dp</item>
     </style>
+
     <style name="TabStyLe">
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textSize">@dimen/extra_small_text_size</item>

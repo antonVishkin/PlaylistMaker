@@ -2,5 +2,5 @@ package com.example.playlistmaker.library.ui
 
 import androidx.lifecycle.ViewModel
 
-class FavoriteListViewModel:ViewModel() {
+class FavoriteListViewModel : ViewModel() {
 }

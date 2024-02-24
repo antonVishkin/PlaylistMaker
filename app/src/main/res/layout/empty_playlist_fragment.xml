@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <Button
         style="@style/RefreshButton"
         android:layout_width="wrap_content"
@@ -41,7 +42,6 @@
         android:textAlignment="center"
         android:textSize="@dimen/place_holder_text_size"
         tools:ignore="MissingConstraints"
-        android:textColor="?attr/colorOnPrimary"
-        />
+        android:textColor="?attr/colorOnPrimary" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

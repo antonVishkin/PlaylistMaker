@@ -21,8 +21,10 @@ class App : Application() {
             // Метод специального класса, переданного как this, для добавления контекста в граф
             androidContext(this@App)
             // Передаём все модули, чтобы их содержимое было передано в граф
-            modules(playerModule, searchModule, settingsModule, sharingModule, dataModule,
-                libraryModule)
+            modules(
+                playerModule, searchModule, settingsModule, sharingModule, dataModule,
+                libraryModule
+            )
         }
         val settingsTheme: SettingsInteractor by inject()
         switchTheme(settingsTheme.isDarkTheme())

@@ -8,19 +8,19 @@ import androidx.fragment.app.Fragment
 import com.example.playlistmaker.databinding.EmptyPlaylistFragmentBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class PlaylistListFragment:Fragment() {
+class PlaylistListFragment : Fragment() {
     private lateinit var binding: EmptyPlaylistFragmentBinding
-    private val viewModel:PlaylistListViewModel by viewModel()
+    private val viewModel: PlaylistListViewModel by viewModel()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = EmptyPlaylistFragmentBinding.inflate(inflater,container,false)
+        binding = EmptyPlaylistFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    companion object{
+    companion object {
         fun newInstance() = PlaylistListFragment()
     }
 }
