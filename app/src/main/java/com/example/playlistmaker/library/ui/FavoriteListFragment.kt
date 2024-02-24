@@ -5,15 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.viewbinding.ViewBinding
 import com.example.playlistmaker.databinding.EmptyFavoritesFragmentBinding
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoriteListFragment: Fragment() {
-    companion object{
-        fun newInstance() = FavoriteListFragment()
-    }
-    private lateinit var binding: EmptyFavoritesFragmentBinding
 
+    private lateinit var binding: EmptyFavoritesFragmentBinding
+    private val viewModel:FavoriteListViewModel by viewModel()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -21,5 +19,9 @@ class FavoriteListFragment: Fragment() {
     ): View? {
         binding = EmptyFavoritesFragmentBinding.inflate(inflater,container,false)
         return binding.root
+    }
+
+    companion object{
+        fun newInstance() = FavoriteListFragment()
     }
 }
