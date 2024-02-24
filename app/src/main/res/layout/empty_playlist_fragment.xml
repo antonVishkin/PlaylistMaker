@@ -1,0 +1,47 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <Button
+        style="@style/RefreshButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/newPlaylistButton"
+        android:layout_marginTop="@dimen/extra_medium_margin"
+        android:backgroundTint="?attr/colorOnPrimary"
+        android:text="@string/new_playlist"
+        android:textColor="?attr/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/empty_playlists_image"
+        android:src="@drawable/no_search_result"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/empty_playlist_text"
+        app:layout_constraintTop_toBottomOf="@+id/empty_playlists_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:text="@string/emplty_playlists_list"
+        android:fontFamily="@font/ys_display_medium"
+        android:textAlignment="center"
+        android:textSize="@dimen/place_holder_text_size"
+        tools:ignore="MissingConstraints"
+        android:textColor="?attr/colorOnPrimary"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
