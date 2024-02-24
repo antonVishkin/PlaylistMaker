@@ -20,14 +20,14 @@ class PlaylistListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = EmptyPlaylistFragmentBinding.inflate(inflater, container, false)
-        viewModel.observeState().observe(viewLifecycleOwner){
+        viewModel.observeState().observe(viewLifecycleOwner) {
             renderState(it)
         }
         return binding.root
     }
 
-    private fun renderState( state:PlaylistListState){
-        when(state){
+    private fun renderState(state: PlaylistListState) {
+        when (state) {
             is PlaylistListState.Content -> showContent()
             PlaylistListState.Empty -> showEmpty()
             PlaylistListState.Loading -> showLoading()

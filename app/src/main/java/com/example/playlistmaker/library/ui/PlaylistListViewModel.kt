@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.playlistmaker.library.domain.PlaylistListState
 
 class PlaylistListViewModel() : ViewModel() {
-    private var stateLiveData =  MutableLiveData<PlaylistListState>(PlaylistListState.Empty)
+    private val stateLiveData = MutableLiveData<PlaylistListState>(PlaylistListState.Empty)
     fun observeState(): LiveData<PlaylistListState> = stateLiveData
 
 }
