@@ -8,7 +8,7 @@
         style="@style/RefreshButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/newPlaylistButton"
+        android:id="@+id/new_playlist_button"
         android:layout_marginTop="@dimen/extra_medium_margin"
         android:backgroundTint="?attr/colorOnPrimary"
         android:text="@string/new_playlist"

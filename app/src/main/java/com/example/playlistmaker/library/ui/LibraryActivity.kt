@@ -35,7 +35,7 @@ class LibraryActivity : AppCompatActivity() {
     }
 
     private fun backButtonCreate() {
-        backButton = findViewById(R.id.backButton)
+        backButton = findViewById(R.id.back_button)
         backButton.setOnClickListener {
             this.finish()
         }

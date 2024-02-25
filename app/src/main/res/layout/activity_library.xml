@@ -12,7 +12,7 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/backButton"
+            android:id="@+id/back_button"
             style="@style/ArrowBack"
             android:foreground="?attr/selectableItemBackground"
             android:src="@drawable/arrow_back" />
@@ -23,7 +23,7 @@
     </LinearLayout>
 
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/libraryTabLayout"
+        android:id="@+id/library_tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:tabMode="fixed"
@@ -32,7 +32,7 @@
         app:tabTextColor="?attr/colorOnPrimary" />
 
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/libraryViewPager"
+        android:id="@+id/library_view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
