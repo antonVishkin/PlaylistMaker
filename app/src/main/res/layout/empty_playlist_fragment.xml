@@ -16,7 +16,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
+        android:visibility="gone"
+        />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -28,7 +29,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.3"
-        tools:ignore="MissingConstraints" />
+        android:visibility="gone" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -41,7 +42,7 @@
         android:fontFamily="@font/ys_display_medium"
         android:textAlignment="center"
         android:textSize="@dimen/place_holder_text_size"
-        tools:ignore="MissingConstraints"
-        android:textColor="?attr/colorOnPrimary" />
+        android:textColor="?attr/colorOnPrimary"
+        android:visibility="gone"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

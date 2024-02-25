@@ -2,7 +2,6 @@ package com.example.playlistmaker.player.ui
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -84,7 +83,6 @@ class AudioPlayerActivity : AppCompatActivity() {
     }
 
     private fun changeTimer(time: String) {
-        Log.v("timer", time)
         playingTime?.text = time
     }
 
