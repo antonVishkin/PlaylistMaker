@@ -21,7 +21,9 @@
             android:exported="false" />
         <activity
             android:name=".main.ui.RootActivity"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="adjustNothing"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

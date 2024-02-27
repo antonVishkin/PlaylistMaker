@@ -30,13 +30,13 @@ class MainFragment : Fragment() {
         val libraryButton = binding.libraryButton
         val settingsButton = binding.settingsButton
         searchButton.setOnClickListener {
-            findNavController().navigate(R.id.action_mainFragment_to_searchFragment)
+//            findNavController().navigate(R.id.action_mainFragment_to_searchFragment)
         }
         libraryButton.setOnClickListener {
-            findNavController().navigate(R.id.action_mainFragment_to_libraryFragment)
+//            findNavController().navigate(R.id.action_mainFragment_to_libraryFragment)
         }
         settingsButton.setOnClickListener {
-            findNavController().navigate(R.id.action_mainFragment_to_settingsFragment)
+ //           findNavController().navigate(R.id.action_mainFragment_to_settingsFragment)
         }
     }
 }

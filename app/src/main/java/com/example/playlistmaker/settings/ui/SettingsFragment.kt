@@ -29,16 +29,12 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        backButtonCreate()
         sharingButtonCreate()
         helpDeskButtonCreate()
         licenseButtonCreate()
         themeSwitcherCreate()
     }
 
-    private fun backButtonCreate() {
-        backButton = binding.backButton
-    }
 
     private fun sharingButtonCreate() {
         sharingButton = binding.sharingButton
