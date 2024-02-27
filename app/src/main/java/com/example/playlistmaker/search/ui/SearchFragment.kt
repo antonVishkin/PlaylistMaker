@@ -1,6 +1,5 @@
 package com.example.playlistmaker.search.ui
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,13 +7,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.hideKeyboard
 import com.example.playlistmaker.player.domain.Track
-import com.example.playlistmaker.player.domain.Track.Companion.TRACK
 import com.example.playlistmaker.player.ui.AudioPlayerActivity
 import com.example.playlistmaker.search.ui.models.SearchState
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -51,7 +55,6 @@ class SearchFragment : Fragment() {
             //empty
         }
     }
-
 
 
     override fun onCreateView(
@@ -122,9 +125,10 @@ class SearchFragment : Fragment() {
     private fun trackListCreation() {
         searchListItemAdapter = TrackItemAdapter {
             viewModel.onTrackClicked(it)
-           val playerIntent = Intent(context, AudioPlayerActivity::class.java)
-            playerIntent.putExtra(TRACK, it)
-            this.startActivity(playerIntent)
+            findNavController().navigate(
+                R.id.action_searchFragment_to_audioPlayerActivity,
+                AudioPlayerActivity.createArgs(it)
+            )
         }
         trackItemsRecyclerView = binding.trackList
         trackItemsRecyclerView.adapter = searchListItemAdapter
@@ -137,9 +141,10 @@ class SearchFragment : Fragment() {
         historyTrackListAdapter =
             TrackItemAdapter {
                 viewModel.onTrackClicked(it)
-                val playerIntent = Intent(context, AudioPlayerActivity::class.java)
-                playerIntent.putExtra(TRACK, it)
-                this.startActivity(playerIntent)
+                findNavController().navigate(
+                    R.id.action_searchFragment_to_audioPlayerActivity,
+                    AudioPlayerActivity.createArgs(it)
+                )
             }
         historyTrackList.adapter = historyTrackListAdapter
         clearHistoryButton.setOnClickListener {

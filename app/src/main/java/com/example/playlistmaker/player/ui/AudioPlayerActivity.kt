@@ -7,6 +7,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import com.bumptech.glide.Glide
 import com.example.playlistmaker.R
 import com.example.playlistmaker.player.domain.Track
@@ -116,5 +117,12 @@ class AudioPlayerActivity : AppCompatActivity() {
             PlayerState.Playing -> showPlaying()
             is PlayerState.Prepared -> showContent(state.track)
         }
+    }
+
+    companion object{
+        private const val TRACK = "TRACK"
+        fun createArgs(track: Track):Bundle = bundleOf(
+            TRACK to track
+        )
     }
 }

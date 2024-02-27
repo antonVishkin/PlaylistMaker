@@ -16,9 +16,6 @@ class LibraryFragment : Fragment() {
     private lateinit var binding: FragmentLibraryBinding
     private lateinit var tabMediator: TabLayoutMediator
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,7 +38,6 @@ class LibraryFragment : Fragment() {
                 }
             }
         tabMediator.attach()
-        backButtonCreate()
 
     }
 
@@ -50,10 +46,4 @@ class LibraryFragment : Fragment() {
         tabMediator.detach()
     }
 
-    private fun backButtonCreate() {
-        backButton = binding.backButton
-        backButton.setOnClickListener {
-
-        }
-    }
 }

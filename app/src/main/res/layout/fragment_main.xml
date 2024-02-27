@@ -4,9 +4,11 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="?attr/backgroundMainActivityColor"
-    android:statusBarColor="?attr/backgroundMainActivityColor">
+    android:statusBarColor="?attr/backgroundMainActivityColor"
+    tools:context=".main.ui.MainFragment">
 
     <TextView
         style="@style/NavigationBar"
