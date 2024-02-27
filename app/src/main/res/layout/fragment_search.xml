@@ -4,24 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/colorPrimary"
     android:orientation="vertical"
-    tools:context=".search.ui.SearchFragment"
-    android:background="?attr/colorPrimary">
+    tools:context=".search.ui.SearchFragment">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/back_button"
-            style="@style/ArrowBack"
-            android:foreground="?attr/selectableItemBackground"
-            android:src="@drawable/arrow_back" />
-
-        <TextView
-            style="@style/NavigationBar"
-            android:text="@string/search" />
-    </LinearLayout>
+    <TextView
+        style="@style/NavigationBar"
+        android:text="@string/search" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -43,13 +32,13 @@
             android:drawablePadding="@dimen/minimum_margin"
             android:drawableTint="?attr/hintsColor"
             android:hint="@string/search"
+            android:imeOptions="actionDone"
             android:inputType="text"
             android:maxLength="256"
             android:maxLines="1"
+            android:singleLine="true"
             android:textColor="@color/black"
-            android:textColorHint="?attr/hintsColor"
-            android:imeOptions="actionDone"
-            android:singleLine="true" />
+            android:textColorHint="?attr/hintsColor" />
 
         <ImageView
             android:id="@+id/search_clear"
@@ -185,8 +174,8 @@
             android:layout_width="44dp"
             android:layout_height="44dp"
             android:layout_gravity="center"
-            android:visibility="visible"
-            android:indeterminateTint="@color/blue_fon" />
+            android:indeterminateTint="@color/blue_fon"
+            android:visibility="visible" />
     </FrameLayout>
 
 </LinearLayout>

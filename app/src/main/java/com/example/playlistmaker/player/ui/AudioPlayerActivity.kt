@@ -11,7 +11,6 @@ import androidx.core.os.bundleOf
 import com.bumptech.glide.Glide
 import com.example.playlistmaker.R
 import com.example.playlistmaker.player.domain.Track
-import com.example.playlistmaker.player.domain.Track.Companion.TRACK
 import com.example.playlistmaker.player.ui.models.PlayerState
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.core.parameter.parametersOf
@@ -119,9 +118,9 @@ class AudioPlayerActivity : AppCompatActivity() {
         }
     }
 
-    companion object{
+    companion object {
         private const val TRACK = "TRACK"
-        fun createArgs(track: Track):Bundle = bundleOf(
+        fun createArgs(track: Track): Bundle = bundleOf(
             TRACK to track
         )
     }

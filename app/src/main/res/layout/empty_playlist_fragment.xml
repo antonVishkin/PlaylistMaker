@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".library.ui.PlaylistListFragment"
-    >
+    tools:context=".library.ui.PlaylistListFragment">
 
     <Button
         style="@style/RefreshButton"
@@ -18,8 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"
-        />
+        android:visibility="gone" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -45,6 +43,6 @@
         android:textAlignment="center"
         android:textSize="@dimen/place_holder_text_size"
         android:textColor="?attr/colorOnPrimary"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

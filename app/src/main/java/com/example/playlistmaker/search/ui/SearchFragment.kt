@@ -70,7 +70,6 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         searchProgressBarCreate()
         searchHistoryCreation()
-        backButtonCreate()
         trackListCreation()
         searchEditTextCreate()
         viewModel.observeState().observe(viewLifecycleOwner) {
@@ -83,12 +82,6 @@ class SearchFragment : Fragment() {
         searchProgressBar.visibility = View.INVISIBLE
     }
 
-
-    private fun backButtonCreate() {
-        backButton = binding.backButton
-        backButton.setOnClickListener {
-        }
-    }
 
     private fun searchEditTextCreate() {
         noSearchResult = binding.noSearchResult
