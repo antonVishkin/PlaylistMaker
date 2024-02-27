@@ -1,23 +1,38 @@
 package com.example.playlistmaker.library.ui
 
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.ActivityLibraryBinding
+import com.example.playlistmaker.databinding.FragmentLibraryBinding
 import com.google.android.material.tabs.TabLayoutMediator
 
-class LibraryActivity : AppCompatActivity() {
+class LibraryFragment : Fragment() {
     private lateinit var backButton: ImageView
-    private lateinit var binding: ActivityLibraryBinding
+    private lateinit var binding: FragmentLibraryBinding
     private lateinit var tabMediator: TabLayoutMediator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityLibraryBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentLibraryBinding.inflate(inflater)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.libraryViewPager.adapter =
-            LibraryViewPagerAdapter(supportFragmentManager, lifecycle)
+            LibraryViewPagerAdapter(childFragmentManager, lifecycle)
         tabMediator =
             TabLayoutMediator(binding.libraryTabLayout, binding.libraryViewPager) { tab, position ->
                 when (position) {
@@ -27,6 +42,7 @@ class LibraryActivity : AppCompatActivity() {
             }
         tabMediator.attach()
         backButtonCreate()
+
     }
 
     override fun onDestroy() {
@@ -35,9 +51,9 @@ class LibraryActivity : AppCompatActivity() {
     }
 
     private fun backButtonCreate() {
-        backButton = findViewById(R.id.back_button)
+        backButton = binding.backButton
         backButton.setOnClickListener {
-            this.finish()
+
         }
     }
 }
