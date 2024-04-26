@@ -76,8 +76,8 @@ class AudioPlayerViewModel(
     private fun startTimer() {
         timerJob = viewModelScope.launch {
             while (mediaPlayer.playerStatus == PlayerStatus.STATE_PLAYING) {
-                delay(DELAY)
                 timerLiveData.postValue(getCurrentPlayerPosition())
+                delay(DELAY)
             }
         }
     }
