@@ -13,6 +13,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
@@ -21,11 +22,11 @@ import com.example.playlistmaker.hideKeyboard
 import com.example.playlistmaker.player.domain.Track
 import com.example.playlistmaker.player.ui.AudioPlayerActivity
 import com.example.playlistmaker.search.ui.models.SearchState
+import com.example.playlistmaker.util.debounce
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
     private lateinit var binding: FragmentSearchBinding
-    private lateinit var backButton: ImageView
     private lateinit var searchClearButton: ImageView
     private lateinit var searchEditText: EditText
     private lateinit var trackItemsRecyclerView: RecyclerView
@@ -38,6 +39,7 @@ class SearchFragment : Fragment() {
     private lateinit var searchListItemAdapter: TrackItemAdapter
     private lateinit var historyTrackListAdapter: TrackItemAdapter
     private lateinit var searchProgressBar: ProgressBar
+    private lateinit var onTrackClickDebounce: (Track) -> Unit
     private val viewModel: SearchViewModel by viewModel()
     private val simpleTextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -68,6 +70,14 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        onTrackClickDebounce =
+            debounce<Track>(CLICK_DEBOUNCE_DELAY, viewLifecycleOwner.lifecycleScope, false) {
+                viewModel.addTrackToHistory(it)
+                findNavController().navigate(
+                    R.id.action_searchFragment_to_audioPlayerActivity,
+                    AudioPlayerActivity.createArgs(it)
+                )
+            }
         searchProgressBarCreate()
         searchHistoryCreation()
         trackListCreation()
@@ -95,7 +105,6 @@ class SearchFragment : Fragment() {
             viewModel.clearSearch()
         }
         searchEditText.addTextChangedListener(simpleTextWatcher)
-        searchEditText.requestFocus()
         searchEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 viewModel.searchDebounce(searchEditText.text.toString())
@@ -117,11 +126,7 @@ class SearchFragment : Fragment() {
 
     private fun trackListCreation() {
         searchListItemAdapter = TrackItemAdapter {
-            viewModel.onTrackClicked(it)
-            findNavController().navigate(
-                R.id.action_searchFragment_to_audioPlayerActivity,
-                AudioPlayerActivity.createArgs(it)
-            )
+            onTrackClickDebounce(it)
         }
         trackItemsRecyclerView = binding.trackList
         trackItemsRecyclerView.adapter = searchListItemAdapter
@@ -133,11 +138,7 @@ class SearchFragment : Fragment() {
         clearHistoryButton = binding.clearHistory
         historyTrackListAdapter =
             TrackItemAdapter {
-                viewModel.onTrackClicked(it)
-                findNavController().navigate(
-                    R.id.action_searchFragment_to_audioPlayerActivity,
-                    AudioPlayerActivity.createArgs(it)
-                )
+                onTrackClickDebounce(it)
             }
         historyTrackList.adapter = historyTrackListAdapter
         clearHistoryButton.setOnClickListener {
@@ -204,5 +205,9 @@ class SearchFragment : Fragment() {
             searchHistory.visibility = View.VISIBLE
         } else
             searchHistory.visibility = View.INVISIBLE
+    }
+
+    companion object {
+        private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 }
