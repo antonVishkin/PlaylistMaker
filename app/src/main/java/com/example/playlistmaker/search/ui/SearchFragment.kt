@@ -14,7 +14,6 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
@@ -71,13 +70,14 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        onTrackClickDebounce = debounce<Track>(CLICK_DEBOUNCE_DELAY,viewLifecycleOwner.lifecycleScope,false){
-            viewModel.addTrackToHistory(it)
-            findNavController().navigate(
-                R.id.action_searchFragment_to_audioPlayerActivity,
-                AudioPlayerActivity.createArgs(it)
-            )
-        }
+        onTrackClickDebounce =
+            debounce<Track>(CLICK_DEBOUNCE_DELAY, viewLifecycleOwner.lifecycleScope, false) {
+                viewModel.addTrackToHistory(it)
+                findNavController().navigate(
+                    R.id.action_searchFragment_to_audioPlayerActivity,
+                    AudioPlayerActivity.createArgs(it)
+                )
+            }
         searchProgressBarCreate()
         searchHistoryCreation()
         trackListCreation()
@@ -206,7 +206,8 @@ class SearchFragment : Fragment() {
         } else
             searchHistory.visibility = View.INVISIBLE
     }
-    companion object{
+
+    companion object {
         private const val CLICK_DEBOUNCE_DELAY = 1000L
     }
 }

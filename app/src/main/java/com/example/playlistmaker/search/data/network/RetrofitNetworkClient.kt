@@ -10,16 +10,17 @@ class RetrofitNetworkClient(private val iTunesService: ITunesApi) : NetworkClien
 
 
     override suspend fun doRequest(dto: Any): Response {
-        if (dto !is SearchRequest){
+        if (dto !is SearchRequest) {
             return Response().apply { resultCode = CLIENT_ERROR_RESULT_CODE }
         }
-        return withContext(Dispatchers.IO){
+        return withContext(Dispatchers.IO) {
             try {
-            val response = iTunesService.search(dto.request)
-            response.apply { resultCode = CLIENT_SUCCESS_RESULT_CODE }
-        } catch (e:Throwable) {
-            Response().apply { resultCode = CLIENT_ERROR_RESULT_CODE }
-        }}
+                val response = iTunesService.search(dto.request)
+                response.apply { resultCode = CLIENT_SUCCESS_RESULT_CODE }
+            } catch (e: Throwable) {
+                Response().apply { resultCode = CLIENT_ERROR_RESULT_CODE }
+            }
+        }
     }
 
     companion object {

@@ -25,6 +25,7 @@ class TrackListRepositoryImpl(private val networkClient: NetworkClient) : TrackL
                         it.previewUrl
                     )
                 }))
+
             else -> {
                 emit(Result.failure(Throwable("Сетевая ошибка")))
             }
