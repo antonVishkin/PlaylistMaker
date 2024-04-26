@@ -33,7 +33,7 @@ class AudioPlayerViewModel(
     fun observeTimer(): LiveData<String> = timerLiveData
 
     companion object {
-        private const val DELAY = 1000L
+        private const val DELAY = 300L
     }
 
     fun preparePlayer() {
@@ -92,5 +92,8 @@ class AudioPlayerViewModel(
     }
 
     private fun onPrepared(): () -> Unit = { renderState(PlayerState.Prepared(track)) }
-    private fun onCompletion(): () -> Unit = { renderState(PlayerState.Pause) }
+    private fun onCompletion(): () -> Unit = {
+        renderState(PlayerState.Pause)
+        timerLiveData.postValue(getApplication<Application>().getString(R.string.timer_zero))
+    }
 }
