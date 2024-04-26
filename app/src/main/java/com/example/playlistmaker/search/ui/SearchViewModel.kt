@@ -1,9 +1,6 @@
 package com.example.playlistmaker.search.ui
 
 import android.app.Application
-import android.os.Handler
-import android.os.Looper
-import android.os.SystemClock
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -13,6 +10,7 @@ import com.example.playlistmaker.search.domain.api.TrackHistoryInteractor
 import com.example.playlistmaker.search.domain.api.TrackListInteractor
 import com.example.playlistmaker.search.ui.models.SearchState
 import com.example.playlistmaker.util.debounce
+import kotlinx.coroutines.launch
 
 class SearchViewModel(
     application: Application,
@@ -22,9 +20,10 @@ class SearchViewModel(
     private var stateLiveData: MutableLiveData<SearchState> =
         MutableLiveData<SearchState>(SearchState.History(trackHistoryInteractor.getHistory()))
     private var latestSearchText: String? = null
-    private val trackSearchDebounce = debounce<String>(SEARCH_DEBOUNCE_DELAY,viewModelScope,true){
-        search(it)
-    }
+    private val trackSearchDebounce =
+        debounce<String>(SEARCH_DEBOUNCE_DELAY, viewModelScope, true) {
+            search(it)
+        }
 
     fun observeState(): LiveData<SearchState> = stateLiveData
 
@@ -51,10 +50,10 @@ class SearchViewModel(
             renderState(
                 SearchState.Loading
             )
-
-            trackListInteractor.searchTracks(searchText,
-                object : TrackListInteractor.TracksConsumer {
-                    override fun consume(foundTracks: List<Track>?, errorMessage: String?) {
+            viewModelScope.launch {
+                trackListInteractor
+                    .searchTracks(searchText)
+                    .collect { (foundTracks, errorMessage) ->
                         val trackList = mutableListOf<Track>()
                         if (foundTracks != null)
                             trackList.addAll(foundTracks)
@@ -78,7 +77,7 @@ class SearchViewModel(
                             }
                         }
                     }
-                })
+            }
         }
     }
 
