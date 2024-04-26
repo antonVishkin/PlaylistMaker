@@ -94,6 +94,7 @@ class AudioPlayerViewModel(
     private fun onPrepared(): () -> Unit = { renderState(PlayerState.Prepared(track)) }
     private fun onCompletion(): () -> Unit = {
         renderState(PlayerState.Pause)
+        timerJob?.cancel()
         timerLiveData.postValue(getApplication<Application>().getString(R.string.timer_zero))
     }
 }
