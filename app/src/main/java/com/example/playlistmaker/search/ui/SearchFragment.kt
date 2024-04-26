@@ -95,7 +95,6 @@ class SearchFragment : Fragment() {
             viewModel.clearSearch()
         }
         searchEditText.addTextChangedListener(simpleTextWatcher)
-        searchEditText.requestFocus()
         searchEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 viewModel.searchDebounce(searchEditText.text.toString())

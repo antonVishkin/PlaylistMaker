@@ -1,16 +1,20 @@
 package com.example.playlistmaker.player.ui
 
 import android.app.Application
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.R
 import com.example.playlistmaker.player.domain.MediaPlayerInteractor
 import com.example.playlistmaker.player.domain.PlayerStatus
 import com.example.playlistmaker.player.domain.Track
 import com.example.playlistmaker.player.ui.models.PlayerState
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 
 class AudioPlayerViewModel(
@@ -19,8 +23,8 @@ class AudioPlayerViewModel(
     private val mediaPlayer: MediaPlayerInteractor
 ) :
     AndroidViewModel(application) {
-    private val mainThreadHandler = Handler(Looper.getMainLooper())
     private val stateLiveData = MutableLiveData<PlayerState>()
+    private var timerJob: Job? = null
 
     private val timerLiveData =
         MutableLiveData(getApplication<Application>().getString(R.string.timer_zero))
@@ -68,30 +72,23 @@ class AudioPlayerViewModel(
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        mainThreadHandler.removeCallbacks(timerRunnable)
-    }
-
 
     private fun startTimer() {
-        mainThreadHandler.post(timerRunnable)
+        timerJob = viewModelScope.launch {
+            while (mediaPlayer.playerStatus == PlayerStatus.STATE_PLAYING) {
+                delay(DELAY)
+                timerLiveData.postValue(getCurrentPlayerPosition())
+            }
+        }
     }
 
     private fun pauseTimer() {
-        mainThreadHandler.removeCallbacks(timerRunnable)
+        timerJob?.cancel()
     }
 
-    private val timerRunnable = object : Runnable {
-        override fun run() {
-            if (mediaPlayer.playerStatus == PlayerStatus.STATE_PLAYING) {
-                val playedTime = mediaPlayer.currentPosition / DELAY
-                timerLiveData.postValue(
-                    String.format("%d:%02d", playedTime / 60, playedTime % 60)
-                )
-                mainThreadHandler.postDelayed(this, DELAY)
-            }
-        }
+    private fun getCurrentPlayerPosition(): String {
+        return SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition)
+            ?: "00:00"
     }
 
     private fun onPrepared(): () -> Unit = { renderState(PlayerState.Prepared(track)) }
