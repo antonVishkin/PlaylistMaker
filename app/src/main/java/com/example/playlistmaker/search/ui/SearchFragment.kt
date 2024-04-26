@@ -1,24 +1,30 @@
 package com.example.playlistmaker.search.ui
 
-import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.ProgressBar
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
+import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.hideKeyboard
 import com.example.playlistmaker.player.domain.Track
-import com.example.playlistmaker.player.domain.Track.Companion.TRACK
 import com.example.playlistmaker.player.ui.AudioPlayerActivity
 import com.example.playlistmaker.search.ui.models.SearchState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchActivity : AppCompatActivity() {
+class SearchFragment : Fragment() {
+    private lateinit var binding: FragmentSearchBinding
     private lateinit var backButton: ImageView
     private lateinit var searchClearButton: ImageView
     private lateinit var searchEditText: EditText
@@ -51,38 +57,37 @@ class SearchActivity : AppCompatActivity() {
     }
 
 
-    @SuppressLint("MissingInflatedId")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentSearchBinding.inflate(inflater)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         searchProgressBarCreate()
         searchHistoryCreation()
-        backButtonCreate()
         trackListCreation()
         searchEditTextCreate()
-        viewModel.observeState().observe(this) {
+        viewModel.observeState().observe(viewLifecycleOwner) {
             render(it)
         }
     }
 
     private fun searchProgressBarCreate() {
-        searchProgressBar = findViewById(R.id.progressBar)
+        searchProgressBar = binding.progressBar
         searchProgressBar.visibility = View.INVISIBLE
     }
 
 
-    private fun backButtonCreate() {
-        backButton = findViewById(R.id.back_button)
-        backButton.setOnClickListener {
-            this.finish()
-        }
-    }
-
     private fun searchEditTextCreate() {
-        noSearchResult = findViewById(R.id.no_search_result)
-        noInternet = findViewById(R.id.no_internet)
-        searchClearButton = findViewById(R.id.search_clear)
-        searchEditText = findViewById(R.id.search_form)
+        noSearchResult = binding.noSearchResult
+        noInternet = binding.noInternet
+        searchClearButton = binding.searchClear
+        searchEditText = binding.searchForm
         searchClearButton.setOnClickListener {
             searchEditText.setText("")
             it.hideKeyboard()
@@ -98,7 +103,7 @@ class SearchActivity : AppCompatActivity() {
             }
             false
         }
-        refreshButton = findViewById(R.id.refresh_button)
+        refreshButton = binding.refreshButton
         refreshButton.setOnClickListener {
             viewModel.searchDebounce(searchEditText.text.toString())
         }
@@ -113,27 +118,28 @@ class SearchActivity : AppCompatActivity() {
     private fun trackListCreation() {
         searchListItemAdapter = TrackItemAdapter {
             viewModel.onTrackClicked(it)
-            val playerIntent = Intent(this, AudioPlayerActivity::class.java)
-            playerIntent.putExtra(TRACK, it)
-            this.startActivity(playerIntent)
+            findNavController().navigate(
+                R.id.action_searchFragment_to_audioPlayerActivity,
+                AudioPlayerActivity.createArgs(it)
+            )
         }
-        trackItemsRecyclerView = findViewById(R.id.trackList)
+        trackItemsRecyclerView = binding.trackList
         trackItemsRecyclerView.adapter = searchListItemAdapter
     }
 
     private fun searchHistoryCreation() {
-        searchHistory = findViewById(R.id.search_history)
-        historyTrackList = findViewById(R.id.history_track_list)
-        clearHistoryButton = findViewById(R.id.clear_history)
+        searchHistory = binding.searchHistory
+        historyTrackList = binding.historyTrackList
+        clearHistoryButton = binding.clearHistory
         historyTrackListAdapter =
             TrackItemAdapter {
                 viewModel.onTrackClicked(it)
-                val playerIntent = Intent(this, AudioPlayerActivity::class.java)
-                playerIntent.putExtra(TRACK, it)
-                this.startActivity(playerIntent)
+                findNavController().navigate(
+                    R.id.action_searchFragment_to_audioPlayerActivity,
+                    AudioPlayerActivity.createArgs(it)
+                )
             }
         historyTrackList.adapter = historyTrackListAdapter
-        clearHistoryButton = findViewById(R.id.clear_history)
         clearHistoryButton.setOnClickListener {
             viewModel.clearHistory()
         }
