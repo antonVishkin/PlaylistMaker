@@ -13,7 +13,7 @@ val libraryModule = module {
         PlaylistListViewModel()
     }
     viewModel {
-        FavoriteListViewModel()
+        FavoriteListViewModel(get())
     }
 
     single <FavoritesInteractor> { FavoritesInteractorImpl(get()) }
