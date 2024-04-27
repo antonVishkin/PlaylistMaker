@@ -8,6 +8,10 @@ class FavoritesInteractorImpl(private val favoritesRepository: FavoritesReposito
         favoritesRepository.addTrackToFavorites(track)
     }
 
+    override suspend fun deleteTrackFromFavorites(track: Track) {
+        favoritesRepository.deleteTrackFromFavorites(track)
+    }
+
     override fun getFavorites(): Flow<List<Track>> {
         return favoritesRepository.getFavorites()
     }

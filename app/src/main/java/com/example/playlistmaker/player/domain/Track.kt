@@ -18,6 +18,7 @@ data class Track(
     val country: String,
     val previewUrl: String
 ) : Parcelable {
+    var isFavorite: Boolean = false
     companion object {
         const val TRACK = "TRACK_PARCELABLE_EXTRA"
     }
