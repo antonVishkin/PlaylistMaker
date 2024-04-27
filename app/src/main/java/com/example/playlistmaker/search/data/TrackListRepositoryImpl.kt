@@ -14,6 +14,7 @@ class TrackListRepositoryImpl(private val networkClient: NetworkClient) : TrackL
             200 ->
                 emit(Result.success((response as SearchResponse).results.map {
                     Track(
+                        it.trackId,
                         it.trackName,
                         it.artistName,
                         it.trackTimeMillis,
