@@ -19,9 +19,11 @@ class SearchViewModel(
 ) : AndroidViewModel(application) {
     private var stateLiveData: MutableLiveData<SearchState> =
         MutableLiveData<SearchState>(SearchState.Loading)
+
     init {
         getHistory()
     }
+
     private var latestSearchText: String? = null
     private val trackSearchDebounce =
         debounce<String>(SEARCH_DEBOUNCE_DELAY, viewModelScope, true) {
@@ -82,12 +84,12 @@ class SearchViewModel(
         }
     }
 
-    private fun getHistory(){
+    private fun getHistory() {
         renderState(
             SearchState.Loading
         )
         viewModelScope.launch {
-            trackHistoryInteractor.getHistory().collect{
+            trackHistoryInteractor.getHistory().collect {
                 renderState(SearchState.History(it))
             }
         }

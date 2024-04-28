@@ -1,7 +1,6 @@
 package com.example.playlistmaker.library.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,6 @@ import com.example.playlistmaker.databinding.EmptyFavoritesFragmentBinding
 import com.example.playlistmaker.library.domain.FavoriteListState
 import com.example.playlistmaker.player.domain.Track
 import com.example.playlistmaker.player.ui.AudioPlayerActivity
-import com.example.playlistmaker.search.ui.SearchFragment
 import com.example.playlistmaker.search.ui.TrackItemAdapter
 import com.example.playlistmaker.util.debounce
 import org.koin.androidx.viewmodel.ext.android.viewModel

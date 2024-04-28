@@ -37,8 +37,8 @@ class AudioPlayerViewModel(
     fun observeIsFavorite(): LiveData<Boolean> = isFavoriteLiveData
 
     init {
-        viewModelScope.launch{
-            track.isFavorite = favoritesInteractor.isFavorite(track.trackId)>0
+        viewModelScope.launch {
+            track.isFavorite = favoritesInteractor.isFavorite(track.trackId) > 0
             isFavoriteLiveData.postValue(track.isFavorite)
         }
     }
