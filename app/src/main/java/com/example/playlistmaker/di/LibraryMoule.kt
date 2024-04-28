@@ -16,6 +16,6 @@ val libraryModule = module {
         FavoriteListViewModel(get())
     }
 
-    single <FavoritesInteractor> { FavoritesInteractorImpl(get()) }
+    single<FavoritesInteractor> { FavoritesInteractorImpl(get()) }
 
 }

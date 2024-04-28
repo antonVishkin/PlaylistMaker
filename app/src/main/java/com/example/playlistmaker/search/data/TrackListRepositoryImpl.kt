@@ -14,7 +14,7 @@ class TrackListRepositoryImpl(
 ) : TrackListRepository {
     override fun searchTrack(expression: String): Flow<Result<List<Track>>> = flow {
         val response = networkClient.doRequest(SearchRequest(expression))
-        val favoritesIdList =  appDatabase.trackDao().getFavoritesIdList()
+        val favoritesIdList = appDatabase.trackDao().getFavoritesIdList()
         when (response.resultCode) {
             200 ->
                 emit(Result.success((response as SearchResponse).results.map {

@@ -1,6 +1,5 @@
 package com.example.playlistmaker.search.data
 
-import android.content.Context
 import android.content.SharedPreferences
 import com.example.playlistmaker.library.data.db.AppDatabase
 import com.example.playlistmaker.player.domain.Track
@@ -12,7 +11,7 @@ class SearchHistoryProvider(
     private val gson: Gson,
     private val prefs: SharedPreferences,
     private val appDatabase: AppDatabase,
-    ) : SearchHistoryRepository {
+) : SearchHistoryRepository {
     private lateinit var searchList: ArrayList<Track>
     private val limit = 10
 

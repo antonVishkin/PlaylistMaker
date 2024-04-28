@@ -14,12 +14,16 @@ class FavoriteListViewModel(
     private val stateLiveData = MutableLiveData<FavoriteListState>(FavoriteListState.Empty)
     fun observeState(): LiveData<FavoriteListState> = stateLiveData
 
+    init {
+        fillData()
+    }
+
     fun fillData() {
         renderState(FavoriteListState.Loading)
         viewModelScope.launch {
             favoritesInteractor
                 .getFavorites()
-                .collect{
+                .collect {
                     if (it.isEmpty())
                         renderState(FavoriteListState.Empty)
                     else
