@@ -13,7 +13,11 @@ class FavoritesInteractorImpl(private val favoritesRepository: FavoritesReposito
         favoritesRepository.deleteTrackFromFavorites(track)
     }
 
-    override fun getFavorites(): Flow<List<Track>> {
+    override suspend fun getFavorites(): Flow<List<Track>> {
         return favoritesRepository.getFavorites()
+    }
+
+    override suspend fun isFavorite(trackId: Long): Int {
+        return favoritesRepository.isFavorite(trackId)
     }
 }

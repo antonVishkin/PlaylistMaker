@@ -20,4 +20,7 @@ interface TrackDao {
 
     @Delete(entity = TrackEntity::class)
     suspend fun removeTrackFromFavorites(track: TrackEntity)
+
+    @Query("SELECT COUNT(*) as count FROM track_favorites WHERE trackId = :trackId")
+    suspend fun isFavorite(trackId:Long):Int
 }

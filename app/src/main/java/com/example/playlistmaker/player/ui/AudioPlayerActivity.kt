@@ -43,7 +43,6 @@ class AudioPlayerActivity : AppCompatActivity() {
         viewModel.observePlayerState().observe(this) { render(it) }
         viewModel.observeTimer().observe(this) { changeTimer(it) }
         viewModel.observePlayerState().value?.let { render(it) }
-        changeFavorite(track.isFavorite)
         viewModel.observeIsFavorite().observe(this) { changeFavorite(it) }
         binding.likeButton.setOnClickListener {
             viewModel.onFavoriteClicked()
