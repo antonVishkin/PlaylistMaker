@@ -23,4 +23,7 @@ interface TrackDao {
 
     @Query("SELECT COUNT(*) as count FROM track_favorites WHERE trackId = :trackId")
     suspend fun isFavorite(trackId: Long): Int
+
+    @Query("SELECT * FROM track_favorites WHERE trackId = :trackId")
+    suspend fun getFavoriteById(trackId: Long): TrackEntity
 }

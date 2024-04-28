@@ -17,7 +17,8 @@ class FavoritesRepositoryImpl(
     }
 
     override suspend fun deleteTrackFromFavorites(track: Track) {
-        appDatabase.trackDao().removeTrackFromFavorites(trackDBConverters.map(track))
+        val trackEntity = appDatabase.trackDao().getFavoriteById(track.trackId)
+        appDatabase.trackDao().removeTrackFromFavorites(trackEntity)
     }
 
     override suspend fun isFavorite(trackId: Long): Int {
@@ -25,7 +26,7 @@ class FavoritesRepositoryImpl(
     }
 
     override suspend fun getFavorites(): Flow<List<Track>> = flow {
-        val trackList = appDatabase.trackDao().getFavoriteList()
+        val trackList = appDatabase.trackDao().getFavoriteList().sortedByDescending { it.indexAdding }
         emit(convertFromTrackEntity(trackList))
     }
 
