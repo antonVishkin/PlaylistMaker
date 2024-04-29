@@ -2,6 +2,7 @@ package com.example.playlistmaker.library.domain
 
 import com.example.playlistmaker.player.domain.Track
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class FavoritesInteractorImpl(private val favoritesRepository: FavoritesRepository) :
     FavoritesInteractor {
@@ -13,9 +14,8 @@ class FavoritesInteractorImpl(private val favoritesRepository: FavoritesReposito
         favoritesRepository.deleteTrackFromFavorites(track)
     }
 
-    override suspend fun getFavorites(): Flow<List<Track>> {
-        return favoritesRepository.getFavorites()
-    }
+    override fun getFavorites(): Flow<List<Track>> = favoritesRepository.getFavorites()
+
 
     override suspend fun isFavorite(trackId: Long): Int {
         return favoritesRepository.isFavorite(trackId)

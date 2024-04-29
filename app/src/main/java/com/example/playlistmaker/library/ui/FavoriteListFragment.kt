@@ -18,7 +18,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoriteListFragment : Fragment() {
 
-    private lateinit var binding: EmptyFavoritesFragmentBinding
+    private var binding: EmptyFavoritesFragmentBinding? = null
     private val viewModel: FavoriteListViewModel by viewModel()
     private lateinit var favoriteItemAdapter: TrackItemAdapter
     private lateinit var onTrackClickDebounce: (Track) -> Unit
@@ -29,7 +29,7 @@ class FavoriteListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = EmptyFavoritesFragmentBinding.inflate(inflater, container, false)
-        return binding.root
+        return binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,7 +44,7 @@ class FavoriteListFragment : Fragment() {
         favoriteItemAdapter = TrackItemAdapter {
             onTrackClickDebounce(it)
         }
-        binding.favoriteList.adapter = favoriteItemAdapter
+        binding?.favoriteList?.adapter = favoriteItemAdapter
         viewModel.observeState().observe(viewLifecycleOwner) {
             renderState(it)
         }
@@ -56,6 +56,11 @@ class FavoriteListFragment : Fragment() {
         viewModel.fillData()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
+    }
+
     private fun renderState(state: FavoriteListState) {
         when (state) {
             is FavoriteListState.Content -> showContent(state.favoriteList)
@@ -65,7 +70,7 @@ class FavoriteListFragment : Fragment() {
     }
 
     private fun showLoading() {
-        binding.apply {
+        binding?.apply {
             emptyFavoriteImage.visibility = View.GONE
             emptyFavoriteText.visibility = View.GONE
             favoriteList.visibility = View.GONE
@@ -74,7 +79,7 @@ class FavoriteListFragment : Fragment() {
     }
 
     private fun showContent(trackList: List<Track>) {
-        binding.apply {
+        binding?.apply {
             emptyFavoriteImage.visibility = View.GONE
             emptyFavoriteText.visibility = View.GONE
             favoriteItemAdapter.trackItems.clear()
@@ -87,7 +92,7 @@ class FavoriteListFragment : Fragment() {
     }
 
     private fun showEmpty() {
-        binding.apply {
+        binding?.apply {
             emptyFavoriteImage.visibility = View.VISIBLE
             emptyFavoriteText.visibility = View.VISIBLE
             favoriteList.visibility = View.GONE
@@ -97,6 +102,6 @@ class FavoriteListFragment : Fragment() {
 
     companion object {
         fun newInstance() = FavoriteListFragment()
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
+        private const val CLICK_DEBOUNCE_DELAY = 300L
     }
 }

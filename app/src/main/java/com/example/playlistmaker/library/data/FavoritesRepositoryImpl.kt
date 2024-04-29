@@ -25,7 +25,7 @@ class FavoritesRepositoryImpl(
         return appDatabase.trackDao().isFavorite(trackId)
     }
 
-    override suspend fun getFavorites(): Flow<List<Track>> = flow {
+    override fun getFavorites(): Flow<List<Track>> = flow {
         val trackList = appDatabase.trackDao().getFavoriteList().sortedByDescending { it.indexAdding }
         emit(convertFromTrackEntity(trackList))
     }
