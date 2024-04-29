@@ -1,7 +1,12 @@
 package com.example.playlistmaker.di
 
 import android.content.Context
+import androidx.room.Room
 import com.example.playlistmaker.App.Companion.PLAYLIST_MAKER_SHARED_PREFERENCES
+import com.example.playlistmaker.library.data.FavoritesRepositoryImpl
+import com.example.playlistmaker.library.data.converters.TrackDBConverters
+import com.example.playlistmaker.library.data.db.AppDatabase
+import com.example.playlistmaker.library.domain.FavoritesRepository
 import com.example.playlistmaker.search.data.network.ITunesApi
 import com.google.gson.Gson
 import org.koin.android.ext.koin.androidContext
@@ -21,4 +26,10 @@ val dataModule = module {
         androidContext()
             .getSharedPreferences(PLAYLIST_MAKER_SHARED_PREFERENCES, Context.MODE_PRIVATE)
     }
+    single {
+        Room.databaseBuilder(androidContext(), AppDatabase::class.java, "database.db")
+            .build()
+    }
+    factory { TrackDBConverters() }
+    single<FavoritesRepository> { FavoritesRepositoryImpl(get(), get()) }
 }

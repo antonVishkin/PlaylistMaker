@@ -18,7 +18,12 @@ class SearchViewModel(
     private val trackHistoryInteractor: TrackHistoryInteractor
 ) : AndroidViewModel(application) {
     private var stateLiveData: MutableLiveData<SearchState> =
-        MutableLiveData<SearchState>(SearchState.History(trackHistoryInteractor.getHistory()))
+        MutableLiveData<SearchState>(SearchState.Loading)
+
+    init {
+        getHistory()
+    }
+
     private var latestSearchText: String? = null
     private val trackSearchDebounce =
         debounce<String>(SEARCH_DEBOUNCE_DELAY, viewModelScope, true) {
@@ -43,9 +48,7 @@ class SearchViewModel(
 
     private fun search(searchText: String) {
         if (searchText.isEmpty()) {
-            renderState(
-                SearchState.History(trackHistoryInteractor.getHistory())
-            )
+            getHistory()
         } else {
             renderState(
                 SearchState.Loading
@@ -81,13 +84,24 @@ class SearchViewModel(
         }
     }
 
+    private fun getHistory() {
+        renderState(
+            SearchState.Loading
+        )
+        viewModelScope.launch {
+            trackHistoryInteractor.getHistory().collect {
+                renderState(SearchState.History(it))
+            }
+        }
+    }
+
     fun clearHistory() {
         trackHistoryInteractor.clearHistory()
-        renderState(SearchState.History(trackHistoryInteractor.getHistory()))
+        getHistory()
     }
 
     fun clearSearch() {
-        renderState(SearchState.History(trackHistoryInteractor.getHistory()))
+        getHistory()
     }
 
     fun addTrackToHistory(track: Track) {

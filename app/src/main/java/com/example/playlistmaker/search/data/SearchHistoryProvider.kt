@@ -1,29 +1,35 @@
 package com.example.playlistmaker.search.data
 
-import android.content.Context
 import android.content.SharedPreferences
+import com.example.playlistmaker.library.data.db.AppDatabase
 import com.example.playlistmaker.player.domain.Track
 import com.example.playlistmaker.search.domain.api.SearchHistoryRepository
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class SearchHistoryProvider(
-    context: Context,
     private val gson: Gson,
-    private val prefs: SharedPreferences
+    private val prefs: SharedPreferences,
+    private val appDatabase: AppDatabase,
 ) : SearchHistoryRepository {
     private lateinit var searchList: ArrayList<Track>
     private val limit = 10
 
 
-    override fun getHistory(): ArrayList<Track> {
+    override fun getHistory(): Flow<List<Track>> = flow {
         if (!::searchList.isInitialized) {
             val listAsString = prefs.getString(SEARCH_HISTORY_KEY, "")
             val itemType = object : TypeToken<ArrayList<Track>>() {}.type
             searchList = gson.fromJson<ArrayList<Track>>(listAsString, itemType) ?: arrayListOf()
         }
         removeOverLimited()
-        return searchList
+        val favoritesIdList = appDatabase.trackDao().getFavoritesIdList()
+        emit(searchList.onEach {
+            if (favoritesIdList.contains(it.trackId))
+                it.isFavorite = true
+        })
     }
 
     override fun addTrackToHistory(track: Track) {

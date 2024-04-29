@@ -1,11 +1,12 @@
-package com.example.playlistmaker.player.domain
+package com.example.playlistmaker.library.data.db
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
-
-@Parcelize
-data class Track(
+@Entity(tableName = "track_favorites")
+data class TrackEntity(
+    @PrimaryKey(autoGenerate = true)
+    val indexAdding:Int,
     val trackId: Long,
     val trackName: String,
     val artistName: String,
@@ -16,9 +17,4 @@ data class Track(
     val artworkUrl100: String,
     val country: String,
     val previewUrl: String,
-    var isFavorite: Boolean = false
-) : Parcelable {
-    companion object {
-        const val TRACK = "TRACK_PARCELABLE_EXTRA"
-    }
-}
+)
