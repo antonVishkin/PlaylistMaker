@@ -27,42 +27,51 @@
         app:layout_constraintStart_toEndOf="@id/back_button"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/playlist_image"
+    <FrameLayout
+        android:id="@+id/imageFrame"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/extra_medium_margin"
         android:layout_marginTop="@dimen/extra_medium_margin"
-        android:scaleType="centerCrop"
-        android:src="@drawable/add_photo"
-        app:layout_constraintDimensionRatio="1:1"
+        android:background="@drawable/image_loading_border"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/navigation_bar"
-        app:shapeAppearanceOverlay="@style/rounded_corner" />
+        app:layout_constraintTop_toBottomOf="@id/navigation_bar">
 
-    <FrameLayout
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/playlist_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            android:src="@drawable/add_photo"
+            app:layout_constraintDimensionRatio="1:1"
+            app:shapeAppearanceOverlay="@style/rounded_corner" />
+    </FrameLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/name_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/standard_margin"
-        android:layout_marginTop="@dimen/double_standard_margin"
-        android:background="@drawable/edite_selector"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/playlist_image">
-
-        <EditText
+        app:layout_constraintTop_toBottomOf="@id/imageFrame"
+        android:layout_marginHorizontal="@dimen/standard_margin"
+        android:layout_marginTop="@dimen/double_standard_margin"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        app:boxStrokeWidth="1dp"
+        app:boxStrokeColor="@color/stroke_input_colors"
+        android:hint="@string/playlist_name_edit"
+        android:textColorHint="?attr/colorOnPrimary"
+        app:hintTextColor="@color/stroke_input_colors"
+        >
+        <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/name_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/standard_margin"
-            android:layout_marginVertical="@dimen/standard_margin"
-            android:text="@string/playlist_name_edit"
-            android:background="@null"
+            android:textColor="@color/black"
             />
-    </FrameLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -70,6 +79,7 @@
         android:layout_marginHorizontal="@dimen/standard_margin"
         android:layout_marginTop="@dimen/standard_margin"
         android:background="@drawable/edite_selector"
+        android:focusable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/name_layout">
@@ -80,9 +90,15 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/standard_margin"
             android:layout_marginVertical="@dimen/standard_margin"
-            android:text="@string/playlist_description"
             android:background="@null"
-             />
+            android:hint="@string/playlist_description"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLength="256"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textColorHint="?attr/colorOnPrimary" />
     </FrameLayout>
 
     <androidx.appcompat.widget.AppCompatButton
@@ -91,8 +107,9 @@
         android:layout_marginHorizontal="@dimen/standard_margin"
         android:layout_marginBottom="@dimen/double_standard_margin"
         android:background="@drawable/selector_button"
-        android:enabled="true"
+        android:enabled="false"
         android:text="@string/create"
+        android:textAllCaps="false"
         android:textColor="?attr/colorOnSecondary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

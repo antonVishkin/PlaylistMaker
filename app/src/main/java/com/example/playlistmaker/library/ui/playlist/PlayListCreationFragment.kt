@@ -16,6 +16,9 @@ class PlayListCreationFragment:Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentPlaylistCreationBinding.inflate(inflater,container,false)
+        binding.backButton.setOnClickListener {
+            requireActivity().supportFragmentManager.popBackStack()
+        }
         return binding.root
     }
 }
