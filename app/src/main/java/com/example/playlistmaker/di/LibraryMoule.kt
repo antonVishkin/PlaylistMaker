@@ -2,8 +2,8 @@ package com.example.playlistmaker.di
 
 import com.example.playlistmaker.library.domain.FavoritesInteractor
 import com.example.playlistmaker.library.domain.FavoritesInteractorImpl
-import com.example.playlistmaker.library.ui.FavoriteListViewModel
-import com.example.playlistmaker.library.ui.PlaylistListViewModel
+import com.example.playlistmaker.library.ui.favorites.FavoriteListViewModel
+import com.example.playlistmaker.library.ui.playlist.PlaylistListViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

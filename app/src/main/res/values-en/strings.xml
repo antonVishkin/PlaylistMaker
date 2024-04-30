@@ -25,4 +25,7 @@
     <string name="new_playlist">New playlist</string>
     <string name="favorite_traks">Favorite tracks</string>
     <string name="playlists">Playlists</string>
+    <string name="create">Create</string>
+    <string name="playlist_name_edit">Name*</string>
+    <string name="playlist_description">Description</string>
 </resources>

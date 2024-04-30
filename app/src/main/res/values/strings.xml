@@ -29,5 +29,8 @@
     <string name="emplty_playlists_list">Вы не создали ни одного плейлиста</string>
     <string name="new_playlist">Новый плейлист</string>
     <string name="favorite_traks">Избранные треки</string>
-    <string name="playlists">Плейлисты</string>>
+    <string name="playlists">Плейлисты</string>
+    <string name="create">Создать</string>
+    <string name="playlist_name_edit">Название*</string>
+    <string name="playlist_description">Описание</string>>
 </resources>
