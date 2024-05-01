@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.playlistmaker.library.domain.FavoriteListState
-import com.example.playlistmaker.library.domain.FavoritesInteractor
+import com.example.playlistmaker.library.domain.favorites.FavoriteListState
+import com.example.playlistmaker.library.domain.favorites.FavoritesInteractor
 import kotlinx.coroutines.launch
 
 class FavoriteListViewModel(

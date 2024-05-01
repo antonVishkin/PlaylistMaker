@@ -9,7 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.EmptyFavoritesFragmentBinding
-import com.example.playlistmaker.library.domain.FavoriteListState
+import com.example.playlistmaker.library.domain.favorites.FavoriteListState
 import com.example.playlistmaker.player.domain.Track
 import com.example.playlistmaker.player.ui.AudioPlayerActivity
 import com.example.playlistmaker.search.ui.TrackItemAdapter

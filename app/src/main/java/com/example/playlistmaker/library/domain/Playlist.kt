@@ -1,5 +1,8 @@
 package com.example.playlistmaker.library.domain
 
-import com.example.playlistmaker.player.domain.Track
-
-data class Playlist(var list: List<Track>)
+data class Playlist(
+    val name: String,
+    val description: String,
+    val imagePath: String,
+    var list: List<Int>
+)
