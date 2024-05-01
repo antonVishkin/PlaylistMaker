@@ -23,7 +23,7 @@
         android:id="@+id/track_number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:layout_marginBottom="@dimen/standard_margin"
         android:fontFamily="@font/ys_display_regular"
         android:textSize="@dimen/small_margin"
         android:textColor="?attr/colorOnPrimary"

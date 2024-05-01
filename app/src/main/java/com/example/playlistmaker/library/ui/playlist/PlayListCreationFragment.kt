@@ -1,20 +1,30 @@
 package com.example.playlistmaker.library.ui.playlist
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.databinding.FragmentPlaylistCreationBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.io.File
+import java.io.FileOutputStream
 
 
 class PlayListCreationFragment : Fragment() {
     private lateinit var binding: FragmentPlaylistCreationBinding
     private val viewModel: PlayListCreationViewModel by viewModel()
+    private var imageUri:Uri? = null
     private val nameTextWatcher = object : TextWatcher {
         override fun beforeTextChanged(
             s: CharSequence?,
@@ -26,11 +36,7 @@ class PlayListCreationFragment : Fragment() {
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            if (s.isNullOrEmpty()) {
-                binding.createButton.isEnabled = false
-            } else {
-                binding.createButton.isEnabled = true
-            }
+            binding.createButton.isEnabled = !s.isNullOrEmpty()
         }
 
         override fun afterTextChanged(s: Editable?) {
@@ -61,10 +67,26 @@ class PlayListCreationFragment : Fragment() {
             viewModel.createPlaylist(
                 binding.nameEditText.text.toString(),
                 binding.descriptionEditText.text.toString(),
-                ""
+                imageUri
             )
             findNavController().popBackStack()
         }
+
+        val pickMedia =
+            registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+                //обрабатываем событие выбора пользователем фотографии
+                if (uri != null) {
+                    binding.playlistImage.setImageURI(uri)
+                    imageUri = uri
+                } else {
+                    Log.d("PhotoPicker", "No media selected")
+                }
+            }
+        binding.imageFrame.setOnClickListener {
+            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+        }
     }
+
+
 
 }

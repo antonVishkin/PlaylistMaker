@@ -7,6 +7,7 @@ import com.example.playlistmaker.library.domain.playlist.PlayListsInteractorImpl
 import com.example.playlistmaker.library.ui.favorites.FavoriteListViewModel
 import com.example.playlistmaker.library.ui.playlist.PlayListCreationViewModel
 import com.example.playlistmaker.library.ui.playlist.PlaylistListViewModel
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -20,7 +21,7 @@ val libraryModule = module {
     }
 
     viewModel{
-        PlayListCreationViewModel(get())
+        PlayListCreationViewModel(androidContext(),get())
     }
 
     single<FavoritesInteractor> { FavoritesInteractorImpl(get()) }
