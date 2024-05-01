@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.EmptyPlaylistFragmentBinding
-import com.example.playlistmaker.library.domain.PlaylistListState
+import com.example.playlistmaker.library.domain.playlist.PlaylistListState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistListFragment : Fragment() {

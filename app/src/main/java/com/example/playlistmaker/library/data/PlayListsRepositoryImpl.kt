@@ -2,8 +2,8 @@ package com.example.playlistmaker.library.data
 
 import com.example.playlistmaker.library.data.converters.PlayListsDBConverters
 import com.example.playlistmaker.library.data.db.AppDatabase
-import com.example.playlistmaker.library.domain.PlayListsRepository
-import com.example.playlistmaker.library.domain.Playlist
+import com.example.playlistmaker.library.domain.playlist.PlayListsRepository
+import com.example.playlistmaker.library.domain.playlist.Playlist
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 

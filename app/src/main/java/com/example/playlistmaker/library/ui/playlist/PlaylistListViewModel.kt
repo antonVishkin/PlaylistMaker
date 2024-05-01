@@ -3,7 +3,7 @@ package com.example.playlistmaker.library.ui.playlist
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.playlistmaker.library.domain.PlaylistListState
+import com.example.playlistmaker.library.domain.playlist.PlaylistListState
 
 class PlaylistListViewModel() : ViewModel() {
     private val stateLiveData = MutableLiveData<PlaylistListState>(PlaylistListState.Empty)

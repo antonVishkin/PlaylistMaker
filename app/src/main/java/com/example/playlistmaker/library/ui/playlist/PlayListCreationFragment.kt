@@ -1,10 +1,13 @@
 package com.example.playlistmaker.library.ui.playlist
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.databinding.FragmentPlaylistCreationBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -12,6 +15,29 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class PlayListCreationFragment : Fragment() {
     private lateinit var binding: FragmentPlaylistCreationBinding
     private val viewModel: PlayListCreationViewModel by viewModel()
+    private val nameTextWatcher = object : TextWatcher {
+        override fun beforeTextChanged(
+            s: CharSequence?,
+            start: Int,
+            count: Int,
+            after: Int
+        ) {
+            //empty
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            if (s.isNullOrEmpty()) {
+                binding.createButton.isEnabled = false
+            } else {
+                binding.createButton.isEnabled = true
+            }
+        }
+
+        override fun afterTextChanged(s: Editable?) {
+            //empty
+        }
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -19,9 +45,26 @@ class PlayListCreationFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentPlaylistCreationBinding.inflate(inflater, container, false)
-        binding.backButton.setOnClickListener {
-            requireActivity().supportFragmentManager.popBackStack()
-        }
         return binding.root
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.backButton.setOnClickListener {
+            findNavController().popBackStack()
+        }
+        binding.createButton.isEnabled = false
+        binding.nameEditText.addTextChangedListener(
+            nameTextWatcher
+        )
+        binding.createButton.setOnClickListener {
+            viewModel.createPlaylist(
+                binding.nameEditText.text.toString(),
+                binding.descriptionEditText.text.toString(),
+                ""
+            )
+            findNavController().popBackStack()
+        }
+    }
+
 }

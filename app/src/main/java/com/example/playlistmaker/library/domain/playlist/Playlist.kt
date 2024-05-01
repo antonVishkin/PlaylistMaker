@@ -1,4 +1,4 @@
-package com.example.playlistmaker.library.domain
+package com.example.playlistmaker.library.domain.playlist
 
 data class Playlist(
     val name: String,
