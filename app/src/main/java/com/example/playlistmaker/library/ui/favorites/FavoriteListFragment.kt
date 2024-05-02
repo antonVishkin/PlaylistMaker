@@ -11,8 +11,6 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.EmptyFavoritesFragmentBinding
 import com.example.playlistmaker.library.domain.favorites.FavoriteListState
 import com.example.playlistmaker.player.domain.Track
-import com.example.playlistmaker.player.ui.AudioPlayerFragment
-import com.example.playlistmaker.search.ui.SearchFragment
 import com.example.playlistmaker.search.ui.TrackItemAdapter
 import com.example.playlistmaker.util.debounce
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -38,7 +36,7 @@ class FavoriteListFragment : Fragment() {
         onTrackClickDebounce =
             debounce<Track>(CLICK_DEBOUNCE_DELAY, viewLifecycleOwner.lifecycleScope, false) {
                 val args = Bundle()
-                args.putParcelable(TRACK,it)
+                args.putParcelable(TRACK, it)
                 findNavController().navigate(
                     R.id.action_libraryFragment_to_audioPlayerFragment,
                     args

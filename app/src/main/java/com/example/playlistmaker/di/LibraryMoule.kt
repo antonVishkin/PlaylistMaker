@@ -20,8 +20,8 @@ val libraryModule = module {
         FavoriteListViewModel(get())
     }
 
-    viewModel{
-        PlayListCreationViewModel(androidContext(),get())
+    viewModel {
+        PlayListCreationViewModel(androidContext(), get())
     }
 
     single<FavoritesInteractor> { FavoritesInteractorImpl(get()) }

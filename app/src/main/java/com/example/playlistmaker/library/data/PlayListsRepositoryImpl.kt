@@ -15,12 +15,14 @@ class PlayListsRepositoryImpl(
     private val playListsDBConverters: PlayListsDBConverters
 ) : PlayListsRepository {
     override suspend fun addPlayList(name: String, description: String, imagePath: String) {
-        appDatabase.playListsDao().addPlayList(PlayListsEntity(
-            id = 0,
-            name = name,
-            description = description,
-            imageFilePath = imagePath
-        ))
+        appDatabase.playListsDao().addPlayList(
+            PlayListsEntity(
+                id = 0,
+                name = name,
+                description = description,
+                imageFilePath = imagePath
+            )
+        )
     }
 
     override suspend fun getPlaylistsList(): Flow<List<Playlist>> = flow {
@@ -31,11 +33,12 @@ class PlayListsRepositoryImpl(
         emit(playListsList)
     }
 
-    override suspend fun addTrackToPlaylist(playlist: Playlist,track: Track):Boolean {
+    override suspend fun addTrackToPlaylist(playlist: Playlist, track: Track): Boolean {
         try {
-            appDatabase.playListTrackDao().addTrackToPlaylist(PlaylistTrackEntity(playlist.id,track.trackId))
+            appDatabase.playListTrackDao()
+                .addTrackToPlaylist(PlaylistTrackEntity(playlist.id, track.trackId))
             return true
-        } catch (e:Throwable){
+        } catch (e: Throwable) {
             return false
         }
     }

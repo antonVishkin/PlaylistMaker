@@ -37,5 +37,5 @@ val dataModule = module {
     single<FavoritesRepository> { FavoritesRepositoryImpl(get(), get()) }
 
     factory { PlayListsDBConverters() }
-    single<PlayListsRepository> { PlayListsRepositoryImpl(get(),get()) }
+    single<PlayListsRepository> { PlayListsRepositoryImpl(get(), get()) }
 }

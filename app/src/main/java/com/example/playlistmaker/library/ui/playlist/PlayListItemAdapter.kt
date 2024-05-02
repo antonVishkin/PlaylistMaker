@@ -7,10 +7,11 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.library.domain.playlist.Playlist
 
 
-class PlayListItemAdapter(): RecyclerView.Adapter<PlayListItemViewHolder>() {
+class PlayListItemAdapter() : RecyclerView.Adapter<PlayListItemViewHolder>() {
     val playListsList = arrayListOf<Playlist>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayListItemViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.playlist_item,parent,false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.playlist_item, parent, false)
         return PlayListItemViewHolder(view)
     }
 

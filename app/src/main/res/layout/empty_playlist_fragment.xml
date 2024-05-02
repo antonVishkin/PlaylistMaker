@@ -18,8 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:visibility="gone"
-        tools:visibility="visible"
-        />
+        tools:visibility="visible" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -47,8 +46,8 @@
         android:textSize="@dimen/place_holder_text_size"
         android:textColor="?attr/colorOnPrimary"
         android:visibility="gone"
-        tools:visibility="visible"
-        />
+        tools:visibility="visible" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -57,7 +56,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginHorizontal="@dimen/standard_margin"
-        android:layout_marginTop="@dimen/standard_margin"
-        />
+        android:layout_marginTop="@dimen/standard_margin" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

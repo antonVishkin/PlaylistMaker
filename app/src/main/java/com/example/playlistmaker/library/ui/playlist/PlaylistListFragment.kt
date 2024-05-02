@@ -27,7 +27,7 @@ class PlaylistListFragment : Fragment() {
         viewModel.observeState().observe(viewLifecycleOwner) {
             renderState(it)
         }
-        binding.playlistsList.layoutManager = GridLayoutManager(this.context,2)
+        binding.playlistsList.layoutManager = GridLayoutManager(this.context, 2)
         playListItemAdapter = PlayListItemAdapter()
         binding.playlistsList.adapter = playListItemAdapter
         return binding.root

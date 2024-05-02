@@ -282,11 +282,12 @@
             app:constraint_referenced_ids="duration" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <View android:id="@+id/overlay"
+    <View
+        android:id="@+id/overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#99000000"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/bottom_container"
@@ -297,13 +298,14 @@
         android:background="@drawable/bottom_sheet_shape"
 
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/minimum_margin"
             android:src="@drawable/rectangle_1457"
-            android:layout_gravity="center_horizontal"
-            />
+            android:layout_gravity="center_horizontal" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

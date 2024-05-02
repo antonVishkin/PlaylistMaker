@@ -36,14 +36,13 @@ class AudioPlayerViewModel(
         MutableLiveData(getApplication<Application>().getString(R.string.timer_zero))
     private val isFavoriteLiveData = MutableLiveData(track.isFavorite)
     private val playlistListState = MutableLiveData<PlaylistListState>()
-    private val addingResultLiveData = MutableLiveData<String>()
-
+    private val _addingResultLiveData = MutableLiveData<String>()
+    val addingResultLiveData: LiveData<String> get() = _addingResultLiveData
 
     fun observePlayerState(): LiveData<PlayerState> = stateLiveData
     fun observeTimer(): LiveData<String> = timerLiveData
     fun observeIsFavorite(): LiveData<Boolean> = isFavoriteLiveData
-    fun observePlaylistListState():LiveData<PlaylistListState> = playlistListState
-    fun observeAddingResult():LiveData<String> = addingResultLiveData
+    fun observePlaylistListState(): LiveData<PlaylistListState> = playlistListState
 
     init {
         viewModelScope.launch {
@@ -58,10 +57,10 @@ class AudioPlayerViewModel(
         private const val DELAY = 300L
     }
 
-    fun getPlaylistList(){
+    fun getPlaylistList() {
         playlistListState.postValue(PlaylistListState.Loading)
         viewModelScope.launch {
-            playListsInteractor.getPlaylistsList().collect{
+            playListsInteractor.getPlaylistsList().collect {
                 if (it.isEmpty())
                     renderPlaylistsState(PlaylistListState.Empty)
                 else
@@ -70,12 +69,12 @@ class AudioPlayerViewModel(
         }
     }
 
-    fun addToPlaylist(playlist: Playlist){
+    fun addToPlaylist(playlist: Playlist) {
         viewModelScope.launch {
-            if (playListsInteractor.addTrackToPlaylist(playlist,track))
-                addingResultLiveData.postValue("Добавлено в плейлист ${playlist.name}")
+            if (playListsInteractor.addTrackToPlaylist(playlist, track))
+                _addingResultLiveData.postValue("Добавлено в плейлист ${playlist.name}")
             else
-                addingResultLiveData.postValue("Трек уже добавлен в плейлист ${playlist.name}")
+                _addingResultLiveData.postValue("Трек уже добавлен в плейлист ${playlist.name}")
         }
     }
 

@@ -20,7 +20,6 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.hideKeyboard
 import com.example.playlistmaker.player.domain.Track
-import com.example.playlistmaker.player.ui.AudioPlayerFragment
 import com.example.playlistmaker.search.ui.models.SearchState
 import com.example.playlistmaker.util.debounce
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -74,7 +73,7 @@ class SearchFragment : Fragment() {
             debounce<Track>(CLICK_DEBOUNCE_DELAY, viewLifecycleOwner.lifecycleScope, false) {
                 viewModel.addTrackToHistory(it)
                 val args = Bundle()
-                args.putParcelable(TRACK,it)
+                args.putParcelable(TRACK, it)
                 findNavController().navigate(
                     R.id.action_searchFragment_to_audioPlayerFragment,
                     args

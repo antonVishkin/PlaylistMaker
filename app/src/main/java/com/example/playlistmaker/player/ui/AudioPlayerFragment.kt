@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
@@ -14,17 +13,15 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentAudioPlayerBinding
 import com.example.playlistmaker.library.domain.playlist.Playlist
 import com.example.playlistmaker.library.domain.playlist.PlaylistListState
-import com.example.playlistmaker.library.ui.playlist.PlayListItemAdapter
 import com.example.playlistmaker.player.domain.Track
 import com.example.playlistmaker.player.ui.models.PlayerState
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.getViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class AudioPlayerFragment:Fragment() {
+class AudioPlayerFragment : Fragment() {
     private var _binding: FragmentAudioPlayerBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: AudioPlayerViewModel
@@ -62,8 +59,8 @@ class AudioPlayerFragment:Fragment() {
         viewModel.observeTimer().observe(viewLifecycleOwner) { changeTimer(it) }
         viewModel.observePlayerState().value?.let { render(it) }
         viewModel.observeIsFavorite().observe(viewLifecycleOwner) { changeFavorite(it) }
-        viewModel.observePlaylistListState().observe(viewLifecycleOwner){ renderPlaylist(it)}
-        viewModel.observeAddingResult().observe(viewLifecycleOwner){ showToast(it)}
+        viewModel.observePlaylistListState().observe(viewLifecycleOwner) { renderPlaylist(it) }
+
         binding.likeButton.setOnClickListener {
             viewModel.onFavoriteClicked()
         }
@@ -79,17 +76,20 @@ class AudioPlayerFragment:Fragment() {
         overlay.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
-        bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+        bottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_HIDDEN -> {
                         overlay.visibility = View.GONE
                     }
+
                     else -> {
                         overlay.visibility = View.VISIBLE
                     }
                 }
             }
+
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
 
             }
@@ -97,19 +97,20 @@ class AudioPlayerFragment:Fragment() {
         binding.newPlaylistButton.setOnClickListener {
             findNavController().navigate(R.id.action_audioPlayerFragment_to_playListCreationFragment)
         }
-        playListItemAdapter = BottomSheetPlaylistAdapter{
+        playListItemAdapter = BottomSheetPlaylistAdapter {
             viewModel.addToPlaylist(it)
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
         binding.playlistRecycler.adapter = playListItemAdapter
+        viewModel.addingResultLiveData.observe(viewLifecycleOwner) { showToast(it) }
     }
 
     private fun showToast(text: String) {
-        Toast.makeText(requireContext(),text,Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
     }
 
-    private fun renderPlaylist(state: PlaylistListState){
-        when(state){
+    private fun renderPlaylist(state: PlaylistListState) {
+        when (state) {
             PlaylistListState.Empty -> emptyPlaylists()
             PlaylistListState.Loading -> emptyPlaylists()
             is PlaylistListState.Content -> showPlaylistsList(state.playlistList)

@@ -50,16 +50,14 @@
         android:id="@+id/audioPlayerFragment"
         android:name="com.example.playlistmaker.player.ui.AudioPlayerFragment"
         android:label="fragment_audio_player"
-        tools:layout="@layout/fragment_audio_player" >
+        tools:layout="@layout/fragment_audio_player">
         <argument
             android:name="item"
-            app:argType="com.example.playlistmaker.player.domain.Track"
-            />
+            app:argType="com.example.playlistmaker.player.domain.Track" />
         <action
             android:id="@+id/action_audioPlayerFragment_to_playListCreationFragment"
             app:destination="@id/playListCreationFragment" />
     </fragment>
-
 
 
 </navigation>

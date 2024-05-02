@@ -80,7 +80,7 @@ class PlayListCreationFragment : Fragment() {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
         requireActivity().onBackPressedDispatcher.addCallback(
-            object: OnBackPressedCallback(true) {
+            object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     showDialog()
                 }
@@ -91,7 +91,10 @@ class PlayListCreationFragment : Fragment() {
 
     private fun showDialog() {
         val dialog =
-            MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme).setTitle("Завершить создание плейлиста?")
+            MaterialAlertDialogBuilder(
+                requireContext(),
+                R.style.AlertDialogTheme
+            ).setTitle("Завершить создание плейлиста?")
                 .setMessage("Все несохраненные данные будут потеряны")
                 .setNegativeButton("Отмена") { dialog, which ->
                     dialog.cancel()
@@ -105,11 +108,15 @@ class PlayListCreationFragment : Fragment() {
     private fun canClose(): Boolean {
         return binding.nameEditText.text.isNullOrEmpty()
                 && binding.descriptionEditText.text.isNullOrEmpty()
-                && (imageUri==null || imageUri?.toString().isNullOrEmpty())
+                && (imageUri == null || imageUri?.toString().isNullOrEmpty())
     }
 
-    private fun showToast(playlistName:String){
-        Toast.makeText(requireContext(), "Плейлист $playlistName успешно создан", Toast.LENGTH_SHORT).show()
+    private fun showToast(playlistName: String) {
+        Toast.makeText(
+            requireContext(),
+            "Плейлист $playlistName успешно создан",
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
 }

@@ -11,18 +11,20 @@ import kotlinx.coroutines.launch
 class PlaylistListViewModel(private val playListsInteractor: PlayListsInteractor) : ViewModel() {
     private val stateLiveData = MutableLiveData<PlaylistListState>(PlaylistListState.Empty)
     fun observeState(): LiveData<PlaylistListState> = stateLiveData
+
     init {
         fillData()
     }
-    fun fillData(){
+
+    fun fillData() {
         renderState(PlaylistListState.Loading)
 
     }
 
-    private fun renderState(state: PlaylistListState){
+    private fun renderState(state: PlaylistListState) {
         stateLiveData.postValue(state)
         viewModelScope.launch {
-            playListsInteractor.getPlaylistsList().collect{
+            playListsInteractor.getPlaylistsList().collect {
                 if (it.isEmpty())
                     renderState(PlaylistListState.Empty)
                 else

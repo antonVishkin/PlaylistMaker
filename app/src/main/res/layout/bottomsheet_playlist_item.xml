@@ -3,21 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
+    android:layout_height="wrap_content">
+
     <ImageView
         android:id="@+id/player_playlist_image"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginVertical="@dimen/minimum_margin"
-        android:layout_marginStart="@dimen/small_margin"
-        />
+        android:layout_marginStart="@dimen/small_margin" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="@dimen/minimum_margin"
         android:orientation="vertical">
+
         <TextView
             android:id="@+id/player_playlist_name"
             android:layout_width="wrap_content"
@@ -25,8 +26,8 @@
             tools:text="playlist name"
             android:fontFamily="@font/ys_display_regular"
             android:textSize="@dimen/small_text_size"
-            android:textColor="?attr/colorOnPrimary"
-            />
+            android:textColor="?attr/colorOnPrimary" />
+
         <TextView
             android:id="@+id/player_track_number"
             android:layout_width="wrap_content"
@@ -34,7 +35,6 @@
             tools:text="98 tracks"
             android:fontFamily="@font/ys_display_regular"
             android:textSize="@dimen/minimum_text_size"
-            android:textColor="?attr/iconsColor"
-            />
+            android:textColor="?attr/iconsColor" />
     </LinearLayout>
 </LinearLayout>
