@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -62,6 +63,7 @@ class PlayListCreationFragment : Fragment() {
                 binding.descriptionEditText.text.toString(),
                 imageUri
             )
+            showToast(binding.nameEditText.text.toString())
             findNavController().popBackStack()
         }
 
@@ -106,5 +108,8 @@ class PlayListCreationFragment : Fragment() {
                 && (imageUri==null || imageUri?.toString().isNullOrEmpty())
     }
 
+    private fun showToast(playlistName:String){
+        Toast.makeText(requireContext(), "Плейлист $playlistName успешно создан", Toast.LENGTH_SHORT).show()
+    }
 
 }
