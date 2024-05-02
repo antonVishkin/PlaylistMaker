@@ -2,56 +2,61 @@ package com.example.playlistmaker.player.ui
 
 import android.os.Build
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
+import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.ActivityAudioPlayerBinding
+import com.example.playlistmaker.databinding.FragmentAudioPlayerBinding
 import com.example.playlistmaker.player.domain.Track
 import com.example.playlistmaker.player.ui.models.PlayerState
 import org.koin.androidx.viewmodel.ext.android.getViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class AudioPlayerActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityAudioPlayerBinding
-
+class AudioPlayerFragment:Fragment() {
+    private var _binding: FragmentAudioPlayerBinding? = null
+    private val binding get() = _binding!!
     private lateinit var viewModel: AudioPlayerViewModel
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentAudioPlayerBinding.inflate(inflater)
+        return binding.root
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityAudioPlayerBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val track = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra(TRACK, Track::class.java) as Track
+            arguments?.getParcelable(TRACK, Track::class.java) as Track
         } else {
-            intent.getParcelableExtra(TRACK)!!
+            arguments?.getParcelable(TRACK)!!
         }
         viewModel = getViewModel() {
             parametersOf(track)
         }
         viewModel.preparePlayer()
         binding.backButton.setOnClickListener {
-            this.finish()
+            findNavController().popBackStack()
         }
         binding.playButton.setOnClickListener {
             viewModel.playClick()
         }
-        viewModel.observePlayerState().observe(this) { render(it) }
-        viewModel.observeTimer().observe(this) { changeTimer(it) }
+        viewModel.observePlayerState().observe(viewLifecycleOwner) { render(it) }
+        viewModel.observeTimer().observe(viewLifecycleOwner) { changeTimer(it) }
         viewModel.observePlayerState().value?.let { render(it) }
-        viewModel.observeIsFavorite().observe(this) { changeFavorite(it) }
+        viewModel.observeIsFavorite().observe(viewLifecycleOwner) { changeFavorite(it) }
         binding.likeButton.setOnClickListener {
             viewModel.onFavoriteClicked()
         }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        viewModel.stopPlaying()
     }
 
     private fun changeFavorite(isFavorite: Boolean) {
@@ -84,7 +89,7 @@ class AudioPlayerActivity : AppCompatActivity() {
             binding.albumName.visibility = View.GONE
             binding.albumNameValue.visibility = View.GONE
         } else {
-            binding.albumName.text = track.collectionName
+            binding.albumNameValue.text = track.collectionName
         }
         binding.yearValue.text = track.releaseDate.subSequence(0, 4)
         binding.genreValue.text = track.primaryGenreName
@@ -96,6 +101,17 @@ class AudioPlayerActivity : AppCompatActivity() {
             .into(binding.albumArt)
     }
 
+    override fun onPause() {
+        super.onPause()
+        viewModel.stopPlaying()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
+
     private fun render(state: PlayerState) {
         when (state) {
             PlayerState.Pause -> showPause()
@@ -106,8 +122,6 @@ class AudioPlayerActivity : AppCompatActivity() {
 
     companion object {
         private const val TRACK = "TRACK"
-        fun createArgs(track: Track): Bundle = bundleOf(
-            TRACK to track
-        )
+
     }
 }

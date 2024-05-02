@@ -28,4 +28,5 @@
     <string name="create">Create</string>
     <string name="playlist_name_edit">Name*</string>
     <string name="playlist_description">Description</string>
+    <string name="add_to_playlist">Add to playlist</string>
 </resources>

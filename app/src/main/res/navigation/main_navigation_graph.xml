@@ -11,8 +11,8 @@
         android:label="fragment_search"
         tools:layout="@layout/fragment_search">
         <action
-            android:id="@+id/action_searchFragment_to_audioPlayerActivity"
-            app:destination="@id/audioPlayerActivity" />
+            android:id="@+id/action_searchFragment_to_audioPlayerFragment"
+            app:destination="@id/audioPlayerFragment" />
     </fragment>
     <fragment
         android:id="@+id/libraryFragment"
@@ -20,11 +20,11 @@
         android:label="fragment_library"
         tools:layout="@layout/fragment_library">
         <action
-            android:id="@+id/action_libraryFragment_to_audioPlayerActivity"
-            app:destination="@id/audioPlayerActivity" />
-        <action
             android:id="@+id/action_libraryFragment_to_playListCreationFragment"
             app:destination="@id/playListCreationFragment" />
+        <action
+            android:id="@+id/action_libraryFragment_to_audioPlayerFragment"
+            app:destination="@id/audioPlayerFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -41,16 +41,22 @@
         android:name="com.example.playlistmaker.library.ui.playlist.PlaylistListFragment"
         android:label="empty_playlist_fragment"
         tools:layout="@layout/empty_playlist_fragment" />
-    <activity
-        android:id="@+id/audioPlayerActivity"
-        android:name="com.example.playlistmaker.player.ui.AudioPlayerActivity"
-        android:label="activity_audio_player"
-        tools:layout="@layout/activity_audio_player" />
     <fragment
         android:id="@+id/playListCreationFragment"
         android:name="com.example.playlistmaker.library.ui.playlist.PlayListCreationFragment"
         android:label="PlayListCreationFragment"
         tools:layout="@layout/fragment_playlist_creation" />
+    <fragment
+        android:id="@+id/audioPlayerFragment"
+        android:name="com.example.playlistmaker.player.ui.AudioPlayerFragment"
+        android:label="fragment_audio_player"
+        tools:layout="@layout/fragment_audio_player" >
+        <argument
+            android:name="item"
+            app:argType="com.example.playlistmaker.player.domain.Track"
+            />
+    </fragment>
+
 
 
 </navigation>
