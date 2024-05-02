@@ -6,16 +6,17 @@ import com.example.playlistmaker.library.domain.playlist.Playlist
 class PlayListsDBConverters {
     fun map(playlist: Playlist): PlayListsEntity =
         PlayListsEntity(
-            0,
-            playlist.name,
-            playlist.description,
-            playlist.imagePath
+            id = 0,
+            name = playlist.name,
+            description = playlist.description,
+            imageFilePath = playlist.imagePath
         )
 
     fun map(playListsEntity: PlayListsEntity, trackList: List<Int>): Playlist = Playlist(
-        playListsEntity.name,
-        playListsEntity.description,
-        playListsEntity.imageFilePath,
-        trackList
+        id = playListsEntity.id,
+        name = playListsEntity.name,
+        description = playListsEntity.description,
+        imagePath = playListsEntity.imageFilePath,
+        list = trackList
     )
 }

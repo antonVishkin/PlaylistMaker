@@ -18,7 +18,7 @@ class PlayListItemViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
 
     fun bind(playlist:Playlist){
         name.text = playlist.name
-        trackNumber.text = "100 tracks"
+        trackNumber.text = tracksText(playlist.list.size)
         if (playlist.imagePath?.isNotEmpty() == true) {
             Glide.with(itemView.context)
                 .load(File(playlist.imagePath))
@@ -29,6 +29,14 @@ class PlayListItemViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
                 .into(imageView)
         } else {
             imageView.setImageResource(R.drawable.album_placeholder)
+        }
+    }
+
+    private fun tracksText(n:Int):String{
+        return when{
+            n % 10 == 1 && n % 100 != 11 -> "$n трек"
+            n % 10 in 2..4 && n % 100 !in 12..14 -> "$n трека"
+            else -> "$n треков"
         }
     }
 }

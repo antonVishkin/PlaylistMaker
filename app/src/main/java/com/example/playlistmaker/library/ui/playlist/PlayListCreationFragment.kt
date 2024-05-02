@@ -74,7 +74,6 @@ class PlayListCreationFragment : Fragment() {
 
         val pickMedia =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-                //обрабатываем событие выбора пользователем фотографии
                 if (uri != null) {
                     binding.playlistImage.setImageURI(uri)
                     imageUri = uri

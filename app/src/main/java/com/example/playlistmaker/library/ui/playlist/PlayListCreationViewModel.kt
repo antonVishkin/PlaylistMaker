@@ -8,7 +8,6 @@ import android.os.Environment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.library.domain.playlist.PlayListsInteractor
-import com.example.playlistmaker.library.domain.playlist.Playlist
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
@@ -23,12 +22,7 @@ class PlayListCreationViewModel(
         viewModelScope.launch {
             val imagePath = if (imageUri != null) saveImageToPrivateStorage(imageUri) else ""
             playListsInteractor.addPlayList(
-                Playlist(
-                    name,
-                    description,
-                    imagePath,
-                    listOf()
-                )
+                name = name, description = description, imagePath = imagePath
             )
         }
     }
