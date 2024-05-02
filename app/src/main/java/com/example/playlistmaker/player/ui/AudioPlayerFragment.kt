@@ -76,6 +76,9 @@ class AudioPlayerFragment:Fragment() {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
         val overlay = binding.overlay
+        overlay.setOnClickListener {
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        }
         bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
@@ -102,7 +105,7 @@ class AudioPlayerFragment:Fragment() {
     }
 
     private fun showToast(text: String) {
-        Toast.makeText(context,text,Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(),text,Toast.LENGTH_SHORT).show()
     }
 
     private fun renderPlaylist(state: PlaylistListState){

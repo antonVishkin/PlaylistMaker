@@ -18,5 +18,6 @@
         <item name="backgroundMainActivityColor">@color/blue_fon</item>
         <item name="backgroundColorWithAlpha">@color/blackWithAlpha</item>
         <item name="searchFieldBackgroundColor">@color/grey</item>
+        <item name="dialogButtonsColor">@color/blue_fon</item>
     </style>
 </resources>

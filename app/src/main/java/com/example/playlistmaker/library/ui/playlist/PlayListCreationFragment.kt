@@ -1,36 +1,31 @@
 package com.example.playlistmaker.library.ui.playlist
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlaylistCreationBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.io.File
-import java.io.FileOutputStream
 
 
 class PlayListCreationFragment : Fragment() {
     private lateinit var binding: FragmentPlaylistCreationBinding
     private val viewModel: PlayListCreationViewModel by viewModel()
-    private var imageUri:Uri? = null
+    private var imageUri: Uri? = null
     private val nameTextWatcher = object : TextWatcher {
         override fun beforeTextChanged(
-            s: CharSequence?,
-            start: Int,
-            count: Int,
-            after: Int
+            s: CharSequence?, start: Int, count: Int, after: Int
         ) {
             //empty
         }
@@ -46,9 +41,7 @@ class PlayListCreationFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         binding = FragmentPlaylistCreationBinding.inflate(inflater, container, false)
         return binding.root
@@ -57,7 +50,7 @@ class PlayListCreationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.backButton.setOnClickListener {
-            findNavController().popBackStack()
+            showDialog()
         }
         binding.createButton.isEnabled = false
         binding.nameEditText.addTextChangedListener(
@@ -84,8 +77,34 @@ class PlayListCreationFragment : Fragment() {
         binding.imageFrame.setOnClickListener {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
+        requireActivity().onBackPressedDispatcher.addCallback(
+            object: OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    showDialog()
+                }
+
+            }
+        )
     }
 
+    private fun showDialog() {
+        val dialog =
+            MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme).setTitle("Завершить создание плейлиста?")
+                .setMessage("Все несохраненные данные будут потеряны")
+                .setNegativeButton("Отмена") { dialog, which ->
+                    dialog.cancel()
+                }.setPositiveButton("Завершить") { dialog, which ->
+                    findNavController().popBackStack()
+                }
+        if (!canClose()) dialog.show()
+        else findNavController().popBackStack()
+    }
+
+    private fun canClose(): Boolean {
+        return binding.nameEditText.text.isNullOrEmpty()
+                && binding.descriptionEditText.text.isNullOrEmpty()
+                && (imageUri==null || imageUri?.toString().isNullOrEmpty())
+    }
 
 
 }
