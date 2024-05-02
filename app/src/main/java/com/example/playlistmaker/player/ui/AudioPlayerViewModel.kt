@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.R
 import com.example.playlistmaker.library.domain.favorites.FavoritesInteractor
 import com.example.playlistmaker.library.domain.playlist.PlayListsInteractor
+import com.example.playlistmaker.library.domain.playlist.Playlist
 import com.example.playlistmaker.library.domain.playlist.PlaylistListState
 import com.example.playlistmaker.player.domain.MediaPlayerInteractor
 import com.example.playlistmaker.player.domain.PlayerStatus
@@ -35,11 +36,14 @@ class AudioPlayerViewModel(
         MutableLiveData(getApplication<Application>().getString(R.string.timer_zero))
     private val isFavoriteLiveData = MutableLiveData(track.isFavorite)
     private val playlistListState = MutableLiveData<PlaylistListState>()
+    private val addingResultLiveData = MutableLiveData<String>()
+
 
     fun observePlayerState(): LiveData<PlayerState> = stateLiveData
     fun observeTimer(): LiveData<String> = timerLiveData
     fun observeIsFavorite(): LiveData<Boolean> = isFavoriteLiveData
     fun observePlaylistListState():LiveData<PlaylistListState> = playlistListState
+    fun observeAddingResult():LiveData<String> = addingResultLiveData
 
     init {
         viewModelScope.launch {
@@ -63,6 +67,15 @@ class AudioPlayerViewModel(
                 else
                     renderPlaylistsState(PlaylistListState.Content(it))
             }
+        }
+    }
+
+    fun addToPlaylist(playlist: Playlist){
+        viewModelScope.launch {
+            if (playListsInteractor.addTrackToPlaylist(playlist,track))
+                addingResultLiveData.postValue("Добавлено в плейлист ${playlist.name}")
+            else
+                addingResultLiveData.postValue("Трек уже добавлен в плейлист ${playlist.name}")
         }
     }
 

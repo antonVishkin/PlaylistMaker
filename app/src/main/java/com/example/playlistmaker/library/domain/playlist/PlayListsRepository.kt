@@ -8,6 +8,6 @@ interface PlayListsRepository {
 
     suspend fun getPlaylistsList(): Flow<List<Playlist>>
 
-    suspend fun addTrackToPlaylist(playlist: Playlist,track: Track)
+    suspend fun addTrackToPlaylist(playlist: Playlist,track: Track):Boolean
 
 }

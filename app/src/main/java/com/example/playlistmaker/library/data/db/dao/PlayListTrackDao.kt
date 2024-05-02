@@ -8,7 +8,7 @@ import com.example.playlistmaker.library.data.db.PlaylistTrackEntity
 
 @Dao
 interface PlayListTrackDao {
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun addTrackToPlaylist(playlistTrackEntity: PlaylistTrackEntity)
 
     @Query("SELECT trackId FROM playlist_tracks_table WHERE playlistId = :playListId")

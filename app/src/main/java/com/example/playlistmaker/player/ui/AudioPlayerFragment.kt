@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -41,8 +42,7 @@ class AudioPlayerFragment:Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        playListItemAdapter = BottomSheetPlaylistAdapter()
-        binding.playlistRecycler.adapter = playListItemAdapter
+
         val track = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arguments?.getParcelable(TRACK, Track::class.java) as Track
         } else {
@@ -63,6 +63,7 @@ class AudioPlayerFragment:Fragment() {
         viewModel.observePlayerState().value?.let { render(it) }
         viewModel.observeIsFavorite().observe(viewLifecycleOwner) { changeFavorite(it) }
         viewModel.observePlaylistListState().observe(viewLifecycleOwner){ renderPlaylist(it)}
+        viewModel.observeAddingResult().observe(viewLifecycleOwner){ showToast(it)}
         binding.likeButton.setOnClickListener {
             viewModel.onFavoriteClicked()
         }
@@ -90,7 +91,18 @@ class AudioPlayerFragment:Fragment() {
 
             }
         })
+        binding.newPlaylistButton.setOnClickListener {
+            findNavController().navigate(R.id.action_audioPlayerFragment_to_playListCreationFragment)
+        }
+        playListItemAdapter = BottomSheetPlaylistAdapter{
+            viewModel.addToPlaylist(it)
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        }
+        binding.playlistRecycler.adapter = playListItemAdapter
+    }
 
+    private fun showToast(text: String) {
+        Toast.makeText(context,text,Toast.LENGTH_SHORT).show()
     }
 
     private fun renderPlaylist(state: PlaylistListState){

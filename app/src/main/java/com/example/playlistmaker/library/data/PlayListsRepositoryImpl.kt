@@ -31,8 +31,13 @@ class PlayListsRepositoryImpl(
         emit(playListsList)
     }
 
-    override suspend fun addTrackToPlaylist(playlist: Playlist,track: Track) {
-        appDatabase.playListTrackDao().addTrackToPlaylist(PlaylistTrackEntity(0,playlist.id,track.trackId))
+    override suspend fun addTrackToPlaylist(playlist: Playlist,track: Track):Boolean {
+        try {
+            appDatabase.playListTrackDao().addTrackToPlaylist(PlaylistTrackEntity(playlist.id,track.trackId))
+            return true
+        } catch (e:Throwable){
+            return false
+        }
     }
 
 

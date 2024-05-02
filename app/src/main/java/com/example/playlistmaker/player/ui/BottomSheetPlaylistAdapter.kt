@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.library.domain.playlist.Playlist
 
-class BottomSheetPlaylistAdapter():RecyclerView.Adapter<BottomSheetPlaylistItemViewHolder>() {
+class BottomSheetPlaylistAdapter(private val onPlaylistClicked:(Playlist)->Unit):RecyclerView.Adapter<BottomSheetPlaylistItemViewHolder>() {
     val playListsList = arrayListOf<Playlist>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BottomSheetPlaylistItemViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.bottomsheet_playlist_item,parent,false)
@@ -19,5 +19,9 @@ class BottomSheetPlaylistAdapter():RecyclerView.Adapter<BottomSheetPlaylistItemV
 
     override fun onBindViewHolder(holder: BottomSheetPlaylistItemViewHolder, position: Int) {
         holder.bind(playListsList[position])
+        holder.itemView.setOnClickListener {
+            val playlist = playListsList[position]
+            onPlaylistClicked.invoke(playlist)
+        }
     }
 }
