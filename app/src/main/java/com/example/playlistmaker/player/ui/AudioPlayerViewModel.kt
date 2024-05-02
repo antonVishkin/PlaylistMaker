@@ -7,6 +7,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.R
 import com.example.playlistmaker.library.domain.favorites.FavoritesInteractor
+import com.example.playlistmaker.library.domain.playlist.PlayListsInteractor
+import com.example.playlistmaker.library.domain.playlist.PlaylistListState
 import com.example.playlistmaker.player.domain.MediaPlayerInteractor
 import com.example.playlistmaker.player.domain.PlayerStatus
 import com.example.playlistmaker.player.domain.Track
@@ -22,7 +24,8 @@ class AudioPlayerViewModel(
     private val track: Track,
     application: Application,
     private val mediaPlayer: MediaPlayerInteractor,
-    private val favoritesInteractor: FavoritesInteractor
+    private val favoritesInteractor: FavoritesInteractor,
+    private val playListsInteractor: PlayListsInteractor
 ) :
     AndroidViewModel(application) {
     private var timerJob: Job? = null
@@ -31,20 +34,36 @@ class AudioPlayerViewModel(
     private val timerLiveData =
         MutableLiveData(getApplication<Application>().getString(R.string.timer_zero))
     private val isFavoriteLiveData = MutableLiveData(track.isFavorite)
+    private val playlistListState = MutableLiveData<PlaylistListState>()
 
     fun observePlayerState(): LiveData<PlayerState> = stateLiveData
     fun observeTimer(): LiveData<String> = timerLiveData
     fun observeIsFavorite(): LiveData<Boolean> = isFavoriteLiveData
+    fun observePlaylistListState():LiveData<PlaylistListState> = playlistListState
 
     init {
         viewModelScope.launch {
             track.isFavorite = favoritesInteractor.isFavorite(track.trackId) > 0
             isFavoriteLiveData.postValue(track.isFavorite)
+            getPlaylistList()
         }
+
     }
 
     companion object {
         private const val DELAY = 300L
+    }
+
+    fun getPlaylistList(){
+        playlistListState.postValue(PlaylistListState.Loading)
+        viewModelScope.launch {
+            playListsInteractor.getPlaylistsList().collect{
+                if (it.isEmpty())
+                    renderPlaylistsState(PlaylistListState.Empty)
+                else
+                    renderPlaylistsState(PlaylistListState.Content(it))
+            }
+        }
     }
 
     fun preparePlayer() {
@@ -67,6 +86,10 @@ class AudioPlayerViewModel(
 
     private fun renderState(state: PlayerState) {
         stateLiveData.postValue(state)
+    }
+
+    private fun renderPlaylistsState(state: PlaylistListState) {
+        playlistListState.postValue(state)
     }
 
     fun playClick() {

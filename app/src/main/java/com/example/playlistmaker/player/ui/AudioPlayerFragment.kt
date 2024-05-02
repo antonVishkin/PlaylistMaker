@@ -11,6 +11,9 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentAudioPlayerBinding
+import com.example.playlistmaker.library.domain.playlist.Playlist
+import com.example.playlistmaker.library.domain.playlist.PlaylistListState
+import com.example.playlistmaker.library.ui.playlist.PlayListItemAdapter
 import com.example.playlistmaker.player.domain.Track
 import com.example.playlistmaker.player.ui.models.PlayerState
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -24,6 +27,8 @@ class AudioPlayerFragment:Fragment() {
     private var _binding: FragmentAudioPlayerBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: AudioPlayerViewModel
+    private lateinit var playListItemAdapter: BottomSheetPlaylistAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,6 +41,8 @@ class AudioPlayerFragment:Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        playListItemAdapter = BottomSheetPlaylistAdapter()
+        binding.playlistRecycler.adapter = playListItemAdapter
         val track = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arguments?.getParcelable(TRACK, Track::class.java) as Track
         } else {
@@ -55,6 +62,7 @@ class AudioPlayerFragment:Fragment() {
         viewModel.observeTimer().observe(viewLifecycleOwner) { changeTimer(it) }
         viewModel.observePlayerState().value?.let { render(it) }
         viewModel.observeIsFavorite().observe(viewLifecycleOwner) { changeFavorite(it) }
+        viewModel.observePlaylistListState().observe(viewLifecycleOwner){ renderPlaylist(it)}
         binding.likeButton.setOnClickListener {
             viewModel.onFavoriteClicked()
         }
@@ -63,6 +71,7 @@ class AudioPlayerFragment:Fragment() {
             state = BottomSheetBehavior.STATE_HIDDEN
         }
         binding.addToPlaylist.setOnClickListener {
+            viewModel.getPlaylistList()
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
         }
         val overlay = binding.overlay
@@ -81,6 +90,30 @@ class AudioPlayerFragment:Fragment() {
 
             }
         })
+
+    }
+
+    private fun renderPlaylist(state: PlaylistListState){
+        when(state){
+            PlaylistListState.Empty -> emptyPlaylists()
+            PlaylistListState.Loading -> emptyPlaylists()
+            is PlaylistListState.Content -> showPlaylistsList(state.playlistList)
+        }
+    }
+
+    private fun showPlaylistsList(playlistList: List<Playlist>) {
+        playListItemAdapter.apply {
+            playListsList.clear()
+            playListsList.addAll(playlistList)
+            notifyDataSetChanged()
+        }
+        binding.playlistRecycler.visibility = View.VISIBLE
+    }
+
+    private fun emptyPlaylists() {
+        binding.apply {
+            playlistRecycler.visibility = View.GONE
+        }
     }
 
     private fun changeFavorite(isFavorite: Boolean) {

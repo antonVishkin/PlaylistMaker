@@ -322,9 +322,11 @@
             android:visibility="visible" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/playlists_list"
+            android:id="@+id/playlist_recycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:layout_marginTop="@dimen/extra_medium_margin" />
     </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
