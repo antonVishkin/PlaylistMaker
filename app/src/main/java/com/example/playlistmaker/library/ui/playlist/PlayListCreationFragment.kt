@@ -21,9 +21,15 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class PlayListCreationFragment : Fragment() {
-    private lateinit var binding: FragmentPlaylistCreationBinding
+    private var _binding: FragmentPlaylistCreationBinding? = null
+    private val binding get() = _binding!!
     private val viewModel: PlayListCreationViewModel by viewModel()
     private var imageUri: Uri? = null
+    private val backPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            showDialog()
+        }
+    }
     private val nameTextWatcher = object : TextWatcher {
         override fun beforeTextChanged(
             s: CharSequence?, start: Int, count: Int, after: Int
@@ -44,7 +50,7 @@ class PlayListCreationFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentPlaylistCreationBinding.inflate(inflater, container, false)
+        _binding = FragmentPlaylistCreationBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -79,14 +85,7 @@ class PlayListCreationFragment : Fragment() {
         binding.imageFrame.setOnClickListener {
             pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
-        requireActivity().onBackPressedDispatcher.addCallback(
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    showDialog()
-                }
-
-            }
-        )
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,backPressedCallback)
     }
 
     private fun showDialog() {
@@ -117,6 +116,12 @@ class PlayListCreationFragment : Fragment() {
             "Плейлист $playlistName успешно создан",
             Toast.LENGTH_SHORT
         ).show()
+    }
+
+    override fun onDestroy() {
+        backPressedCallback.remove()
+        _binding = null
+        super.onDestroy()
     }
 
 }
