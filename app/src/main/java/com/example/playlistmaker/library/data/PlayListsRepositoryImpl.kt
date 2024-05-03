@@ -3,7 +3,7 @@ package com.example.playlistmaker.library.data
 import com.example.playlistmaker.library.data.converters.PlayListsDBConverters
 import com.example.playlistmaker.library.data.db.AppDatabase
 import com.example.playlistmaker.library.data.db.PlayListsEntity
-import com.example.playlistmaker.library.data.db.PlaylistTrackEntity
+import com.example.playlistmaker.library.data.db.TrackToPlaylistEntity
 import com.example.playlistmaker.library.domain.playlist.PlayListsRepository
 import com.example.playlistmaker.library.domain.playlist.Playlist
 import com.example.playlistmaker.player.domain.Track
@@ -27,7 +27,9 @@ class PlayListsRepositoryImpl(
 
     override suspend fun getPlaylistsList(): Flow<List<Playlist>> = flow {
         val playListsList = appDatabase.playListsDao().getPlayListsList().map {
-            val trackList = appDatabase.playListTrackDao().getTracksByPlaylistId(it.id)
+            val trackList = appDatabase.playListTrackDao().getTracksIdByPlaylistId(it.id).map {
+                playListsDBConverters.map(appDatabase.playListTrackDao().getTracksById(it))
+            }
             playListsDBConverters.map(it, trackList)
         }
         emit(playListsList)
@@ -36,7 +38,9 @@ class PlayListsRepositoryImpl(
     override suspend fun addTrackToPlaylist(playlist: Playlist, track: Track): Boolean {
         try {
             appDatabase.playListTrackDao()
-                .addTrackToPlaylist(PlaylistTrackEntity(playlist.id, track.trackId))
+                .connectTrackToPlaylist(TrackToPlaylistEntity(playlist.id, track.trackId))
+            appDatabase.playListTrackDao()
+                .addTrackToPlaylist(playListsDBConverters.map(track))
             return true
         } catch (e: Throwable) {
             return false
