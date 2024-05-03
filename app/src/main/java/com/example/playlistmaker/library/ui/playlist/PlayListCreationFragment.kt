@@ -94,11 +94,11 @@ class PlayListCreationFragment : Fragment() {
             MaterialAlertDialogBuilder(
                 requireContext(),
                 R.style.AlertDialogTheme
-            ).setTitle("Завершить создание плейлиста?")
-                .setMessage("Все несохраненные данные будут потеряны")
-                .setNegativeButton("Отмена") { dialog, which ->
+            ).setTitle(R.string.dialog_playlist_creation_cancel_tittle)
+                .setMessage(R.string.dialog_playlist_creation_cancel_message)
+                .setNegativeButton(R.string.dialog_playlist_creation_cancel_cancellation) { dialog, which ->
                     dialog.cancel()
-                }.setPositiveButton("Завершить") { dialog, which ->
+                }.setPositiveButton(R.string.dialog_playlist_creation_cancel_finish) { dialog, which ->
                     findNavController().popBackStack()
                 }
         if (!canClose()) dialog.show()

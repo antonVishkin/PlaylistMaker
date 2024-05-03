@@ -9,6 +9,7 @@ import com.example.playlistmaker.library.domain.playlist.Playlist
 import com.example.playlistmaker.player.domain.Track
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onEach
 
 class PlayListsRepositoryImpl(
     private val appDatabase: AppDatabase,

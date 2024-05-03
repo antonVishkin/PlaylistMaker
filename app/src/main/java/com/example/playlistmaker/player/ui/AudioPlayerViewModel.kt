@@ -53,10 +53,6 @@ class AudioPlayerViewModel(
 
     }
 
-    companion object {
-        private const val DELAY = 300L
-    }
-
     fun getPlaylistList() {
         playlistListState.postValue(PlaylistListState.Loading)
         viewModelScope.launch {
@@ -155,5 +151,9 @@ class AudioPlayerViewModel(
         renderState(PlayerState.Pause)
         timerJob?.cancel()
         timerLiveData.postValue(getApplication<Application>().getString(R.string.timer_zero))
+    }
+
+    companion object {
+        private const val DELAY = 300L
     }
 }
