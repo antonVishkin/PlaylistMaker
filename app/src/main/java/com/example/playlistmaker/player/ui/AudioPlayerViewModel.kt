@@ -36,8 +36,8 @@ class AudioPlayerViewModel(
         MutableLiveData(getApplication<Application>().getString(R.string.timer_zero))
     private val isFavoriteLiveData = MutableLiveData(track.isFavorite)
     private val playlistListState = MutableLiveData<PlaylistListState>()
-    private val _addingResultLiveData = MutableLiveData<String>()
-    val addingResultLiveData: LiveData<String> get() = _addingResultLiveData
+    private val _addingResultLiveData = MutableLiveData<Pair<String,Boolean>>()
+    val addingResultLiveData: LiveData<Pair<String,Boolean>> get() = _addingResultLiveData
 
     fun observePlayerState(): LiveData<PlayerState> = stateLiveData
     fun observeTimer(): LiveData<String> = timerLiveData
@@ -68,9 +68,9 @@ class AudioPlayerViewModel(
     fun addToPlaylist(playlist: Playlist) {
         viewModelScope.launch {
             if (playListsInteractor.addTrackToPlaylist(playlist, track))
-                _addingResultLiveData.postValue("Добавлено в плейлист ${playlist.name}")
+                _addingResultLiveData.postValue(Pair("Добавлено в плейлист ${playlist.name}",true))
             else
-                _addingResultLiveData.postValue("Трек уже добавлен в плейлист ${playlist.name}")
+                _addingResultLiveData.postValue(Pair("Трек уже добавлен в плейлист ${playlist.name}",false))
         }
     }
 

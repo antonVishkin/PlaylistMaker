@@ -99,10 +99,14 @@ class AudioPlayerFragment : Fragment() {
         }
         playListItemAdapter = BottomSheetPlaylistAdapter {
             viewModel.addToPlaylist(it)
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
         binding.playlistRecycler.adapter = playListItemAdapter
-        viewModel.addingResultLiveData.observe(viewLifecycleOwner) { showToast(it) }
+        viewModel.addingResultLiveData.observe(viewLifecycleOwner) {
+            (text,isSuccess) ->
+            if (isSuccess)
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            showToast(text)
+        }
     }
 
     private fun showToast(text: String) {
