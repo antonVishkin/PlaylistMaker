@@ -2,6 +2,9 @@ package com.example.playlistmaker.di
 
 import com.example.playlistmaker.library.domain.favorites.FavoritesInteractor
 import com.example.playlistmaker.library.domain.favorites.FavoritesInteractorImpl
+import com.example.playlistmaker.library.domain.playlist.FilesInteractor
+import com.example.playlistmaker.library.domain.playlist.FilesInteractorImpl
+import com.example.playlistmaker.library.domain.playlist.FilesRepository
 import com.example.playlistmaker.library.domain.playlist.PlayListsInteractor
 import com.example.playlistmaker.library.domain.playlist.PlayListsInteractorImpl
 import com.example.playlistmaker.library.ui.favorites.FavoriteListViewModel
@@ -21,11 +24,13 @@ val libraryModule = module {
     }
 
     viewModel {
-        PlayListCreationViewModel(androidContext(), get())
+        PlayListCreationViewModel( get(),get())
     }
 
     single<FavoritesInteractor> { FavoritesInteractorImpl(get()) }
 
     single<PlayListsInteractor> { PlayListsInteractorImpl(get()) }
+
+    single<FilesInteractor> { FilesInteractorImpl(get()) }
 
 }

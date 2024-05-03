@@ -9,6 +9,8 @@ import com.example.playlistmaker.library.data.converters.PlayListsDBConverters
 import com.example.playlistmaker.library.data.converters.TrackDBConverters
 import com.example.playlistmaker.library.data.db.AppDatabase
 import com.example.playlistmaker.library.domain.favorites.FavoritesRepository
+import com.example.playlistmaker.library.domain.playlist.FilesRepository
+import com.example.playlistmaker.library.domain.playlist.FilesRepositoryImpl
 import com.example.playlistmaker.library.domain.playlist.PlayListsRepository
 import com.example.playlistmaker.search.data.network.ITunesApi
 import com.google.gson.Gson
@@ -38,4 +40,6 @@ val dataModule = module {
 
     factory { PlayListsDBConverters() }
     single<PlayListsRepository> { PlayListsRepositoryImpl(get(), get()) }
+
+    single<FilesRepository> { FilesRepositoryImpl(androidContext()) }
 }
