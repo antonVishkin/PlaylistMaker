@@ -1,13 +1,17 @@
 package com.example.playlistmaker.library.ui.playlistdetails
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.playlistmaker.library.domain.playlist.Playlist
+import com.example.playlistmaker.library.domain.playlistdetails.PlaylistDetailsState
 
 class PlaylistDetailsViewModel(private val playlist: Playlist) : ViewModel() {
 
-
-    fun fillData() {
-
+    private val playlistDetailsStateLiveData = MutableLiveData<PlaylistDetailsState>()
+    fun observeState():LiveData<PlaylistDetailsState> = playlistDetailsStateLiveData
+    init {
+        renderState(PlaylistDetailsState.Content(playlist))
     }
 
     fun makeTrackNumberText(number: Int): String {
@@ -27,5 +31,9 @@ class PlaylistDetailsViewModel(private val playlist: Playlist) : ViewModel() {
             timeInMinutes % 10 in 2..4 && timeInMinutes % 100 !in 12..14 -> "$timeInMinutes минуты"
             else -> "$timeInMinutes минут"
         }
+    }
+
+    private fun renderState(state: PlaylistDetailsState){
+        playlistDetailsStateLiveData.postValue(state)
     }
 }

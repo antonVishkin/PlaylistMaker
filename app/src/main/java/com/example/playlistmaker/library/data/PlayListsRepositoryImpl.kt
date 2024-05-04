@@ -9,7 +9,6 @@ import com.example.playlistmaker.library.domain.playlist.Playlist
 import com.example.playlistmaker.player.domain.Track
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.onEach
 
 class PlayListsRepositoryImpl(
     private val appDatabase: AppDatabase,
@@ -46,6 +45,16 @@ class PlayListsRepositoryImpl(
         } catch (e: Throwable) {
             return false
         }
+    }
+
+    override suspend fun removeTrackFromPlaylist(track: Track, playlist: Playlist) {
+        appDatabase.playListTrackDao()
+            .deleteTrackToPlaylist(TrackToPlaylistEntity(playlistId = playlist.id,
+                trackId = track.trackId
+            ))
+        val noTrackInPlaylists = appDatabase.playListTrackDao().countPlaylistsContainedTrack(trackId = track.trackId) == 0
+        if (noTrackInPlaylists)
+            appDatabase.playListTrackDao().deleteTrack(playListsDBConverters.map(track))
     }
 
 

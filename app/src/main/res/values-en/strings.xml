@@ -33,4 +33,7 @@
     <string name="dialog_playlist_creation_cancel_message">All unsaved data will be lost</string>
     <string name="dialog_playlist_creation_cancel_cancellation">Cancel</string>
     <string name="dialog_playlist_creation_cancel_finish">Finish</string>
+    <string name="share">Share</string>
+    <string name="edit_information">Edit Information</string>
+    <string name="remove_playlist">Remove playlist</string>
 </resources>

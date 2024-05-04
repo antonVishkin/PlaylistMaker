@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlaylistDetailsBinding
 import com.example.playlistmaker.library.domain.playlist.Playlist
+import com.example.playlistmaker.library.domain.playlistdetails.PlaylistDetailsState
 import com.example.playlistmaker.player.domain.Track
 import com.example.playlistmaker.search.ui.SearchFragment
 import com.example.playlistmaker.search.ui.TrackItemAdapter
@@ -30,6 +31,8 @@ class PlaylistDetailsFragment:Fragment() {
     private lateinit var viewModel:PlaylistDetailsViewModel
     private lateinit var trackItemAdapter:TrackItemAdapter
     private lateinit var onTrackClickDebounce: (Track) -> Unit
+    private lateinit var menuBottomSheetBehavior: BottomSheetBehavior<*>
+
 
 
     override fun onCreateView(
@@ -66,7 +69,7 @@ class PlaylistDetailsFragment:Fragment() {
         trackItemAdapter.trackItems.clear()
         trackItemAdapter.trackItems.addAll(playlist.list)
         binding.playlistRecycler.adapter = trackItemAdapter
-        val bottomSheetContainer = binding.bottomContainer
+        val bottomSheetContainer = binding.trackListBottomContainer
         val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer).apply {
             state = BottomSheetBehavior.STATE_COLLAPSED
         }
@@ -90,14 +93,41 @@ class PlaylistDetailsFragment:Fragment() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
             }
         })
+        val menuBottomSheetContainer = binding.menuBottomContainer
+        menuBottomSheetBehavior = BottomSheetBehavior.from(menuBottomSheetContainer).apply {
+            state = BottomSheetBehavior.STATE_COLLAPSED
+        }
+        menuBottomSheetBehavior.addBottomSheetCallback(object :
+            BottomSheetBehavior.BottomSheetCallback() {
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                when (newState) {
+                    BottomSheetBehavior.STATE_COLLAPSED -> {
+                        overlay.visibility = View.GONE
+                    }
+                    else -> {
+                        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                        overlay.visibility = View.VISIBLE
+                    }
+                }
+            }
+
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+            }
+        })
+
         binding.backButton.setOnClickListener {
             findNavController().popBackStack()
         }
-        showContent(playlist)
+        binding.playlistDetails.setOnClickListener {
+            menuBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        }
+        viewModel.observeState().observe(viewLifecycleOwner){render(it)}
     }
 
+
+
     @SuppressLint("SuspiciousIndentation")
-    private fun showContent(playlist: Playlist){
+    fun showContent(playlist: Playlist){
         binding.apply {
             if (!playlist.imagePath.isNullOrEmpty()){
                 playlistImage.setImageURI(Uri.parse(playlist.imagePath))
@@ -112,6 +142,14 @@ class PlaylistDetailsFragment:Fragment() {
             }
             tracksNumber.text = viewModel.makeTrackNumberText(playlist.list.size)
             playlistTimer.text = viewModel.countUniteTime()
+        }
+    }
+
+    private fun render(state: PlaylistDetailsState){
+        when(state){
+            PlaylistDetailsState.Empty -> TODO()
+            PlaylistDetailsState.Loading -> TODO()
+            is PlaylistDetailsState.Content -> showContent(state.playlist)
         }
     }
 

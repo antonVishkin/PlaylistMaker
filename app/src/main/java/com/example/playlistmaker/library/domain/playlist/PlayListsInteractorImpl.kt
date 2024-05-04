@@ -15,4 +15,8 @@ class PlayListsInteractorImpl(private val playListsRepository: PlayListsReposito
     override suspend fun addTrackToPlaylist(playlist: Playlist, track: Track): Boolean {
         return playListsRepository.addTrackToPlaylist(playlist, track)
     }
+
+    override suspend fun removeTrackFromPlaylist(track: Track, playlist: Playlist) {
+        playListsRepository.removeTrackFromPlaylist(track, playlist)
+    }
 }

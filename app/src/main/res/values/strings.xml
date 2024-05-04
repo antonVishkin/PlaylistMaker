@@ -38,4 +38,7 @@
     <string name="dialog_playlist_creation_cancel_message">Все несохраненные данные будут потеряны</string>
     <string name="dialog_playlist_creation_cancel_cancellation">Отмена</string>
     <string name="dialog_playlist_creation_cancel_finish">Завершить</string>
+    <string name="share">Поделиться</string>
+    <string name="edit_information">Редактировать информацию</string>
+    <string name="remove_playlist">Удалить плейлист</string>
 </resources>
