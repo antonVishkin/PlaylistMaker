@@ -1,6 +1,7 @@
 package com.example.playlistmaker.library.ui.playlist
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,12 +12,19 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.EmptyPlaylistFragmentBinding
 import com.example.playlistmaker.library.domain.playlist.Playlist
 import com.example.playlistmaker.library.domain.playlist.PlaylistListState
+import com.example.playlistmaker.search.ui.SearchFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistListFragment : Fragment() {
     private lateinit var binding: EmptyPlaylistFragmentBinding
     private val viewModel: PlaylistListViewModel by viewModel()
     private lateinit var playListItemAdapter: PlayListItemAdapter
+    private val onItemClicked:(Playlist) -> Unit = {
+        Log.v("PLAYLIST","on item clicked ${it.name} ")
+        val args = Bundle()
+        args.putParcelable(PLAYLIST, it)
+        findNavController().navigate(R.id.action_libraryFragment_to_playlistDetailsFragment,args)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,17 +32,20 @@ class PlaylistListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = EmptyPlaylistFragmentBinding.inflate(inflater, container, false)
-        viewModel.observeState().observe(viewLifecycleOwner) {
-            renderState(it)
-        }
-        binding.playlistsList.layoutManager = GridLayoutManager(this.context, 2)
-        playListItemAdapter = PlayListItemAdapter()
-        binding.playlistsList.adapter = playListItemAdapter
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.observeState().observe(viewLifecycleOwner) {
+            renderState(it)
+        }
+        binding.playlistsList.layoutManager = GridLayoutManager(this.context, 2)
+        Log.v("PLAYLIST","item adapter creating ")
+        playListItemAdapter = PlayListItemAdapter(onItemClicked)
+        Log.v("PLAYLIST","item adapter created ")
+
+        binding.playlistsList.adapter = playListItemAdapter
         binding.newPlaylistButton.setOnClickListener {
             findNavController().navigate(R.id.action_libraryFragment_to_playListCreationFragment)
         }
@@ -81,5 +92,6 @@ class PlaylistListFragment : Fragment() {
 
     companion object {
         fun newInstance() = PlaylistListFragment()
+        private const val PLAYLIST = "PLAYLIST"
     }
 }
