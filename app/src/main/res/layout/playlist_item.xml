@@ -12,6 +12,8 @@
         android:layout_height="160dp"
         app:layout_constraintDimensionRatio="1:1"
         android:scaleType="centerCrop"
+        android:background="@drawable/playlist_item_image_shape"
+        android:clipToOutline="true"
         />
 
     <TextView
