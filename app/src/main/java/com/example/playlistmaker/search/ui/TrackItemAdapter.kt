@@ -8,7 +8,7 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.player.domain.Track
 
 class TrackItemAdapter(
-    private val onTrackClicked: (Track) -> Unit
+    private val onTrackClicked: (Track) -> Unit,private val onLongClicked:(Track)->Unit
 ) : Adapter<TrackItemViewHolder>() {
     val trackItems = arrayListOf<Track>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackItemViewHolder {
@@ -25,6 +25,11 @@ class TrackItemAdapter(
         holder.itemView.setOnClickListener {
             track = trackItems[position]
             onTrackClicked.invoke(track!!)
+        }
+        holder.itemView.setOnLongClickListener {
+            track = trackItems[position]
+            onLongClicked.invoke(track!!)
+            return@setOnLongClickListener true
         }
     }
 

@@ -1,10 +1,12 @@
 package com.example.playlistmaker.library.ui.playlistdetails
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.playlistmaker.library.domain.playlist.Playlist
 import com.example.playlistmaker.library.domain.playlistdetails.PlaylistDetailsState
+import com.example.playlistmaker.player.domain.Track
 import com.example.playlistmaker.sharing.domain.SharingInteractor
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -53,6 +55,10 @@ class PlaylistDetailsViewModel(
                     ")\n"
         }
         sharingInteractor.shareApp(sharingText + trackListText)
+    }
+
+    fun removeTrack(track: Track){
+        Log.v("PLAYLIST","track removing")
     }
 
 

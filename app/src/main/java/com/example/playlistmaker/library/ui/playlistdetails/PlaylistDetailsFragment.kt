@@ -31,6 +31,7 @@ class PlaylistDetailsFragment:Fragment() {
     private lateinit var viewModel:PlaylistDetailsViewModel
     private lateinit var trackItemAdapter:TrackItemAdapter
     private lateinit var onTrackClickDebounce: (Track) -> Unit
+    private lateinit var onLongClicked:(Track) -> Unit
     private lateinit var menuBottomSheetBehavior: BottomSheetBehavior<*>
 
 
@@ -55,6 +56,10 @@ class PlaylistDetailsFragment:Fragment() {
                     args
                 )
             }
+        onLongClicked = {
+
+            viewModel.removeTrack(it)
+        }
         val playlist = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arguments?.getParcelable(PLAYLIST, Playlist::class.java) as Playlist
         } else {
@@ -63,9 +68,9 @@ class PlaylistDetailsFragment:Fragment() {
         viewModel = getViewModel {
             parametersOf(playlist)
         }
-        trackItemAdapter = TrackItemAdapter {
-            onTrackClickDebounce(it)
-        }
+        trackItemAdapter = TrackItemAdapter (
+            onTrackClickDebounce, onLongClicked
+        )
         trackItemAdapter.trackItems.clear()
         trackItemAdapter.trackItems.addAll(playlist.list)
         binding.playlistRecycler.adapter = trackItemAdapter
@@ -75,7 +80,8 @@ class PlaylistDetailsFragment:Fragment() {
         }
         val overlay = binding.overlay
         overlay.setOnClickListener {
-            bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            menuBottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
         }
         bottomSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
@@ -95,17 +101,16 @@ class PlaylistDetailsFragment:Fragment() {
         })
         val menuBottomSheetContainer = binding.menuBottomContainer
         menuBottomSheetBehavior = BottomSheetBehavior.from(menuBottomSheetContainer).apply {
-            state = BottomSheetBehavior.STATE_COLLAPSED
+            state = BottomSheetBehavior.STATE_HIDDEN
         }
         menuBottomSheetBehavior.addBottomSheetCallback(object :
             BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
-                    BottomSheetBehavior.STATE_COLLAPSED -> {
+                    BottomSheetBehavior.STATE_HIDDEN -> {
                         overlay.visibility = View.GONE
                     }
                     else -> {
-                        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
                         overlay.visibility = View.VISIBLE
                     }
                 }

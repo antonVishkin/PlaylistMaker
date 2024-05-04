@@ -21,6 +21,8 @@ class FavoriteListFragment : Fragment() {
     private val viewModel: FavoriteListViewModel by viewModel()
     private lateinit var favoriteItemAdapter: TrackItemAdapter
     private lateinit var onTrackClickDebounce: (Track) -> Unit
+    private var onLongClicked:(Track) -> Unit = {}
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,9 +44,7 @@ class FavoriteListFragment : Fragment() {
                     args
                 )
             }
-        favoriteItemAdapter = TrackItemAdapter {
-            onTrackClickDebounce(it)
-        }
+        favoriteItemAdapter = TrackItemAdapter (onTrackClickDebounce,onLongClicked)
         binding?.favoriteList?.adapter = favoriteItemAdapter
         viewModel.observeState().observe(viewLifecycleOwner) {
             renderState(it)
