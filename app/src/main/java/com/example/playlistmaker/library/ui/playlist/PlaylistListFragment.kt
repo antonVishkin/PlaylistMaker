@@ -20,7 +20,6 @@ class PlaylistListFragment : Fragment() {
     private val viewModel: PlaylistListViewModel by viewModel()
     private lateinit var playListItemAdapter: PlayListItemAdapter
     private val onItemClicked:(Playlist) -> Unit = {
-        Log.v("PLAYLIST","on item clicked ${it.name} ")
         val args = Bundle()
         args.putParcelable(PLAYLIST, it)
         findNavController().navigate(R.id.action_libraryFragment_to_playlistDetailsFragment,args)
@@ -37,19 +36,17 @@ class PlaylistListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.observeState().observe(viewLifecycleOwner) {
-            renderState(it)
-        }
         binding.playlistsList.layoutManager = GridLayoutManager(this.context, 2)
-        Log.v("PLAYLIST","item adapter creating ")
         playListItemAdapter = PlayListItemAdapter(onItemClicked)
-        Log.v("PLAYLIST","item adapter created ")
-
         binding.playlistsList.adapter = playListItemAdapter
         binding.newPlaylistButton.setOnClickListener {
             findNavController().navigate(R.id.action_libraryFragment_to_playListCreationFragment)
         }
+        viewModel.observeState().observe(viewLifecycleOwner) {
+            renderState(it)
+        }
         viewModel.fillData()
+
     }
 
     private fun renderState(state: PlaylistListState) {

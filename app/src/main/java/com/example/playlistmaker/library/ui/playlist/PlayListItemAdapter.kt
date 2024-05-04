@@ -24,7 +24,6 @@ class PlayListItemAdapter(private val onItemClicked: (Playlist) -> Unit) :
     override fun onBindViewHolder(holder: PlayListItemViewHolder, position: Int) {
         holder.bind(playListsList[position])
         holder.itemView.setOnClickListener {
-            Log.v("PLAYLIST","clicked to playlist $position")
             val playlist = playListsList[position]
             onItemClicked.invoke(playlist)
         }

@@ -1,11 +1,17 @@
 package com.example.playlistmaker.library.ui.playlistdetails
 
+import android.annotation.SuppressLint
+import android.media.Image
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.playlistmaker.databinding.FragmentPlaylistDetailsBinding
 import com.example.playlistmaker.library.domain.playlist.Playlist
 import com.example.playlistmaker.player.domain.Track
@@ -58,10 +64,9 @@ class PlaylistDetailsFragment:Fragment() {
             BottomSheetBehavior.BottomSheetCallback() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
-                    BottomSheetBehavior.STATE_HIDDEN,BottomSheetBehavior.STATE_COLLAPSED -> {
+                    BottomSheetBehavior.STATE_COLLAPSED -> {
                         overlay.visibility = View.GONE
                     }
-
                     else -> {
                         overlay.visibility = View.VISIBLE
                     }
@@ -69,10 +74,31 @@ class PlaylistDetailsFragment:Fragment() {
             }
 
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-
             }
         })
+        binding.backButton.setOnClickListener {
+            findNavController().popBackStack()
+        }
+        showContent(playlist)
+    }
 
+    @SuppressLint("SuspiciousIndentation")
+    private fun showContent(playlist: Playlist){
+        binding.apply {
+            if (!playlist.imagePath.isNullOrEmpty()){
+                playlistImage.setImageURI(Uri.parse(playlist.imagePath))
+                playlistImage.scaleType = ImageView.ScaleType.CENTER_CROP
+            }
+            playlistName.text = playlist.name
+            if (playlist.description.isNullOrEmpty())
+                playlistDescription.visibility = View.GONE
+            else {
+                playlistDescription.visibility = View.VISIBLE
+                playlistDescription.text = playlist.description
+            }
+            tracksNumber.text = viewModel.makeTrackNumberText(playlist.list.size)
+            playlistTimer.text = viewModel.countUniteTime()
+        }
     }
 
 companion object{

@@ -18,7 +18,7 @@ class RootActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.playListCreationFragment, R.id.audioPlayerFragment -> {
+                R.id.playListCreationFragment, R.id.audioPlayerFragment,R.id.playlistDetailsFragment -> {
                     binding.bottomNavigationView.visibility = View.GONE
                 }
 
