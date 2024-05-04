@@ -11,11 +11,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlaylistDetailsBinding
 import com.example.playlistmaker.library.domain.playlist.Playlist
 import com.example.playlistmaker.player.domain.Track
+import com.example.playlistmaker.search.ui.SearchFragment
 import com.example.playlistmaker.search.ui.TrackItemAdapter
+import com.example.playlistmaker.util.debounce
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.core.parameter.parametersOf
@@ -25,6 +29,7 @@ class PlaylistDetailsFragment:Fragment() {
     private val binding get() = _binding!!
     private lateinit var viewModel:PlaylistDetailsViewModel
     private lateinit var trackItemAdapter:TrackItemAdapter
+    private lateinit var onTrackClickDebounce: (Track) -> Unit
 
 
     override fun onCreateView(
@@ -38,6 +43,15 @@ class PlaylistDetailsFragment:Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        onTrackClickDebounce =
+            debounce<Track>(CLICK_DEBOUNCE_DELAY, viewLifecycleOwner.lifecycleScope, false) {
+                val args = Bundle()
+                args.putParcelable(TRACK, it)
+                findNavController().navigate(
+                    R.id.action_playlistDetailsFragment_to_audioPlayerFragment,
+                    args
+                )
+            }
         val playlist = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arguments?.getParcelable(PLAYLIST, Playlist::class.java) as Playlist
         } else {
@@ -47,7 +61,7 @@ class PlaylistDetailsFragment:Fragment() {
             parametersOf(playlist)
         }
         trackItemAdapter = TrackItemAdapter {
-            //TODO: onclicked
+            onTrackClickDebounce(it)
         }
         trackItemAdapter.trackItems.clear()
         trackItemAdapter.trackItems.addAll(playlist.list)
@@ -103,5 +117,7 @@ class PlaylistDetailsFragment:Fragment() {
 
 companion object{
     private const val PLAYLIST = "PLAYLIST"
+    private const val TRACK = "TRACK"
+    private const val CLICK_DEBOUNCE_DELAY = 1000L
 }
 }
