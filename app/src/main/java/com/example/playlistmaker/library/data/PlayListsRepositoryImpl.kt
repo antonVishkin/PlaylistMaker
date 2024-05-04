@@ -28,9 +28,10 @@ class PlayListsRepositoryImpl(
 
     override suspend fun getPlaylistsList(): Flow<List<Playlist>> = flow {
         val playListsList = appDatabase.playListsDao().getPlayListsList().map {
-            val trackList = appDatabase.playListTrackDao().getTracksIdByPlaylistId(it.id).map {
+            var trackList = appDatabase.playListTrackDao().getTracksIdByPlaylistId(it.id).map {
                 playListsDBConverters.map(appDatabase.playListTrackDao().getTracksById(it))
             }
+            if (trackList.isNullOrEmpty()) trackList = listOf()
             playListsDBConverters.map(it, trackList)
         }
         emit(playListsList)
