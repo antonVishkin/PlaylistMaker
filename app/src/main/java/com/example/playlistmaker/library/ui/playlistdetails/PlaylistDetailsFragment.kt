@@ -119,12 +119,22 @@ class PlaylistDetailsFragment:Fragment() {
             findNavController().popBackStack()
         }
         binding.playlistDetails.setOnClickListener {
+            if (viewModel.observeState().value is PlaylistDetailsState.Content)
+                menuBottomSheetContent((viewModel.observeState().value as PlaylistDetailsState.Content).playlist)
             menuBottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
         viewModel.observeState().observe(viewLifecycleOwner){render(it)}
+        binding.shareBottom.setOnClickListener {
+            sharePlaylist()
+        }
+        binding.playlistShare.setOnClickListener {
+            sharePlaylist()
+        }
     }
 
-
+    private fun sharePlaylist(){
+        viewModel.sharePlaylist()
+    }
 
     @SuppressLint("SuspiciousIndentation")
     fun showContent(playlist: Playlist){
@@ -142,6 +152,16 @@ class PlaylistDetailsFragment:Fragment() {
             }
             tracksNumber.text = viewModel.makeTrackNumberText(playlist.list.size)
             playlistTimer.text = viewModel.countUniteTime()
+        }
+    }
+
+    private fun menuBottomSheetContent(playlist: Playlist){
+        binding.apply {
+            if (!playlist.imagePath.isNullOrEmpty())
+                playlistBottomImage.setImageURI(Uri.parse(playlist.imagePath))
+            playlistBottomName.text = playlist.name
+            trackBottomNumber.text = viewModel.makeTrackNumberText(playlist.list.size)
+
         }
     }
 

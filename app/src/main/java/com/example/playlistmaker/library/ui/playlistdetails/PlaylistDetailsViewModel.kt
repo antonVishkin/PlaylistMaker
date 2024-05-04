@@ -5,11 +5,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.playlistmaker.library.domain.playlist.Playlist
 import com.example.playlistmaker.library.domain.playlistdetails.PlaylistDetailsState
+import com.example.playlistmaker.sharing.domain.SharingInteractor
+import java.text.SimpleDateFormat
+import java.util.Locale
 
-class PlaylistDetailsViewModel(private val playlist: Playlist) : ViewModel() {
+class PlaylistDetailsViewModel(
+    private val playlist: Playlist,
+    private val sharingInteractor: SharingInteractor
+) : ViewModel() {
 
     private val playlistDetailsStateLiveData = MutableLiveData<PlaylistDetailsState>()
-    fun observeState():LiveData<PlaylistDetailsState> = playlistDetailsStateLiveData
+    fun observeState(): LiveData<PlaylistDetailsState> = playlistDetailsStateLiveData
+
     init {
         renderState(PlaylistDetailsState.Content(playlist))
     }
@@ -33,7 +40,23 @@ class PlaylistDetailsViewModel(private val playlist: Playlist) : ViewModel() {
         }
     }
 
-    private fun renderState(state: PlaylistDetailsState){
+    fun sharePlaylist() {
+        var sharingText = playlist.name + "\n"
+        if (!playlist.description.isNullOrEmpty())
+            sharingText = sharingText + playlist.description + "\n"
+        sharingText = sharingText + makeTrackNumberText(playlist.list.size) + "\n"
+        val trackListText = playlist.list.foldIndexed("") { index, acc, track ->
+            acc + index + "." + track.artistName + " - " + track.trackName + " (" + SimpleDateFormat(
+                "mm:ss",
+                Locale.getDefault()
+            ).format(track.trackTimeMillis.toLong()) +
+                    ")\n"
+        }
+        sharingInteractor.shareApp(sharingText + trackListText)
+    }
+
+
+    private fun renderState(state: PlaylistDetailsState) {
         playlistDetailsStateLiveData.postValue(state)
     }
 }
