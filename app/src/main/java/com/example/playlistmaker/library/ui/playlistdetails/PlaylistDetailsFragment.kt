@@ -185,7 +185,7 @@ class PlaylistDetailsFragment : Fragment() {
                 playlistDescription.text = playlist.description
             }
             tracksNumber.text = viewModel.makeTrackNumberText(playlist.list.size)
-            playlistTimer.text = viewModel.countUniteTime()
+            playlistTimer.text = viewModel.countUniteTime(playlist.list)
         }
     }
 

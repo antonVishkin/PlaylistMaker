@@ -35,9 +35,9 @@ class PlaylistDetailsViewModel(
         }
     }
 
-    fun countUniteTime(): String {
+    fun countUniteTime(trackList:List<Track>): String {
         val time =
-            playlist.list.map { it.trackTimeMillis }.fold(0) { acc: Int, time: Int -> acc + time }
+            trackList.map { it.trackTimeMillis }.fold(0) { acc: Int, time: Int -> acc + time }
         val timeInMinutes = time / 60000
         return when {
             timeInMinutes % 10 == 1 && timeInMinutes % 100 != 11 -> "$timeInMinutes минута"
