@@ -46,9 +46,13 @@ class PlayListEditFragment : PlayListCreationFragment() {
         val pickMedia =
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 if (uri != null) {
+                    binding.playlistImagePlaceholder.visibility = View.GONE
+                    binding.playlistImage.visibility = View.VISIBLE
                     binding.playlistImage.setImageURI(uri)
                     imageUri = uri
                 } else {
+                    binding.playlistImagePlaceholder.visibility = View.VISIBLE
+                    binding.playlistImage.visibility = View.GONE
                     Log.d("PhotoPicker", "No media selected")
                 }
             }
@@ -66,13 +70,18 @@ class PlayListEditFragment : PlayListCreationFragment() {
             )
             findNavController().popBackStack()
         }
+        binding.navigationBar.setText(R.string.playlist_edit_navbar)
         showContent(playlist)
     }
 
     private fun showContent(playlist: Playlist) {
         binding.apply {
             if (!playlist.imagePath.isNullOrEmpty()){
+                playlistImagePlaceholder.visibility = View.GONE
                 playlistImage.setImageURI(Uri.parse(playlist.imagePath))
+            } else {
+                playlistImagePlaceholder.visibility = View.VISIBLE
+                playlistImage.visibility = View.GONE
             }
             nameEditText.setText(playlist.name)
             descriptionEditText.setText(playlist.description)

@@ -51,4 +51,5 @@
     <string name="dialog_remove_playlist_negative_button">Нет</string>
     <string name="dialog_remove_playlist_positive_button">Да</string>
     <string name="playlist_edit_save_button">Сохранить</string>
+    <string name="playlist_edit_navbar">Редактировать</string>
 </resources>

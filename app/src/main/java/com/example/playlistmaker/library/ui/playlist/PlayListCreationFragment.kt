@@ -77,8 +77,10 @@ open class PlayListCreationFragment : Fragment() {
             registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
                 if (uri != null) {
                     binding.playlistImage.setImageURI(uri)
+                    binding.playlistImagePlaceholder.visibility = View.GONE
                     imageUri = uri
                 } else {
+                    binding.playlistImagePlaceholder.visibility = View.VISIBLE
                     Log.d("PhotoPicker", "No media selected")
                 }
             }
