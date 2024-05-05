@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -165,9 +166,12 @@ class PlaylistDetailsFragment : Fragment() {
 
     @SuppressLint("SuspiciousIndentation")
     fun showContent(playlist: Playlist) {
+        Log.v("PLAYLIST","${playlist.list}")
         trackItemAdapter.trackItems.clear()
         trackItemAdapter.trackItems.addAll(playlist.list)
         trackItemAdapter.notifyDataSetChanged()
+        if (playlist.list.isEmpty())
+            Toast.makeText(requireContext(),R.string.no_track_in_playlist_toast,Toast.LENGTH_SHORT).show()
         binding.apply {
             if (!playlist.imagePath.isNullOrEmpty()) {
                 playlistImage.setImageURI(Uri.parse(playlist.imagePath))
@@ -211,12 +215,14 @@ class PlaylistDetailsFragment : Fragment() {
     }
 
     private fun showRemovePlaylistDialog() {
+        val playlistName = (viewModel.observeState().value as PlaylistDetailsState.Content).playlist.name
+        val messageText = getString(R.string.dialog_remove_playlist_message,playlistName)
         val dialog =
             MaterialAlertDialogBuilder(
                 requireContext(),
                 R.style.AlertDialogTheme
             ).setTitle(R.string.dialog_remove_playlist_title)
-                .setMessage(R.string.dialog_remove_playlist_message)
+                .setMessage(messageText)
                 .setNegativeButton(R.string.dialog_remove_playlist_negative_button) { dialog, which ->
                     dialog.cancel()
                 }
@@ -229,7 +235,6 @@ class PlaylistDetailsFragment : Fragment() {
     private fun render(state: PlaylistDetailsState) {
         when (state) {
             PlaylistDetailsState.Empty -> findNavController().popBackStack()
-            PlaylistDetailsState.Loading -> TODO()
             is PlaylistDetailsState.Content -> showContent(state.playlist)
         }
     }

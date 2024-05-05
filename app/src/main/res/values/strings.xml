@@ -47,9 +47,10 @@
     <string name="track_removing_dialog_positive">Удалить</string>
     <string name="no_tracks_in_playlist_share_toast">В этом плейлисте нет списка треков, которым можно поделиться</string>
     <string name="dialog_remove_playlist_title">Удалить плейлист</string>
-    <string name="dialog_remove_playlist_message">Хотите удалить плейлист?</string>
+    <string name="dialog_remove_playlist_message">Хотите удалить плейлист %1$s ?</string>
     <string name="dialog_remove_playlist_negative_button">Нет</string>
     <string name="dialog_remove_playlist_positive_button">Да</string>
     <string name="playlist_edit_save_button">Сохранить</string>
     <string name="playlist_edit_navbar">Редактировать</string>
+    <string name="no_track_in_playlist_toast">В этом плейлисте нет треков</string>
 </resources>
