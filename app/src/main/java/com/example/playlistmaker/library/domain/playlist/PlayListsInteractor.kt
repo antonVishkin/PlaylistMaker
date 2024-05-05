@@ -14,4 +14,8 @@ interface PlayListsInteractor {
 
     suspend fun removePlaylist(playlist: Playlist)
 
+    suspend fun updatePlaylist(playlist: Playlist)
+
+    suspend fun getPlayListById(playlistId: Int):Playlist
+
 }

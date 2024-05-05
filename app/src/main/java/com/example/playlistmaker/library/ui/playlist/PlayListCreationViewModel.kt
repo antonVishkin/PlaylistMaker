@@ -13,13 +13,13 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 
-class PlayListCreationViewModel(
+open class PlayListCreationViewModel(
     private val playListsInteractor: PlayListsInteractor,
     private val filesInteractor: FilesInteractor,
 ) :
     ViewModel() {
 
-    fun createPlaylist(name: String, description: String, imageUri: Uri?) {
+    open fun createPlaylist(name: String, description: String, imageUri: Uri?) {
         viewModelScope.launch {
             val imagePath = if (imageUri != null) filesInteractor.addFileToPrivateStorage(imageUri) else ""
             playListsInteractor.addPlayList(

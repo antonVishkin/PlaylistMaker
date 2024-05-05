@@ -82,6 +82,14 @@ class PlaylistDetailsViewModel(
         }
     }
 
+    fun refreshPlaylist(){
+        viewModelScope.launch{
+            renderState(
+                PlaylistDetailsState.Content(playListsInteractor.getPlayListById(playlist.id))
+            )
+            }
+    }
+
 
     private fun renderState(state: PlaylistDetailsState) {
         playlistDetailsStateLiveData.postValue(state)

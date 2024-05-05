@@ -31,4 +31,5 @@ interface PlayListTrackDao {
 
     @Delete
     suspend fun deleteTrack(playlistsTrackEntity: PlaylistsTrackEntity)
+
 }

@@ -79,6 +79,16 @@ class PlayListsRepositoryImpl(
         appDatabase.playListsDao().deletePlaylist(playListsDBConverters.map(playlist))
     }
 
+    override suspend fun updatePlaylist(playlist: Playlist) {
+        appDatabase.playListsDao().updatePlaylist(playListsDBConverters.map(playlist = playlist))
+    }
+
+    override suspend fun getPlayListById(playlistId: Int): Playlist {
+        val playlistEntity = appDatabase.playListsDao().getPlayListsById(playlistId)
+        return playListsDBConverters.map(playlistEntity,getTrackListByPlaylistId(playlistId))
+    }
+
+
     private suspend fun getTrackListByPlaylistId(playlistId: Int): List<Track> {
         return appDatabase.playListTrackDao().getTracksIdByPlaylistId(playlistId).map {
             playListsDBConverters.map(appDatabase.playListTrackDao().getTracksById(it))

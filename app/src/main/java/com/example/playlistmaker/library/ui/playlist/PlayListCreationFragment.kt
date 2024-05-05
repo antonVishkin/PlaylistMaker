@@ -20,10 +20,10 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
-class PlayListCreationFragment : Fragment() {
-    private var _binding: FragmentPlaylistCreationBinding? = null
-    private val binding get() = _binding!!
-    private val viewModel: PlayListCreationViewModel by viewModel()
+open class PlayListCreationFragment : Fragment() {
+    var _binding: FragmentPlaylistCreationBinding? = null
+    val binding get() = _binding!!
+    open val viewModel: PlayListCreationViewModel by viewModel()
     private var imageUri: Uri? = null
     private val backPressedCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
