@@ -9,6 +9,7 @@ import com.example.playlistmaker.library.domain.playlist.Playlist
 import com.example.playlistmaker.player.domain.Track
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onEach
 
 class PlayListsRepositoryImpl(
     private val appDatabase: AppDatabase,
@@ -27,7 +28,12 @@ class PlayListsRepositoryImpl(
 
     override suspend fun getPlaylistsList(): Flow<List<Playlist>> = flow {
         val playListsList = appDatabase.playListsDao().getPlayListsList().map {
-            val trackList = getTrackListByPlaylistId(it.id)
+            var trackList:List<Track>
+            try {
+                trackList = getTrackListByPlaylistId(it.id)
+            } catch (e:Exception){
+                trackList = listOf()
+            }
             playListsDBConverters.map(it, trackList)
         }
         emit(playListsList)
