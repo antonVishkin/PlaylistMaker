@@ -156,7 +156,7 @@ class PlaylistDetailsFragment : Fragment() {
                 Toast.makeText(
                     requireContext(),
                     R.string.no_tracks_in_playlist_share_toast,
-                    Toast.LENGTH_SHORT
+                    Toast.LENGTH_LONG
                 ).show()
             else
                 viewModel.sharePlaylist()
