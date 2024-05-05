@@ -1,4 +1,4 @@
-package com.example.playlistmaker.library.domain
+package com.example.playlistmaker.library.domain.favorites
 
 import com.example.playlistmaker.player.domain.Track
 

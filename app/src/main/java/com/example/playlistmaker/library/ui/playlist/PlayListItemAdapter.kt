@@ -1,0 +1,25 @@
+package com.example.playlistmaker.library.ui.playlist
+
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.R
+import com.example.playlistmaker.library.domain.playlist.Playlist
+
+
+class PlayListItemAdapter() : RecyclerView.Adapter<PlayListItemViewHolder>() {
+    val playListsList = arrayListOf<Playlist>()
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayListItemViewHolder {
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.playlist_item, parent, false)
+        return PlayListItemViewHolder(view)
+    }
+
+    override fun getItemCount(): Int {
+        return playListsList.size
+    }
+
+    override fun onBindViewHolder(holder: PlayListItemViewHolder, position: Int) {
+        holder.bind(playListsList[position])
+    }
+}

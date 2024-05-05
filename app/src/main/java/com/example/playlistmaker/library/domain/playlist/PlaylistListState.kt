@@ -1,4 +1,4 @@
-package com.example.playlistmaker.library.domain
+package com.example.playlistmaker.library.domain.playlist
 
 sealed interface PlaylistListState {
     object Loading : PlaylistListState

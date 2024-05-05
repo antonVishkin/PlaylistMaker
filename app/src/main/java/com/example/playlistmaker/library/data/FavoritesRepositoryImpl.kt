@@ -3,7 +3,7 @@ package com.example.playlistmaker.library.data
 import com.example.playlistmaker.library.data.converters.TrackDBConverters
 import com.example.playlistmaker.library.data.db.AppDatabase
 import com.example.playlistmaker.library.data.db.TrackEntity
-import com.example.playlistmaker.library.domain.FavoritesRepository
+import com.example.playlistmaker.library.domain.favorites.FavoritesRepository
 import com.example.playlistmaker.player.domain.Track
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -26,7 +26,8 @@ class FavoritesRepositoryImpl(
     }
 
     override fun getFavorites(): Flow<List<Track>> = flow {
-        val trackList = appDatabase.trackDao().getFavoriteList().sortedByDescending { it.indexAdding }
+        val trackList =
+            appDatabase.trackDao().getFavoriteList().sortedByDescending { it.indexAdding }
         emit(convertFromTrackEntity(trackList))
     }
 

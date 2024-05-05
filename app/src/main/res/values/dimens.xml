@@ -15,6 +15,7 @@
     <dimen name="minimum_margin">8dp</dimen>
     <dimen name="small_margin">12dp</dimen>
     <dimen name="standard_margin">16dp</dimen>
+    <dimen name="double_standard_margin">32dp</dimen>
     <dimen name="medium_margin">20dp</dimen>
     <dimen name="extra_medium_margin">24dp</dimen>
     <dimen name="thirty_margin">39dp</dimen>

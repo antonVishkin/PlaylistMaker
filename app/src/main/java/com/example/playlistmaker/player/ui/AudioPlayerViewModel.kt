@@ -6,7 +6,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.R
-import com.example.playlistmaker.library.domain.FavoritesInteractor
+import com.example.playlistmaker.library.domain.favorites.FavoritesInteractor
+import com.example.playlistmaker.library.domain.playlist.PlayListsInteractor
+import com.example.playlistmaker.library.domain.playlist.Playlist
+import com.example.playlistmaker.library.domain.playlist.PlaylistListState
 import com.example.playlistmaker.player.domain.MediaPlayerInteractor
 import com.example.playlistmaker.player.domain.PlayerStatus
 import com.example.playlistmaker.player.domain.Track
@@ -22,7 +25,8 @@ class AudioPlayerViewModel(
     private val track: Track,
     application: Application,
     private val mediaPlayer: MediaPlayerInteractor,
-    private val favoritesInteractor: FavoritesInteractor
+    private val favoritesInteractor: FavoritesInteractor,
+    private val playListsInteractor: PlayListsInteractor
 ) :
     AndroidViewModel(application) {
     private var timerJob: Job? = null
@@ -31,20 +35,43 @@ class AudioPlayerViewModel(
     private val timerLiveData =
         MutableLiveData(getApplication<Application>().getString(R.string.timer_zero))
     private val isFavoriteLiveData = MutableLiveData(track.isFavorite)
+    private val playlistListState = MutableLiveData<PlaylistListState>()
+    private val _addingResultLiveData = MutableLiveData<Pair<String,Boolean>>()
+    val addingResultLiveData: LiveData<Pair<String,Boolean>> get() = _addingResultLiveData
 
     fun observePlayerState(): LiveData<PlayerState> = stateLiveData
     fun observeTimer(): LiveData<String> = timerLiveData
     fun observeIsFavorite(): LiveData<Boolean> = isFavoriteLiveData
+    fun observePlaylistListState(): LiveData<PlaylistListState> = playlistListState
 
     init {
         viewModelScope.launch {
             track.isFavorite = favoritesInteractor.isFavorite(track.trackId) > 0
             isFavoriteLiveData.postValue(track.isFavorite)
+            getPlaylistList()
+        }
+
+    }
+
+    fun getPlaylistList() {
+        playlistListState.postValue(PlaylistListState.Loading)
+        viewModelScope.launch {
+            playListsInteractor.getPlaylistsList().collect {
+                if (it.isEmpty())
+                    renderPlaylistsState(PlaylistListState.Empty)
+                else
+                    renderPlaylistsState(PlaylistListState.Content(it))
+            }
         }
     }
 
-    companion object {
-        private const val DELAY = 300L
+    fun addToPlaylist(playlist: Playlist) {
+        viewModelScope.launch {
+            if (playListsInteractor.addTrackToPlaylist(playlist, track))
+                _addingResultLiveData.postValue(Pair("Добавлено в плейлист ${playlist.name}",true))
+            else
+                _addingResultLiveData.postValue(Pair("Трек уже добавлен в плейлист ${playlist.name}",false))
+        }
     }
 
     fun preparePlayer() {
@@ -67,6 +94,10 @@ class AudioPlayerViewModel(
 
     private fun renderState(state: PlayerState) {
         stateLiveData.postValue(state)
+    }
+
+    private fun renderPlaylistsState(state: PlaylistListState) {
+        playlistListState.postValue(state)
     }
 
     fun playClick() {
@@ -120,5 +151,9 @@ class AudioPlayerViewModel(
         renderState(PlayerState.Pause)
         timerJob?.cancel()
         timerLiveData.postValue(getApplication<Application>().getString(R.string.timer_zero))
+    }
+
+    companion object {
+        private const val DELAY = 300L
     }
 }

@@ -25,4 +25,12 @@
     <string name="new_playlist">New playlist</string>
     <string name="favorite_traks">Favorite tracks</string>
     <string name="playlists">Playlists</string>
+    <string name="create">Create</string>
+    <string name="playlist_name_edit">Name*</string>
+    <string name="playlist_description">Description</string>
+    <string name="add_to_playlist">Add to playlist</string>
+    <string name="dialog_playlist_creation_cancel_tittle">Cancel playlist creation?</string>
+    <string name="dialog_playlist_creation_cancel_message">All unsaved data will be lost</string>
+    <string name="dialog_playlist_creation_cancel_cancellation">Cancel</string>
+    <string name="dialog_playlist_creation_cancel_finish">Finish</string>
 </resources>

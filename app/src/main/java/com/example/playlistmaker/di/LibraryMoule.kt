@@ -1,21 +1,36 @@
 package com.example.playlistmaker.di
 
-import com.example.playlistmaker.library.domain.FavoritesInteractor
-import com.example.playlistmaker.library.domain.FavoritesInteractorImpl
-import com.example.playlistmaker.library.ui.FavoriteListViewModel
-import com.example.playlistmaker.library.ui.PlaylistListViewModel
+import com.example.playlistmaker.library.domain.favorites.FavoritesInteractor
+import com.example.playlistmaker.library.domain.favorites.FavoritesInteractorImpl
+import com.example.playlistmaker.library.domain.playlist.FilesInteractor
+import com.example.playlistmaker.library.domain.playlist.FilesInteractorImpl
+import com.example.playlistmaker.library.domain.playlist.FilesRepository
+import com.example.playlistmaker.library.domain.playlist.PlayListsInteractor
+import com.example.playlistmaker.library.domain.playlist.PlayListsInteractorImpl
+import com.example.playlistmaker.library.ui.favorites.FavoriteListViewModel
+import com.example.playlistmaker.library.ui.playlist.PlayListCreationViewModel
+import com.example.playlistmaker.library.ui.playlist.PlaylistListViewModel
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val libraryModule = module {
 
     viewModel {
-        PlaylistListViewModel()
+        PlaylistListViewModel(get())
     }
     viewModel {
         FavoriteListViewModel(get())
     }
 
+    viewModel {
+        PlayListCreationViewModel( get(),get())
+    }
+
     single<FavoritesInteractor> { FavoritesInteractorImpl(get()) }
+
+    single<PlayListsInteractor> { PlayListsInteractorImpl(get()) }
+
+    single<FilesInteractor> { FilesInteractorImpl(get()) }
 
 }

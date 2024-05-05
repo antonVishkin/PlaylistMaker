@@ -18,6 +18,6 @@ val playerModule = module {
     }
     factory<MediaPlayerInteractor> { MediaPlayerInteractorImpl(get()) }
     viewModel { (track: Track) ->
-        AudioPlayerViewModel(track = track, androidApplication(), get(), get())
+        AudioPlayerViewModel(track = track, androidApplication(), get(), get(), get())
     }
 }
