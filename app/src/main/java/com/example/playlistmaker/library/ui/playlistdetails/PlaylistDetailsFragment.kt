@@ -143,6 +143,9 @@ class PlaylistDetailsFragment:Fragment() {
 
     @SuppressLint("SuspiciousIndentation")
     fun showContent(playlist: Playlist){
+        trackItemAdapter.trackItems.clear()
+        trackItemAdapter.trackItems.addAll(playlist.list)
+        trackItemAdapter.notifyDataSetChanged()
         binding.apply {
             if (!playlist.imagePath.isNullOrEmpty()){
                 playlistImage.setImageURI(Uri.parse(playlist.imagePath))

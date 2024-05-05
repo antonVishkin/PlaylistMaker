@@ -29,7 +29,7 @@ val libraryModule = module {
         PlayListCreationViewModel( get(),get())
     }
 
-    viewModel {(playList:Playlist) -> PlaylistDetailsViewModel(playList,get()) }
+    viewModel {(playList:Playlist) -> PlaylistDetailsViewModel(playList,get(),get()) }
 
     single<FavoritesInteractor> { FavoritesInteractorImpl(get()) }
 

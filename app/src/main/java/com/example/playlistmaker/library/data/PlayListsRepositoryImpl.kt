@@ -27,9 +27,7 @@ class PlayListsRepositoryImpl(
 
     override suspend fun getPlaylistsList(): Flow<List<Playlist>> = flow {
         val playListsList = appDatabase.playListsDao().getPlayListsList().map {
-            val trackList = appDatabase.playListTrackDao().getTracksIdByPlaylistId(it.id).map {
-                playListsDBConverters.map(appDatabase.playListTrackDao().getTracksById(it))
-            }
+            val trackList = getTrackListByPlaylistId(it.id)
             playListsDBConverters.map(it, trackList)
         }
         emit(playListsList)
@@ -47,15 +45,30 @@ class PlayListsRepositoryImpl(
         }
     }
 
-    override suspend fun removeTrackFromPlaylist(track: Track, playlist: Playlist) {
+    override suspend fun removeTrackFromPlaylist(track: Track, playlist: Playlist): Playlist {
         appDatabase.playListTrackDao()
-            .deleteTrackToPlaylist(TrackToPlaylistEntity(playlistId = playlist.id,
-                trackId = track.trackId
-            ))
-        val noTrackInPlaylists = appDatabase.playListTrackDao().countPlaylistsContainedTrack(trackId = track.trackId) == 0
+            .deleteTrackToPlaylist(
+                TrackToPlaylistEntity(
+                    playlistId = playlist.id,
+                    trackId = track.trackId
+                )
+            )
+        val noTrackInPlaylists = appDatabase.playListTrackDao()
+            .countPlaylistsContainedTrack(trackId = track.trackId) == 0
         if (noTrackInPlaylists)
             appDatabase.playListTrackDao().deleteTrack(playListsDBConverters.map(track))
+        return Playlist(
+            playlist.id,
+            playlist.name,
+            playlist.description,
+            playlist.imagePath,
+            getTrackListByPlaylistId(playlistId = playlist.id)
+        )
     }
 
-
+    private suspend fun getTrackListByPlaylistId(playlistId: Int): List<Track> {
+        return appDatabase.playListTrackDao().getTracksIdByPlaylistId(playlistId).map {
+            playListsDBConverters.map(appDatabase.playListTrackDao().getTracksById(it))
+        }
+    }
 }

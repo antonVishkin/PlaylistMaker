@@ -4,16 +4,20 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.library.domain.playlist.PlayListsInteractor
 import com.example.playlistmaker.library.domain.playlist.Playlist
 import com.example.playlistmaker.library.domain.playlistdetails.PlaylistDetailsState
 import com.example.playlistmaker.player.domain.Track
 import com.example.playlistmaker.sharing.domain.SharingInteractor
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class PlaylistDetailsViewModel(
     private val playlist: Playlist,
-    private val sharingInteractor: SharingInteractor
+    private val sharingInteractor: SharingInteractor,
+    private val playListsInteractor: PlayListsInteractor,
 ) : ViewModel() {
 
     private val playlistDetailsStateLiveData = MutableLiveData<PlaylistDetailsState>()
@@ -57,8 +61,18 @@ class PlaylistDetailsViewModel(
         sharingInteractor.shareApp(sharingText + trackListText)
     }
 
-    fun removeTrack(track: Track){
-        Log.v("PLAYLIST","track removing")
+    fun removeTrack(track: Track) {
+        Log.v("PLAYLIST", "track removing")
+        viewModelScope.launch {
+            renderState(
+                PlaylistDetailsState.Content(
+                    playListsInteractor.removeTrackFromPlaylist(
+                        track,
+                        playlist
+                    )
+                )
+            )
+        }
     }
 
 

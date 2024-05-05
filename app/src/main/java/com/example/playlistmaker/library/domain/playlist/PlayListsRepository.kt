@@ -10,5 +10,5 @@ interface PlayListsRepository {
 
     suspend fun addTrackToPlaylist(playlist: Playlist, track: Track): Boolean
 
-    suspend fun removeTrackFromPlaylist(track: Track,playlist: Playlist)
+    suspend fun removeTrackFromPlaylist(track: Track,playlist: Playlist):Playlist
 }
