@@ -36,4 +36,13 @@
     <string name="share">Share</string>
     <string name="edit_information">Edit Information</string>
     <string name="remove_playlist">Remove playlist</string>
+    <string name="track_removing_dialog_title">Remove track</string>
+    <string name="track_removing_dialog_message">Are you sure you want to remove the track from the playlist?</string>
+    <string name="track_removing_dialog_negative">Cancel</string>
+    <string name="track_removing_dialog_positive">Remove</string>
+    <string name="no_tracks_in_playlist_share_toast">This playlist does not have a list of tracks to share</string>
+    <string name="dialog_remove_playlist_title">Remove playlist</string>
+    <string name="dialog_remove_playlist_message">" Want to delete a playlist?"</string>
+    <string name="dialog_remove_playlist_negative_button">No</string>
+    <string name="dialog_remove_playlist_positive_button">Yes</string>
 </resources>

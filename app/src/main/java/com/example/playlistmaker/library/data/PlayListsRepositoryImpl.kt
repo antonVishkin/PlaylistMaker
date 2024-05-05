@@ -72,6 +72,13 @@ class PlayListsRepositoryImpl(
         )
     }
 
+    override suspend fun removePlaylist(playlist: Playlist){
+        playlist.list.forEach {
+            removeTrackFromPlaylist(it,playlist)
+        }
+        appDatabase.playListsDao().deletePlaylist(playListsDBConverters.map(playlist))
+    }
+
     private suspend fun getTrackListByPlaylistId(playlistId: Int): List<Track> {
         return appDatabase.playListTrackDao().getTracksIdByPlaylistId(playlistId).map {
             playListsDBConverters.map(appDatabase.playListTrackDao().getTracksById(it))

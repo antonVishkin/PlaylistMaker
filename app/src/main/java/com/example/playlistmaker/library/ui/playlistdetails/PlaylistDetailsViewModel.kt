@@ -75,6 +75,13 @@ class PlaylistDetailsViewModel(
         }
     }
 
+    fun removePlaylist() {
+        viewModelScope.launch {
+            playListsInteractor.removePlaylist((playlistDetailsStateLiveData.value as PlaylistDetailsState.Content).playlist)
+            renderState(PlaylistDetailsState.Empty)
+        }
+    }
+
 
     private fun renderState(state: PlaylistDetailsState) {
         playlistDetailsStateLiveData.postValue(state)
