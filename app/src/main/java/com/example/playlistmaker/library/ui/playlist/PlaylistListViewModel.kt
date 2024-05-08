@@ -18,11 +18,6 @@ class PlaylistListViewModel(private val playListsInteractor: PlayListsInteractor
 
     fun fillData() {
         renderState(PlaylistListState.Loading)
-
-    }
-
-    private fun renderState(state: PlaylistListState) {
-        stateLiveData.postValue(state)
         viewModelScope.launch {
             playListsInteractor.getPlaylistsList().collect {
                 if (it.isEmpty())
@@ -31,6 +26,10 @@ class PlaylistListViewModel(private val playListsInteractor: PlayListsInteractor
                     renderState(PlaylistListState.Content(it))
             }
         }
+    }
+
+    private fun renderState(state: PlaylistListState) {
+        stateLiveData.postValue(state)
     }
 
 }

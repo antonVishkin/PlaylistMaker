@@ -1,5 +1,6 @@
 package com.example.playlistmaker.library.ui.playlist
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -7,7 +8,8 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.library.domain.playlist.Playlist
 
 
-class PlayListItemAdapter() : RecyclerView.Adapter<PlayListItemViewHolder>() {
+class PlayListItemAdapter(private val onItemClicked: (Playlist) -> Unit) :
+    RecyclerView.Adapter<PlayListItemViewHolder>() {
     val playListsList = arrayListOf<Playlist>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlayListItemViewHolder {
         val view =
@@ -21,5 +23,9 @@ class PlayListItemAdapter() : RecyclerView.Adapter<PlayListItemViewHolder>() {
 
     override fun onBindViewHolder(holder: PlayListItemViewHolder, position: Int) {
         holder.bind(playListsList[position])
+        holder.itemView.setOnClickListener {
+            val playlist = playListsList[position]
+            onItemClicked.invoke(playlist)
+        }
     }
 }

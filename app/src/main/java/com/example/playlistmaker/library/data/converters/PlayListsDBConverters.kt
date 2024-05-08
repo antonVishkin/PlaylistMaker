@@ -15,7 +15,7 @@ class PlayListsDBConverters {
         list = trackList
     )
 
-    fun map(track: Track):PlaylistsTrackEntity = PlaylistsTrackEntity(
+    fun map(track: Track): PlaylistsTrackEntity = PlaylistsTrackEntity(
         trackId = track.trackId,
         trackName = track.trackName,
         artistName = track.artistName,
@@ -28,7 +28,7 @@ class PlayListsDBConverters {
         previewUrl = track.previewUrl
     )
 
-    fun map(trackEntity: PlaylistsTrackEntity):Track = Track(
+    fun map(trackEntity: PlaylistsTrackEntity): Track = Track(
         trackId = trackEntity.trackId,
         trackName = trackEntity.trackName,
         artistName = trackEntity.artistName,
@@ -39,5 +39,12 @@ class PlayListsDBConverters {
         artworkUrl100 = trackEntity.artworkUrl100,
         country = trackEntity.country,
         previewUrl = trackEntity.previewUrl
+    )
+
+    fun map(playlist: Playlist): PlayListsEntity = PlayListsEntity(
+        id = playlist.id,
+        name = playlist.name,
+        description = playlist.description,
+        imageFilePath = playlist.imagePath
     )
 }

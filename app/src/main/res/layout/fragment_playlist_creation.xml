@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="?attr/colorPrimary"
     android:orientation="vertical">
 
@@ -41,15 +42,28 @@
         app:layout_constraintBottom_toTopOf="@id/name_layout"
         app:layout_constraintDimensionRatio="H,1:1">
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/playlist_image"
+        <ImageView
+            android:id="@+id/playlist_image_placeholder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:scaleType="centerCrop"
             android:src="@drawable/add_photo"
             app:layout_constraintDimensionRatio="1:1"
+            app:shapeAppearanceOverlay="@style/rounded_corner"
+            tools:visibility="invisible"
+            />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/playlist_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+            app:layout_constraintDimensionRatio="1:1"
+            tools:src = "@tools:sample/avatars"
             app:shapeAppearanceOverlay="@style/rounded_corner" />
+
     </FrameLayout>
 
     <com.google.android.material.textfield.TextInputLayout

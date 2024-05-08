@@ -39,6 +39,8 @@ class SearchFragment : Fragment() {
     private lateinit var historyTrackListAdapter: TrackItemAdapter
     private lateinit var searchProgressBar: ProgressBar
     private lateinit var onTrackClickDebounce: (Track) -> Unit
+    private var onLongClicked:(Track) -> Unit = {}
+
     private val viewModel: SearchViewModel by viewModel()
     private val simpleTextWatcher = object : TextWatcher {
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -126,9 +128,7 @@ class SearchFragment : Fragment() {
 
 
     private fun trackListCreation() {
-        searchListItemAdapter = TrackItemAdapter {
-            onTrackClickDebounce(it)
-        }
+        searchListItemAdapter = TrackItemAdapter(onTrackClickDebounce,onLongClicked)
         trackItemsRecyclerView = binding.trackList
         trackItemsRecyclerView.adapter = searchListItemAdapter
     }
@@ -137,10 +137,7 @@ class SearchFragment : Fragment() {
         searchHistory = binding.searchHistory
         historyTrackList = binding.historyTrackList
         clearHistoryButton = binding.clearHistory
-        historyTrackListAdapter =
-            TrackItemAdapter {
-                onTrackClickDebounce(it)
-            }
+        historyTrackListAdapter = TrackItemAdapter (onTrackClickDebounce,onLongClicked)
         historyTrackList.adapter = historyTrackListAdapter
         clearHistoryButton.setOnClickListener {
             viewModel.clearHistory()
